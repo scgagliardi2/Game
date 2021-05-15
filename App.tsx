@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Menu from './screens/Menu';
 import BattleScreen from './screens/BattleScreen';
 import World from './screens/World';
+import NavBar from './components/NavBar';
 
 interface Props {
 
@@ -34,15 +35,24 @@ export default class App extends React.Component<Props, State> {
     switch (this.state.Content) {
       case 'Menu':
         return (
-          <Menu onNavigate={this.changeScreen}/>
+          <View style={styles.screen}>
+            <Menu onNavigate={this.changeScreen}/>
+            <NavBar onNavigate={this.changeScreen}/>
+          </View>
         );
       case 'BattleScreen':
         return (
-          <BattleScreen onNavigate={this.changeScreen}/>
+          <View style={styles.screen}>
+            <BattleScreen onNavigate={this.changeScreen}/>
+            <NavBar onNavigate={this.changeScreen}/>
+          </View>
         );
         case 'World':
           return (
-            <World onNavigate={this.changeScreen}/>
+            <View style={styles.screen}>
+              <World onNavigate={this.changeScreen}/>
+              <NavBar onNavigate={this.changeScreen}/>
+            </View>
           );
     };
   }

@@ -35,12 +35,13 @@ export default class NavButton extends React.Component<Props, State> {
 const styles = StyleSheet.create({
     navButton: {
         padding: 10,
-        width: '100%',
+        flex: 1,
+        height: '90%',
         backgroundColor: GlobalConstants.colors.primary,
-        marginBottom: 40,
+        marginBottom: 30,
         borderRadius: 5,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         shadowColor: GlobalConstants.colors.accent,
         shadowOffset: {width: 1, height: 3},
         shadowOpacity: 0.7,
