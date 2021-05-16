@@ -1,18 +1,21 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import Texture from './Texture'
-import TallGrass1 from './textures/TallGrass1';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import Texture from './textures/Texture'
+import Character from './textures/characters/Character';
+import TallGrass1 from './textures/ground/TallGrass1';
+import CharacterLayer from './CharacterLayer';
 
 interface Props {
-    textures: Texture[]
+    textures: Texture[],
+    characters: Character[]
 }
 
 interface State {
 }
 
-const blocks = 6
+export const blocks = 6
 const windowWidth = Dimensions.get('window').width * .4;
-const cellSize = windowWidth / blocks
+export const cellSize = windowWidth / blocks
 
 export default class Window extends React.Component<Props, State> {
 
@@ -23,59 +26,73 @@ export default class Window extends React.Component<Props, State> {
         }
     }
 
-    renderCell(row: number, col: number) {
+    renderCell(col: number, image: any) {
         return (
             <View style={styles.cell} key={col}>
-                {this.props.textures[row * blocks + col].getImage()}
+                {image}
             </View>
         )
     }
 
-    renderRow(index: number) {
-        var cells = []
+    renderRow(index: number, cells: any[]) {
+        var cellViews = []
 
         for (let i = 0; i < blocks; i++) {
-            cells.push(this.renderCell(index, i))
+            cellViews.push(this.renderCell(i, cells[i]))
         }
 
         return (
             <View style={styles.row} key={index}>
-                {cells}
+                {cellViews}
             </View>
         )
     }
 
-    render() {
-
+    renderBaseTextures() {
         var rows = []
 
-        for (let i = 0; i < blocks; i++) {
-            rows.push(this.renderRow(i))
+        for (let r = 0; r < blocks; r++) {
+            var cells: any[] = []
+
+            for (let c = 0; c < blocks; c++) {
+                cells.push(this.props.textures[r * blocks + c].getImage())
+            }
+
+            rows.push(this.renderRow(r, cells))
         }
 
         return (
+            <View style={styles.window}>
+                {rows}
+            </View> 
+        )
+    }
+
+    render() {
+        return (
             <View>
-                <View style={styles.window}>
-                    {rows}
-                </View> 
+                {this.renderBaseTextures()}
+                <CharacterLayer
+                    characters={this.props.characters}
+                />
                 <View style={styles.window}>
                     <View style={styles.row} key={0}>
                         <View style={styles.cell} key={0}>
                             {new TallGrass1().getImage()}
                         </View>
-                        <View style={styles.cell} key={0}>
+                        <View style={styles.cell} key={1}>
+                  
+                        </View>
+                        <View style={styles.cell} key={2}>
                             {new TallGrass1().getImage()}
                         </View>
-                        <View style={styles.cell} key={0}>
+                        <View style={styles.cell} key={3}>
                             {new TallGrass1().getImage()}
                         </View>
-                        <View style={styles.cell} key={0}>
+                        <View style={styles.cell} key={4}>
                             {new TallGrass1().getImage()}
                         </View>
-                        <View style={styles.cell} key={0}>
-                            {new TallGrass1().getImage()}
-                        </View>
-                        <View style={styles.cell} key={0}>
+                        <View style={styles.cell} key={5}>
                             {new TallGrass1().getImage()}
                         </View>
                     </View>
@@ -86,7 +103,7 @@ export default class Window extends React.Component<Props, State> {
     }
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     cell: {
         flex: 1, 
         flexDirection: 'column', 
