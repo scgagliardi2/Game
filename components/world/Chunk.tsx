@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import GlobalConstants from '../../GlobalConstants';
 
 interface Props {
@@ -32,7 +32,8 @@ export default class Chunk extends React.Component<Props, State> {
                         left: this.props.xpos
                     }
                 ]
-            }></View> 
+            }>
+            </View> 
         );
     }
 }
