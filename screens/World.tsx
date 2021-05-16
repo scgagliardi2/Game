@@ -4,6 +4,8 @@ import NavButton from '../components/NavButton';
 import Player from '../components/Player';
 import InputsContainer from '../components/inputs/InputsContainer';
 import Chunk from '../components/world/Chunk';
+import Window from '../components/world/Window'
+import Cell from '../src/world/Cell'
 
 interface Props {
     onNavigate: (screen: string) => any,
@@ -17,8 +19,15 @@ interface State {
 
 export default class World extends React.Component<Props, State> {
 
+    Textures: Cell[]
+
+
     constructor(props: Props) {
         super(props);
+
+        this.Textures = [
+            new Cell('../../assets/grass1.png', true)
+        ]
 
         this.state = {
             world_position: [100, 100],
@@ -70,16 +79,7 @@ export default class World extends React.Component<Props, State> {
     render() {
         return (
             <View style={styles.world}>
-                <Chunk 
-                    xpos={this.state.world_position[0]} 
-                    ypos={this.state.world_position[1]}
-                    neighbors={[]}
-                />
-                <View style={styles.centerPlayer}>
-                    <Player 
-                        direction={this.state.player_direction}
-                    />
-                </View>
+                <Window textures={this.Textures}/>
                 <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
             </View> 
         );
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 10,
         borderWidth: 1,
-        backgroundColor: 'lightgreen'
+        backgroundColor: 'grey'
     },
     centerPlayer: {
         alignItems: 'center',

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import Menu from './screens/Menu';
 import BattleScreen from './screens/BattleScreen';
-import World from './screens/World';
 import NavBar from './components/NavBar';
+import Texture from './src/world/Texture'
+import Window from './src/world/Window'
+import Grass1 from './src/world/textures/Grass1';
 
 interface Props {
 
@@ -14,11 +16,51 @@ interface State {
 }
 
 export default class App extends React.Component<Props, State> {
+  Textures: Texture[]
 
   constructor(props: Props) {
     super(props);
 
     this.changeScreen = this.changeScreen.bind(this);
+
+    this.Textures = [
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1(),
+      new Grass1()
+  ]
 
     this.state = {
       Content: 'World',
@@ -49,10 +91,7 @@ export default class App extends React.Component<Props, State> {
         );
         case 'World':
           return (
-            <View style={styles.screen}>
-              <World onNavigate={this.changeScreen}/>
-              <NavBar onNavigate={this.changeScreen}/>
-            </View>
+            <Window textures={this.Textures}/>
           );
     };
   }
