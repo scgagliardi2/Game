@@ -30,16 +30,15 @@ export default class App extends React.Component<Props, AppState> {
     super(props);
 
     this.changeScreen = this.changeScreen.bind(this);
-
-
-
+    this.move = this.move.bind(this);
+    
     this.state = {
       Content: 'World',
       world_position: [100, 100],
       player_direction: 'down',
       active_chunk: 0,
       Map: new TestingMap()
-    };
+    }
   }
   
   changeScreen(screen: string) {
@@ -48,38 +47,8 @@ export default class App extends React.Component<Props, AppState> {
     });
   }
 
-  move = (direction: MoveSetType, tap: boolean) => {
-
-      // this.state.Characters[0].look(this, direction);
-
-      // if (!tap) {
-      //   this.state.Characters[0].walk(this)
-      // }
-  }
-
-  moveWorld = (direction: string) => {
-    switch (direction) {
-        case 'up':
-            this.setState({
-                world_position: [this.state.world_position[0], this.state.world_position[1] + 20]
-            });
-            break;
-        case 'down':
-            this.setState({
-                world_position: [this.state.world_position[0], this.state.world_position[1] - 20]
-            });
-            break;
-        case 'left':
-            this.setState({
-                world_position: [this.state.world_position[0] + 20, this.state.world_position[1]]
-            });
-            break;
-        case 'right':
-            this.setState({
-                world_position: [this.state.world_position[0] - 20, this.state.world_position[1]]
-            });
-            break;
-    }
+  move(direction: MoveSetType, tap: boolean) {
+    this.state.Map.handleMove(direction, tap, this)
   }
 
   render() {

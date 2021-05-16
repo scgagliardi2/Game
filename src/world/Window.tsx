@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import GameMap from './GameMap';
+import Tile from './textures/Tile';
 
 interface Props {
     map: GameMap
@@ -22,15 +23,19 @@ export default class Window extends React.Component<Props, State> {
         }
     }
 
-    renderCell(col: number, image: any) {
+    renderCell(col: number, tile: Tile) {
         return (
             <View style={styles.cell} key={col}>
-                {image}
+                {tile == undefined ? 
+                    (<View/>)
+                    :
+                    tile.getImage()
+                }
             </View>
         )
     }
 
-    renderRow(index: number, cells: any[]) {
+    renderRow(index: number, cells: Tile[]) {
         var cellViews = []
 
         for (let i = 0; i < blocks; i++) {
@@ -44,21 +49,14 @@ export default class Window extends React.Component<Props, State> {
         )
     }
 
-    renderTextures(images: any[][]) {
+    renderTextures(images: Tile[][]) {
         var rows = []
 
         for (let r = 0; r < blocks; r++) {
-            var cells: any[] = []
+            var cells: Tile[] = []
 
             for (let c = 0; c < blocks; c++) {
-                var image = images[r][c]
-
-                if (image == undefined) {
-                    cells.push((<View/>))
-                }
-                else {
-                    cells.push(image)
-                }
+                cells.push(images[r][c])
             }
 
             rows.push(this.renderRow(r, cells))
@@ -75,14 +73,16 @@ export default class Window extends React.Component<Props, State> {
         let map = this.props.map.buildMap()
 
         let baseImages = map[0]
-        let characterImages = map[1]
-        let landscapeImages = map[2]
+        let lowLandscapeImages = map[1]
+        let characterImages = map[2]
+        let highLandscapeImages = map[3]
 
         return (
             <View>
                 {this.renderTextures(baseImages)}
+                {this.renderTextures(lowLandscapeImages)}
                 {this.renderTextures(characterImages)}
-                {this.renderTextures(landscapeImages)}
+                {this.renderTextures(highLandscapeImages)}
             </View>
 
         );

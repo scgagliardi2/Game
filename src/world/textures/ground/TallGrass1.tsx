@@ -6,7 +6,7 @@ export default class TallGrass1 extends Texture {
         super(
             xpos, 
             ypos, 
-            TextureLevel.LANDSCAPE,
+            TextureLevel.HIGHLANDSCAPE,
             [
                 [
                     new Tile(

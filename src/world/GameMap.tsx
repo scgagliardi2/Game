@@ -1,3 +1,7 @@
+import App from "../../App";
+import Character from "./textures/characters/Character";
+import { MoveSetType } from "./textures/characters/MoveSet";
+import Red from "./textures/characters/Red";
 import Texture, { TextureLevel } from "./textures/Texture";
 
 
@@ -6,20 +10,44 @@ export default class GameMap {
     Name: string
 
     BaseTextures: Texture[]
+    LowLandscapeTextures: Texture[]
     SpriteTextures: Texture[]
-    LandscapeTextures: Texture[]
+    HighLandscapeTextures: Texture[]
+
+    Player: Character
 
     Width: number
     Height: number
 
     constructor(name: string, width: number, height: number) {
         this.BaseTextures = []
+        this.LowLandscapeTextures = []
         this.SpriteTextures = []
-        this.LandscapeTextures = []
+        this.HighLandscapeTextures = []
+
+        this.Player = new Red(2, 2)
+
+        this.SpriteTextures.push(this.Player)
 
         this.Name = name
         this.Width = width
         this.Height = height
+    }
+
+    handleMove(direction: MoveSetType, tap: boolean, app: App): any{
+        let update = () => {
+            app.setState({
+                Map: this
+            })
+        }
+        
+        this.Player.look(direction)
+
+        if (!tap) {
+            this.Player.walk(update)
+        }
+
+        update()
     }
 
     addTexture(texture: Texture) {
@@ -31,24 +59,29 @@ export default class GameMap {
             case TextureLevel.BASE:
                 this.BaseTextures.push(texture)
                 break;
-            case TextureLevel.LANDSCAPE:
-                this.LandscapeTextures.push(texture)
+            case TextureLevel.LOWLANDSCAPE:
+                this.LowLandscapeTextures.push(texture)
                 break
             case TextureLevel.SPRITES:
                 this.SpriteTextures.push(texture)
                 break    
+            case TextureLevel.HIGHLANDSCAPE:
+                this.HighLandscapeTextures.push(texture)
+                break
         }
     }
 
     buildMap(): any[] {
         var baseTiles: any[] = []
+        var lowLandscapeTiles: any[] = []
         var spriteTiles: any[] = []
-        var landscapeTiles: any[] = []
+        var highLandscapeTiles: any[] = []
 
         for (let y = 0; y < this.Height; y++) {
             baseTiles[y] = []
+            lowLandscapeTiles[y] = []
             spriteTiles[y] = []
-            landscapeTiles[y] = []
+            highLandscapeTiles[y] = []
         }
 
         for (let i = 0; i < this.BaseTextures.length; i++) {
@@ -57,7 +90,18 @@ export default class GameMap {
             // add all images to the 2D array
             for (let r = 0; r < texture.Height; r++) {
                 for (let c = 0; c < texture.Width; c++) {
-                    baseTiles[r + texture.Ypos][c + texture.Xpos] = texture.getImage(r, c)
+                    baseTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
+                }
+            }
+        }
+
+        for (let i = 0; i < this.LowLandscapeTextures.length; i++) {
+            var texture: Texture = this.LowLandscapeTextures[i]
+
+            // add all images to the 2D array
+            for (let r = 0; r < texture.Height; r++) {
+                for (let c = 0; c < texture.Width; c++) {
+                    lowLandscapeTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
                 }
             }
         }
@@ -68,22 +112,22 @@ export default class GameMap {
             // add all images to the 2D array
             for (let r = 0; r < texture.Height; r++) {
                 for (let c = 0; c < texture.Width; c++) {
-                    spriteTiles[r + texture.Ypos][c + texture.Xpos] = texture.getImage(r, c)
+                    spriteTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
                 }
             }
         }
 
-        for (let i = 0; i < this.LandscapeTextures.length; i++) {
-            var texture: Texture = this.LandscapeTextures[i]
+        for (let i = 0; i < this.HighLandscapeTextures.length; i++) {
+            var texture: Texture = this.HighLandscapeTextures[i]
 
             // add all images to the 2D array
             for (let r = 0; r < texture.Height; r++) {
                 for (let c = 0; c < texture.Width; c++) {
-                    landscapeTiles[r + texture.Ypos][c + texture.Xpos] = texture.getImage(r, c)
+                    highLandscapeTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
                 }
             }
         }
 
-        return [baseTiles, spriteTiles, landscapeTiles]
+        return [baseTiles, lowLandscapeTiles, spriteTiles, highLandscapeTiles]
     }
 }

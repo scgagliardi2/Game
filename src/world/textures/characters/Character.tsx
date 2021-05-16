@@ -1,6 +1,5 @@
 import MoveSet, { MoveSetType } from './MoveSet';
 import { cellSize } from '../../Window'
-import App from '../../../../App'
 import Texture, { TextureLevel } from '../Texture';
 import Tile from '../Tile';
 
@@ -36,23 +35,18 @@ export default class Character extends Texture {
         this.IsMoving = false
     }
 
-    look(app: App, direction: MoveSetType) {
+    look(direction: MoveSetType) {
         if (!this.IsMoving) {
-            var characters = app.state.Characters
-            
+
             // change facing direction
-            characters[0].Facing = direction
+            this.Facing = direction
 
             // change display tile
-            characters[0].Tiles[0][0] = this.getTile()
-
-            app.setState({
-                Characters: characters
-            })
+            this.Tiles[0][0] = this.getTile()
         }
     }
 
-    walk(app: App) {
+    walk(update: any) {
         if (!this.IsMoving) {
             this.IsMoving = true;
 
@@ -76,19 +70,21 @@ export default class Character extends Texture {
     
             var moving = setInterval(() => { 
     
-                var characters = app.state.Characters
-    
                 // increment animation index
-                characters[0].AnimationIndex = characters[0].AnimationIndex + 1
+                this.AnimationIndex++
     
-                if (characters[0].AnimationIndex == 4) {
-                    characters[0].AnimationIndex = 0
-                    characters[0].Xpos += dx 
-                    characters[0].Ypos += dy
+                var offsetX = 0
+                var offsetY = 0
+
+                if (this.AnimationIndex == 4) {
+                    this.AnimationIndex = 0
+                    this.Xpos += dx 
+                    this.Ypos += dy
 
                     this.IsMoving = false
-                    this.OffsetX = 0
-                    this.OffsetY = 0
+
+                    offsetX = 0
+                    offsetY = 0
 
                     clearInterval(moving)
                 }
@@ -96,20 +92,29 @@ export default class Character extends Texture {
                     // set offsets
                     switch (this.Facing) {
                         case MoveSetType.DOWN:
+                            offsetY = this.AnimationIndex * (cellSize / 4)
+                            break
                         case MoveSetType.UP:
-                            this.OffsetY = this.AnimationIndex * (cellSize / 4)
+                            offsetY = -1 * this.AnimationIndex * (cellSize / 4)
+                            break
                         case MoveSetType.LEFT:
+                            offsetX = -1 * this.AnimationIndex * (cellSize / 4)
+                            break
                         case MoveSetType.RIGHT:
-                            this.OffsetX = this.AnimationIndex * (cellSize / 4)
+                            offsetX = this.AnimationIndex * (cellSize / 4)
+                            break
                     }
                 }
 
                 // update display tile
-                characters[0].Tiles[0][0] = this.getTile()
+                let tile = this.getTile()
 
-                app.setState({
-                    Characters: characters
-                })
+                tile.OffsetX = offsetX
+                tile.OffsetY = offsetY
+
+                this.Tiles[0][0] = tile
+
+                update()
             },
             200)
         }    
