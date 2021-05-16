@@ -32,10 +32,10 @@ export default class D_Pad extends React.Component<Props, State> {
     render() {
         return (
             <View style={styles.D_Pad}>
-                <Arrow direction={'^'} width={200} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
-                <Arrow direction={'<'} width={100} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
-                <Arrow direction={'>'} width={100} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
-                <Arrow direction={'v'} width={200} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
+                <Arrow direction={'up'} width={200} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
+                <Arrow direction={'left'} width={100} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
+                <Arrow direction={'right'} width={100} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
+                <Arrow direction={'down'} width={200} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
             </View>   
         );
     }

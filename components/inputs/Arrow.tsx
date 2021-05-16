@@ -10,7 +10,6 @@ interface Props {
 }
 
 interface State {
-    direction: string
 }
 
 export default class Arrow extends React.Component<Props, State> {
@@ -18,43 +17,65 @@ export default class Arrow extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        var dir = '';
-
-        switch (this.props.direction) {
-            case '^':
-                dir = 'up';
-                break;
-            case 'v':
-                dir = 'down';
-                break;
-            case '<':
-                dir = 'left';
-                break;
-            case '>':
-                dir = 'right';
-                break;
-        }
-
         this.state = {
-            direction: dir
         }
     }
 
     render() {
-        return (
-            <View style={{width: this.props.width, alignItems: 'center'}}>
-                <TouchableOpacity 
-                    style={styles.Arrow}
-                    delayLongPress={35}
-                    onPress={() => this.props.arrowPress(this.state.direction)}
-                    onLongPress={() => this.props.arrowLongPress(this.state.direction)}
-                >
-                    <Text style={styles.Letter}>
-                        {this.props.direction}
-                    </Text>
-                </TouchableOpacity> 
-            </View>
-        );
+        switch (this.props.direction) {
+            case 'up' :
+                return (
+                <View style={{width: this.props.width, alignItems: 'center'}}>
+                    <TouchableOpacity 
+                        style={styles.Arrow}
+                        delayLongPress={35}
+                        onPress={() => this.props.arrowPress(this.props.direction)}
+                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
+                    >
+                        <View style={styles.up}></View>
+                    </TouchableOpacity> 
+                </View>
+                )
+            case 'down' :
+                return (
+                <View style={{width: this.props.width, alignItems: 'center'}}>
+                    <TouchableOpacity 
+                        style={styles.Arrow}
+                        delayLongPress={35}
+                        onPress={() => this.props.arrowPress(this.props.direction)}
+                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
+                    >
+                        <View style={styles.down}></View>
+                    </TouchableOpacity> 
+                </View>
+                )
+            case 'left' :
+                return (
+                <View style={{width: this.props.width, alignItems: 'center'}}>
+                    <TouchableOpacity 
+                        style={styles.Arrow}
+                        delayLongPress={35}
+                        onPress={() => this.props.arrowPress(this.props.direction)}
+                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
+                    >
+                        <View style={styles.left}></View>
+                    </TouchableOpacity> 
+                </View>
+                )
+            case 'right' :
+                return (
+                <View style={{width: this.props.width, alignItems: 'center'}}>
+                    <TouchableOpacity 
+                        style={styles.Arrow}
+                        delayLongPress={35}
+                        onPress={() => this.props.arrowPress(this.props.direction)}
+                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
+                    >
+                        <View style={styles.right}></View>
+                    </TouchableOpacity> 
+                </View>
+                )
+        }
     }
 }
 
@@ -75,8 +96,63 @@ const styles = StyleSheet.create({
         opacity: .4,
         backgroundColor: 'white'
     },
-    Letter: {
-        fontWeight: 'bold',
-        fontSize: 20
-    }
+    up: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderTopWidth: 0,
+        borderRightWidth: 7,
+        borderBottomWidth: 12,
+        borderLeftWidth: 7,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'gray',
+        borderLeftColor: 'transparent',
+    },
+    down: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderTopWidth: 0,
+        borderRightWidth: 7,
+        borderBottomWidth: 12,
+        borderLeftWidth: 7,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'gray',
+        borderLeftColor: 'transparent',
+        transform: [{rotate: '180deg'}]
+    },
+    left: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderTopWidth: 0,
+        borderRightWidth: 7,
+        borderBottomWidth: 12,
+        borderLeftWidth: 7,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'gray',
+        borderLeftColor: 'transparent',
+        transform: [{rotate: '270deg'}]
+    },
+    right: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderTopWidth: 0,
+        borderRightWidth: 7,
+        borderBottomWidth: 12,
+        borderLeftWidth: 7,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'gray',
+        borderLeftColor: 'transparent',
+        transform: [{rotate: '90deg'}]
+    },
 });
