@@ -1,22 +1,32 @@
-import { ImageProps } from 'react-native';
 import MoveSet, { MoveSetType } from './MoveSet';
 import { cellSize } from '../../Window'
 import App from '../../../../App'
+import Texture, { TextureLevel } from '../Texture';
+import Tile from '../Tile';
 
-export default class Character {
-    Facing: MoveSetType
-    AnimationIndex: number
-    Xpos: number
-    Ypos: number
+export default class Character extends Texture {
     DownMoveSet: MoveSet
     LeftMoveSet: MoveSet
     RightMoveSet: MoveSet
     UpMoveSet: MoveSet
+
     IsMoving: boolean
 
-    constructor(dms: MoveSet, lms: MoveSet, rms: MoveSet, ums: MoveSet) {
-        this.Xpos = 0,
-        this.Ypos = 0,
+    Facing: MoveSetType
+    AnimationIndex: number
+
+    constructor(xpos: number, ypos: number, dms: MoveSet, lms: MoveSet, rms: MoveSet, ums: MoveSet) {
+        super(
+            xpos, 
+            ypos,
+            TextureLevel.SPRITES,
+            [
+                [
+                    dms.Source[0]
+                ]
+            ]
+        )
+
         this.Facing = MoveSetType.DOWN
         this.AnimationIndex = 0
         this.DownMoveSet = dms
@@ -30,7 +40,11 @@ export default class Character {
         if (!this.IsMoving) {
             var characters = app.state.Characters
             
+            // change facing direction
             characters[0].Facing = direction
+
+            // change display tile
+            characters[0].Tiles[0][0] = this.getTile()
 
             app.setState({
                 Characters: characters
@@ -64,6 +78,7 @@ export default class Character {
     
                 var characters = app.state.Characters
     
+                // increment animation index
                 characters[0].AnimationIndex = characters[0].AnimationIndex + 1
     
                 if (characters[0].AnimationIndex == 4) {
@@ -72,10 +87,26 @@ export default class Character {
                     characters[0].Ypos += dy
 
                     this.IsMoving = false
+                    this.OffsetX = 0
+                    this.OffsetY = 0
 
                     clearInterval(moving)
                 }
-    
+                else {
+                    // set offsets
+                    switch (this.Facing) {
+                        case MoveSetType.DOWN:
+                        case MoveSetType.UP:
+                            this.OffsetY = this.AnimationIndex * (cellSize / 4)
+                        case MoveSetType.LEFT:
+                        case MoveSetType.RIGHT:
+                            this.OffsetX = this.AnimationIndex * (cellSize / 4)
+                    }
+                }
+
+                // update display tile
+                characters[0].Tiles[0][0] = this.getTile()
+
                 app.setState({
                     Characters: characters
                 })
@@ -84,52 +115,16 @@ export default class Character {
         }    
     }
 
-    _getImageProps(moveSet: MoveSetType, index: number): ImageProps {
-        switch (moveSet) {
+    getTile(): Tile {
+        switch (this.Facing) {
             case MoveSetType.DOWN:
-                return {
-                    source: this.DownMoveSet.Source[index],
-                    style :{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'cover',
-                        top: index * (cellSize / 4)
-                    }
-                }
+                return this.DownMoveSet.Source[this.AnimationIndex]
             case MoveSetType.LEFT:
-                return {
-                    source: this.LeftMoveSet.Source[index],
-                    style :{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'cover',
-                        right: index * (cellSize / 4)
-                    }
-                }
+                return this.LeftMoveSet.Source[this.AnimationIndex]
             case MoveSetType.RIGHT:
-                return {
-                    source: this.RightMoveSet.Source[index],
-                    style :{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'cover',
-                        left: index * (cellSize / 4)
-                    }
-                }
+                return this.RightMoveSet.Source[this.AnimationIndex]
             case MoveSetType.UP:
-                return {
-                    source: this.UpMoveSet.Source[index],
-                    style :{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'cover',
-                        bottom: index * (cellSize / 4)
-                    }
-                }
+                return this.UpMoveSet.Source[this.AnimationIndex]
         }
-    }
-
-    getImageProps(): ImageProps {
-        return this._getImageProps(this.Facing, this.AnimationIndex)
     }
 }

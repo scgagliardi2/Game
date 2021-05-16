@@ -10,6 +10,8 @@ import InputsContainer from './components/inputs/InputsContainer';
 import Red from './src/world/textures/characters/Red';
 import Character from './src/world/textures/characters/Character';
 import { MoveSetType } from './src/world/textures/characters/MoveSet';
+import GameMap from './src/world/GameMap';
+import TestingMap from './src/world/TestingMap';
 
 interface Props {
 
@@ -20,64 +22,23 @@ export interface AppState {
   world_position: [number, number],
   player_direction: string,
   active_chunk: number,
-  Characters: Character[]
+  Map: GameMap
 }
 
 export default class App extends React.Component<Props, AppState> {
-  Textures: Texture[]
-
   constructor(props: Props) {
     super(props);
 
     this.changeScreen = this.changeScreen.bind(this);
 
-    this.Textures = [
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1(),
-      new Grass1()
-    ]
+
 
     this.state = {
       Content: 'World',
       world_position: [100, 100],
       player_direction: 'down',
       active_chunk: 0,
-      Characters: [
-        new Red()
-      ]
+      Map: new TestingMap()
     };
   }
   
@@ -89,11 +50,11 @@ export default class App extends React.Component<Props, AppState> {
 
   move = (direction: MoveSetType, tap: boolean) => {
 
-      this.state.Characters[0].look(this, direction);
+      // this.state.Characters[0].look(this, direction);
 
-      if (!tap) {
-        this.state.Characters[0].walk(this)
-      }
+      // if (!tap) {
+      //   this.state.Characters[0].walk(this)
+      // }
   }
 
   moveWorld = (direction: string) => {
@@ -140,7 +101,7 @@ export default class App extends React.Component<Props, AppState> {
         case 'World':
           return (
             <View>
-              <Window textures={this.Textures} characters={this.state.Characters}/>
+              <Window map={this.state.Map}/>
               <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
             </View>
           );

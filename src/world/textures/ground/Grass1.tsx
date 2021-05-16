@@ -1,8 +1,20 @@
-import Texture from '../Texture'
+import Texture, { TextureLevel } from '../Texture'
+import Tile from '../Tile'
 
 export default class Grass1 extends Texture {
-    constructor() {
-        super("./grass1.png", true)
-        this.Source = require('./grass1.png')
+    constructor(xpos: number, ypos: number) {
+        super(
+            xpos, 
+            ypos, 
+            TextureLevel.BASE,
+            [
+                [
+                    new Tile(
+                        require('./grass1.png'),
+                        false
+                    )
+                ]
+            ]
+        )
     }
 }

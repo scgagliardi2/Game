@@ -1,4 +1,4 @@
-import { ImageProps } from 'react-native'
+import Tile from "../Tile"
 
 export enum MoveSetType {
     DOWN,
@@ -8,9 +8,9 @@ export enum MoveSetType {
 }
 
 export default class MoveSet {
-    Source: any[]
+    Source: Tile[]
 
-    constructor(sources: any[]) {
+    constructor(sources: Tile[]) {
         this.Source = sources
     }
 }

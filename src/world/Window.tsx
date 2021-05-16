@@ -1,13 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Image } from 'react-native';
-import Texture from './textures/Texture'
-import Character from './textures/characters/Character';
-import TallGrass1 from './textures/ground/TallGrass1';
-import CharacterLayer from './CharacterLayer';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import GameMap from './GameMap';
 
 interface Props {
-    textures: Texture[],
-    characters: Character[]
+    map: GameMap
 }
 
 interface State {
@@ -48,14 +44,21 @@ export default class Window extends React.Component<Props, State> {
         )
     }
 
-    renderBaseTextures() {
+    renderTextures(images: any[][]) {
         var rows = []
 
         for (let r = 0; r < blocks; r++) {
             var cells: any[] = []
 
             for (let c = 0; c < blocks; c++) {
-                cells.push(this.props.textures[r * blocks + c].getImage())
+                var image = images[r][c]
+
+                if (image == undefined) {
+                    cells.push((<View/>))
+                }
+                else {
+                    cells.push(image)
+                }
             }
 
             rows.push(this.renderRow(r, cells))
@@ -69,34 +72,17 @@ export default class Window extends React.Component<Props, State> {
     }
 
     render() {
+        let map = this.props.map.buildMap()
+
+        let baseImages = map[0]
+        let characterImages = map[1]
+        let landscapeImages = map[2]
+
         return (
             <View>
-                {this.renderBaseTextures()}
-                <CharacterLayer
-                    characters={this.props.characters}
-                />
-                <View style={styles.window}>
-                    <View style={styles.row} key={0}>
-                        <View style={styles.cell} key={0}>
-                            {new TallGrass1().getImage()}
-                        </View>
-                        <View style={styles.cell} key={1}>
-                  
-                        </View>
-                        <View style={styles.cell} key={2}>
-                            {new TallGrass1().getImage()}
-                        </View>
-                        <View style={styles.cell} key={3}>
-                            {new TallGrass1().getImage()}
-                        </View>
-                        <View style={styles.cell} key={4}>
-                            {new TallGrass1().getImage()}
-                        </View>
-                        <View style={styles.cell} key={5}>
-                            {new TallGrass1().getImage()}
-                        </View>
-                    </View>
-                </View> 
+                {this.renderTextures(baseImages)}
+                {this.renderTextures(characterImages)}
+                {this.renderTextures(landscapeImages)}
             </View>
 
         );
