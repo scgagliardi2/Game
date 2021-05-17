@@ -1,10 +1,17 @@
 import React from 'react';
+<<<<<<< HEAD
 import { View, StyleSheet } from 'react-native';
 import { Screens } from '../../Display';
 import Player from '../Player';
 
 interface Props {
     onNavigate: (screen: Screens) => any,
+=======
+import {View, StyleSheet, Animated} from 'react-native';
+import Chunk from '../world/Chunk';
+
+interface Props {
+>>>>>>> origin/main
 }
 
 interface State {
@@ -70,7 +77,6 @@ export default class World extends React.Component<Props, State> {
         return (
             <View style={styles.world}>
                 <View style={styles.centerPlayer} >
-                    <Player direction={this.state.player_direction}/>
                 </View>
             </View> 
         );

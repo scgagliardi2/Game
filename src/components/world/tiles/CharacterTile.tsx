@@ -1,4 +1,5 @@
-import Tile from "../../../components/world/tiles/Tile"
+import Tile from "./Tile"
+
 
 export default class CharacterTile extends Tile {
     Source: any

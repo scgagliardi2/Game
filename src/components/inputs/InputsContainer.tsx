@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, StyleSheet} from 'react-native';
-import { MoveSetType } from '../../assets/textures/characters/MoveSet';
+import { MoveSetType } from '../../assets/characters/MoveSet';
 import ButtonsContainer from './ButtonsContainer';
 import D_Pad from './D_Pad';
+import MenuButton from './Menu_Button';
 
 interface Props {
     inputDpadTap: (direction: MoveSetType, tap: boolean) => any,
     inputDpadLongPress: (direction: MoveSetType, tap: boolean) => any,
+    displayMenuButton: boolean,
+    buttonPressed: (button: string) => any
 }
 
 interface State {
@@ -44,12 +47,25 @@ export default class InputsContainer extends React.Component<Props, State> {
     }
 
     render() {
-        return (
-            <View style={styles.InputsContainer}>
-                <D_Pad dpad_input_Tap={this.dpad_Tap} dpad_input_LongPress={this.dpad_LongPress}/>
-                <ButtonsContainer/>
-            </View>   
-        );
+            if (this.props.displayMenuButton) {
+                return (
+                    <View style={styles.InputsContainer}>
+                        <D_Pad dpad_input_Tap={this.dpad_Tap} dpad_input_LongPress={this.dpad_LongPress}/>
+                        <View style={styles.lockMenu}>
+                            <MenuButton pressed={this.props.buttonPressed}/>
+                        </View>
+                        <ButtonsContainer buttonPressed={this.props.buttonPressed}/>
+                    </View>  
+                )
+            } else {
+                return (
+                    <View style={styles.InputsContainer}>
+                        <D_Pad dpad_input_Tap={this.dpad_Tap} dpad_input_LongPress={this.dpad_LongPress}/>
+                        <ButtonsContainer buttonPressed={this.props.buttonPressed}/>
+                    </View>  
+                ) 
+            }
+        
     }
 }
 
@@ -59,5 +75,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    lockMenu: {
+        position: 'absolute',
+        bottom: 20,
+        left: '50%'
     }
 });

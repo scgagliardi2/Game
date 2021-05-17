@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import { MoveSetType } from './assets/characters/MoveSet';
 import InputsContainer from './components/inputs/InputsContainer';
-import { MoveSetType } from './assets/textures/characters/MoveSet';
 import constants from './GlobalConstants'
 
 interface Props {
     children: any,
-    handleMove: (direction: MoveSetType, tap: boolean) => void
+    handleMove: (direction: MoveSetType, tap: boolean) => void,
+    handlePress: (button: string) => void
 }
 
 interface State {
@@ -26,7 +27,12 @@ export default class Overlay extends React.Component<Props, State> {
         return (
             <View style={styles.display}>
                 {this.props.children}
-                <InputsContainer inputDpadTap={this.props.handleMove} inputDpadLongPress={this.props.handleMove}/>
+                <InputsContainer 
+                    inputDpadTap={this.props.handleMove} 
+                    inputDpadLongPress={this.props.handleMove}
+                    displayMenuButton={false}
+                    buttonPressed={this.props.handlePress}
+                />
             </View>
         )
     }

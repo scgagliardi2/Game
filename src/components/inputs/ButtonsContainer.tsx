@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet} from 'react-native';
-import GlobalConstants from '../../GlobalConstants';
 import A_Button from './A_Button';
 import B_Button from './B_Button';
 
 interface Props {
+    buttonPressed: (button: string) => any
 }
 
 interface State {
@@ -22,8 +22,8 @@ export default class InputsContainer extends React.Component<Props, State> {
     render() {
         return (
             <View style={styles.InputsContainer}>
-                <A_Button/>
-                <B_Button/>
+                <A_Button pressed={this.props.buttonPressed}/>
+                <B_Button pressed={this.props.buttonPressed}/>
             </View>   
         );
     }

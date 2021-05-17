@@ -1,14 +1,11 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import InputsContainer from './components/inputs/InputsContainer';
 import BattleScreen from './components/screens/BattleScreen';
 import Menu from './components/screens/Menu';
-import World from './components/screens/World';
-import { MoveSetType } from './assets/textures/characters/MoveSet';
 import Overlay from './Overlay'
 import Window from './components/world/Window';
 import GameMap from './components/world/GameMap';
 import TestingMap from './components/world/TestingMap';
+import { MoveSetType } from './assets/characters/MoveSet';
 
 interface Props {
 }
@@ -31,14 +28,17 @@ export default class Display extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.changeScreen = this.changeScreen.bind(this);
+        this.handlePress = this.handlePress.bind(this);
         this.move = this.move.bind(this);
 
+        // TODO - temp for testing
         let trans = () => {
-            console.log('test')
-            this.setState({
-                Map: new TestingMap(trans)
-            })
+            setTimeout(() => {
+                this.setState({
+                    Map: new TestingMap(trans)
+                })
+            },
+            500)
         }
 
         this.state = {
@@ -46,6 +46,11 @@ export default class Display extends React.Component<Props, State> {
             Map: new TestingMap(trans),
             UpdateKey: 1
         }
+    }
+
+
+    handlePress(button: string) {
+        console.log(button)
     }
 
     changeScreen(screen: Screens) {
@@ -83,6 +88,7 @@ export default class Display extends React.Component<Props, State> {
         return (
             <Overlay
                 handleMove={this.move}
+                handlePress={this.handlePress}
             >
                 {content}
             </Overlay>

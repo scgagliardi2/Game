@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import GameMap from './GameMap';
 import constants from '../../GlobalConstants'
-import { TextureLevel } from '../../assets/textures/Texture';
+import { TextureLevel } from '../../assets/Texture';
 
 interface Props {
     map: GameMap

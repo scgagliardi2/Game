@@ -28,9 +28,8 @@ export default class BattleScreen extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1,
-        padding: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'lightblue'
     },
 });

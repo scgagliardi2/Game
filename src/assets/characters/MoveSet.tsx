@@ -1,4 +1,5 @@
-import Tile from "../../../components/world/tiles/Tile"
+import Tile from "../../components/world/tiles/Tile"
+
 
 export enum MoveSetType {
     DOWN,

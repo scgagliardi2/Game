@@ -1,5 +1,5 @@
 import Character from "./Character"
-import CharacterTile from "./Charactertile"
+import CharacterTile from "../../components/world/tiles/CharacterTile"
 import MoveSet from "./MoveSet"
 
 
