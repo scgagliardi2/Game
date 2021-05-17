@@ -1,12 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, Animated} from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Screens } from '../../Display';
 import Player from '../Player';
-import InputsContainer from '../inputs/InputsContainer';
-import Chunk from '../world/Chunk';
-import PurpleStore from "../../assets/textures/purple_store/PurpleStore";
 
 interface Props {
-    onNavigate: (screen: string) => any,
+    onNavigate: (screen: Screens) => any,
 }
 
 interface State {

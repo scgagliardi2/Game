@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import GameMap from './GameMap';
-import Tile from '../../assets/textures/Tile';
+import constants from '../../GlobalConstants'
+import { TextureLevel } from '../../assets/textures/Texture';
 
 interface Props {
     map: GameMap
@@ -9,10 +10,6 @@ interface Props {
 
 interface State {
 }
-
-export const blocks = 12
-const windowWidth = Dimensions.get('window').width * .4;
-export const cellSize = windowWidth / blocks
 
 export default class Window extends React.Component<Props, State> {
 
@@ -23,7 +20,9 @@ export default class Window extends React.Component<Props, State> {
         }
     }
 
-    renderCell(col: number, tile: Tile) {
+    renderCell(row: number, col: number, textureLevel: TextureLevel) {
+        var tile = this.props.map.Tiles[col][row].Tiles.get(textureLevel)
+
         return (
             <View style={styles.cell} key={col}>
                 {tile == undefined ? 
@@ -35,31 +34,25 @@ export default class Window extends React.Component<Props, State> {
         )
     }
 
-    renderRow(index: number, cells: Tile[]) {
-        var cellViews = []
+    renderRow(row: number, textureLevel: TextureLevel) {
+        var cells = []
 
-        for (let i = 0; i < blocks; i++) {
-            cellViews.push(this.renderCell(i, cells[i]))
+        for (let column = 0; column < constants.size.windowTiles; column++) {
+            cells.push(this.renderCell(row, column, textureLevel))
         }
 
         return (
-            <View style={styles.row} key={index}>
-                {cellViews}
+            <View style={styles.row} key={row}>
+                {cells}
             </View>
         )
     }
 
-    renderTextures(images: Tile[][]) {
+    renderTextures(textureLevel: TextureLevel) {
         var rows = []
 
-        for (let r = 0; r < blocks; r++) {
-            var cells: Tile[] = []
-
-            for (let c = 0; c < blocks; c++) {
-                cells.push(images[r][c])
-            }
-
-            rows.push(this.renderRow(r, cells))
+        for (let r = 0; r < constants.size.windowTiles; r++) {
+            rows.push(this.renderRow(r, textureLevel))
         }
 
         return (
@@ -70,24 +63,20 @@ export default class Window extends React.Component<Props, State> {
     }
 
     render() {
-        let map = this.props.map.buildMap()
-
-        let baseImages = map[0]
-        let lowLandscapeImages = map[1]
-        let characterImages = map[2]
-        let highLandscapeImages = map[3]
-
         return (
-            <View>
-                {this.renderTextures(baseImages)}
-                {this.renderTextures(lowLandscapeImages)}
-                {this.renderTextures(characterImages)}
-                {this.renderTextures(highLandscapeImages)}
+            <View style={{flex: 1}}>
+                {this.renderTextures(TextureLevel.BASE)}
+                {this.renderTextures(TextureLevel.LOWLANDSCAPE)}
+                {this.renderTextures(TextureLevel.SPRITES)}
+                {this.renderTextures(TextureLevel.HIGHLANDSCAPE)}
             </View>
 
         );
     }
 }
+
+export const windowWidth = constants.size.width * .8 > 512 ? 512 : constants.size.width * .8
+export const cellSize = windowWidth / constants.size.windowTiles
 
 export const styles = StyleSheet.create({
     cell: {
@@ -107,7 +96,7 @@ export const styles = StyleSheet.create({
         height: cellSize
     },
     window: {
-        width: windowWidth, 
+        width: windowWidth,
         height: windowWidth,
         position: 'absolute'
     }

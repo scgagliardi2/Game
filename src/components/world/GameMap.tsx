@@ -1,18 +1,15 @@
-import App from "../../../App";
 import Character from "../../assets/textures/characters/Character";
 import { MoveSetType } from "../../assets/textures/characters/MoveSet";
 import Red from "../../assets/textures/characters/Red";
-import Texture, { TextureLevel } from "../../assets/textures/Texture";
+import Texture from "../../assets/textures/Texture";
+import Tileset from "./tiles/Tileset";
 
 
 export default class GameMap {
 
     Name: string
 
-    BaseTextures: Texture[]
-    LowLandscapeTextures: Texture[]
-    SpriteTextures: Texture[]
-    HighLandscapeTextures: Texture[]
+    Tiles: Tileset[][]
 
     Player: Character
 
@@ -20,114 +17,81 @@ export default class GameMap {
     Height: number
 
     constructor(name: string, width: number, height: number) {
-        this.BaseTextures = []
-        this.LowLandscapeTextures = []
-        this.SpriteTextures = []
-        this.HighLandscapeTextures = []
+        this.Tiles = [[]]
 
-        this.Player = new Red(2, 2)
-
-        this.SpriteTextures.push(this.Player)
+        // add the player to the game
+        this.Player = new Red(5, 6)
+        this.addTexture(this.Player)
 
         this.Name = name
         this.Width = width
         this.Height = height
+
+        this.updateTexture = this.updateTexture.bind(this)
+        this.removeTexture = this.removeTexture.bind(this)
     }
 
-    handleMove(direction: MoveSetType, tap: boolean, app: App): any{
-        let update = () => {
-            app.setState({
-                Map: this
-            })
-        }
-        
-        this.Player.look(direction)
+    handleMove(direction: MoveSetType, tap: boolean, update: () => void): any{  
+        let facingCoords: number[] = this.Player.look(direction, update, this.updateTexture)
 
-        if (!tap) {
-            this.Player.walk(update)
-        }
+        var nextTile: Tileset = this.Tiles[facingCoords[0]][facingCoords[1]]
 
-        update()
+        if (!tap && nextTile.canWalkOn()) {
+            this.Player.walk(update, this.updateTexture, this.removeTexture)
+            
+            if (nextTile.willTransition()) {
+                nextTile.callTransition()
+            }
+        }
+    }
+
+    removeTexture(texture: Texture) {
+        for (let x = 0; x < texture.Width; x++) {
+            for (let y = 0; y < texture.Height; y++) {
+                // is there a tileset here to remove a tile from
+                if (this.Tiles[x + texture.Xpos] != undefined && this.Tiles[x + texture.Xpos][y + texture.Ypos] != undefined) {
+                    var tileset: Tileset = this.Tiles[x + texture.Xpos][y + texture.Ypos]
+                    
+                    tileset.Tiles.delete(texture.Level)
+                }
+            }
+        }
+    }
+
+    updateTexture(texture: Texture) {
+        for (let x = 0; x < texture.Width; x++) {
+            for (let y = 0; y < texture.Height; y++) {
+                // is there a tileset here to remove a tile from
+                if (this.Tiles[x + texture.Xpos] != undefined && this.Tiles[x + texture.Xpos][y + texture.Ypos] != undefined) {
+                    var tileset: Tileset = this.Tiles[x + texture.Xpos][y + texture.Ypos]
+
+                    tileset.addTile(texture.Tiles[y][x], texture)
+                }
+            }
+        }
     }
 
     addTexture(texture: Texture) {
-        if ((texture.Xpos >= this.Width) || (texture.Ypos >= this.Height)) {
+        if ((texture.Xpos + texture.Width > this.Width) || (texture.Ypos + texture.Height > this.Height)) {
             throw new Error(`Texture is out of map bounds. Map name ${this.Name}`)
-        }
+        }   
 
-        switch (texture.Level) {
-            case TextureLevel.BASE:
-                this.BaseTextures.push(texture)
-                break;
-            case TextureLevel.LOWLANDSCAPE:
-                this.LowLandscapeTextures.push(texture)
-                break
-            case TextureLevel.SPRITES:
-                this.SpriteTextures.push(texture)
-                break    
-            case TextureLevel.HIGHLANDSCAPE:
-                this.HighLandscapeTextures.push(texture)
-                break
-        }
-    }
-
-    buildMap(): any[] {
-        var baseTiles: any[] = []
-        var lowLandscapeTiles: any[] = []
-        var spriteTiles: any[] = []
-        var highLandscapeTiles: any[] = []
-
-        for (let y = 0; y < this.Height; y++) {
-            baseTiles[y] = []
-            lowLandscapeTiles[y] = []
-            spriteTiles[y] = []
-            highLandscapeTiles[y] = []
-        }
-
-        for (let i = 0; i < this.BaseTextures.length; i++) {
-            var texture: Texture = this.BaseTextures[i]
-
-            // add all images to the 2D array
-            for (let r = 0; r < texture.Height; r++) {
-                for (let c = 0; c < texture.Width; c++) {
-                    baseTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
+        for (let x = 0; x < texture.Width; x++) {
+            for (let y = 0; y < texture.Height; y++) {
+                // do we have a list?
+                if (this.Tiles[x + texture.Xpos] == undefined) {
+                    this.Tiles[x + texture.Xpos] = []
                 }
+
+                // do we have a Tileset here?
+                if (this.Tiles[x + texture.Xpos][y + texture.Ypos] == undefined) {
+                    this.Tiles[x + texture.Xpos][y + texture.Ypos] = new Tileset()
+                }
+
+                // add the tile to the set
+                var tileset: Tileset = this.Tiles[x + texture.Xpos][y + texture.Ypos]
+                tileset.addTile(texture.Tiles[y][x], texture)
             }
         }
-
-        for (let i = 0; i < this.LowLandscapeTextures.length; i++) {
-            var texture: Texture = this.LowLandscapeTextures[i]
-
-            // add all images to the 2D array
-            for (let r = 0; r < texture.Height; r++) {
-                for (let c = 0; c < texture.Width; c++) {
-                    lowLandscapeTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
-                }
-            }
-        }
-
-        for (let i = 0; i < this.SpriteTextures.length; i++) {
-            var texture: Texture = this.SpriteTextures[i]
-
-            // add all images to the 2D array
-            for (let r = 0; r < texture.Height; r++) {
-                for (let c = 0; c < texture.Width; c++) {
-                    spriteTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
-                }
-            }
-        }
-
-        for (let i = 0; i < this.HighLandscapeTextures.length; i++) {
-            var texture: Texture = this.HighLandscapeTextures[i]
-
-            // add all images to the 2D array
-            for (let r = 0; r < texture.Height; r++) {
-                for (let c = 0; c < texture.Width; c++) {
-                    highLandscapeTiles[r + texture.Ypos][c + texture.Xpos] = texture.Tiles[r][c]
-                }
-            }
-        }
-
-        return [baseTiles, lowLandscapeTiles, spriteTiles, highLandscapeTiles]
     }
 }

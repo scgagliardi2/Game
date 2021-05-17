@@ -1,12 +1,11 @@
 import GameMap from "./GameMap";
 import Grass1 from "../../assets/textures/ground/Grass1";
 import TallGrass1 from "../../assets/textures/ground/TallGrass1";
-import TallGrass1Half from "../../assets/textures/ground/TallGrass1Half";
 import PurpleStore from "../../assets/textures/purple_store/PurpleStore";
 
 export default class TestingMap extends GameMap {
 
-    constructor() {
+    constructor(transition: () => any) {
         super('Testing Map', 12, 12)
 
         // add the grass
@@ -20,9 +19,7 @@ export default class TestingMap extends GameMap {
         this.addTexture(new TallGrass1(0, 0))
         this.addTexture(new TallGrass1(1, 0))
         this.addTexture(new TallGrass1(0, 1))
-        this.addTexture(new TallGrass1Half(1, 1, true))
-        this.addTexture(new TallGrass1Half(1, 1, false))
 
-        this.addTexture(new PurpleStore(3, 0))
+        this.addTexture(new PurpleStore(3, 0, transition))
     }
 }

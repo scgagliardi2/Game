@@ -1,7 +1,7 @@
 import MoveSet, { MoveSetType } from './MoveSet';
 import { cellSize } from '../../../components/world/Window'
 import Texture, { TextureLevel } from '../Texture';
-import Tile from '../Tile';
+import Tile from '../../../components/world/tiles/Tile';
 
 export default class Character extends Texture {
     DownMoveSet: MoveSet
@@ -35,7 +35,7 @@ export default class Character extends Texture {
         this.IsMoving = false
     }
 
-    look(direction: MoveSetType) {
+    look(direction: MoveSetType, update: () => void, updateTile: (texture: Texture) => void): number[] {
         if (!this.IsMoving) {
 
             // change facing direction
@@ -43,10 +43,25 @@ export default class Character extends Texture {
 
             // change display tile
             this.Tiles[0][0] = this.getTile()
+
+            updateTile(this)
+            update()
+        }
+
+        // return the block we are looking at
+        switch (this.Facing) {
+            case MoveSetType.DOWN:
+                return [this.Xpos, this.Ypos + 1]
+            case MoveSetType.LEFT:
+                return [this.Xpos - 1, this.Ypos]
+            case MoveSetType.RIGHT:
+                return [this.Xpos + 1, this.Ypos]
+            case MoveSetType.UP:
+                return [this.Xpos, this.Ypos - 1]
         }
     }
 
-    walk(update: any) {
+    walk(update: () => void, updateTile: (texture: Texture) => void, remove: (texture: Texture) => void) {
         if (!this.IsMoving) {
             this.IsMoving = true;
 
@@ -72,11 +87,14 @@ export default class Character extends Texture {
     
                 // increment animation index
                 this.AnimationIndex++
-    
+
                 var offsetX = 0
                 var offsetY = 0
 
                 if (this.AnimationIndex == 4) {
+                    
+                    remove(this)
+
                     this.AnimationIndex = 0
                     this.Xpos += dx 
                     this.Ypos += dy
@@ -87,6 +105,7 @@ export default class Character extends Texture {
                     offsetY = 0
 
                     clearInterval(moving)
+
                 }
                 else {
                     // set offsets
@@ -114,6 +133,7 @@ export default class Character extends Texture {
 
                 this.Tiles[0][0] = tile
 
+                updateTile(this)
                 update()
             },
             200)

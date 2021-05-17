@@ -5,15 +5,24 @@ import BattleScreen from './components/screens/BattleScreen';
 import Menu from './components/screens/Menu';
 import World from './components/screens/World';
 import { MoveSetType } from './assets/textures/characters/MoveSet';
-
+import Overlay from './Overlay'
+import Window from './components/world/Window';
+import GameMap from './components/world/GameMap';
+import TestingMap from './components/world/TestingMap';
 
 interface Props {
 }
 
 interface State {
-    Content: string,
-    world_position: [number, number],
-    active_chunk: number
+    Content: Screens,
+    Map: GameMap,
+    UpdateKey: number
+}
+
+export enum Screens {
+    MENU,
+    BATTLE,
+    WORLD
 }
 
 export default class Display extends React.Component<Props, State> {
@@ -25,62 +34,58 @@ export default class Display extends React.Component<Props, State> {
         this.changeScreen = this.changeScreen.bind(this);
         this.move = this.move.bind(this);
 
+        let trans = () => {
+            console.log('test')
+            this.setState({
+                Map: new TestingMap(trans)
+            })
+        }
+
         this.state = {
-            Content: 'World',
-            world_position: [100, 100],
-            active_chunk: 0
+            Content: Screens.WORLD,
+            Map: new TestingMap(trans),
+            UpdateKey: 1
         }
     }
 
-    changeScreen(screen: string) {
+    changeScreen(screen: Screens) {
         this.setState({
-          Content: screen,
+            Content: screen,
         });
     }
 
-    move(direction: MoveSetType) {
-        console.log(direction)
+    move(direction: MoveSetType, tap: boolean) {
+        let update = () => {
+            this.setState({
+                Map: this.state.Map,
+                UpdateKey: (this.state.UpdateKey + 1) % 2
+            })
+        }
+
+        this.state.Map.handleMove(direction, tap, update)
     }
 
     render() {
+        var content: any
+
         switch (this.state.Content) {
-            case 'Menu':
-                return (
-                    <View style={styles.display}>
-                        <Menu onNavigate={this.changeScreen}/>
-                        <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
-                    </View>
-                );
-            case 'BattleScreen':
-                return (
-                    <View style={styles.display}>
-                        <BattleScreen onNavigate={this.changeScreen}/>
-                        <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
-                    </View>
-                );
-            case 'World':
-                return (
-                    <View style={styles.display}>
-                        <World onNavigate={this.changeScreen}/>
-                        <View style={styles.lock_position}>
-                            <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
-                        </View>
-                    </View>
-                );
+            case Screens.MENU:
+                content = (<Menu onNavigate={this.changeScreen}/>)
+                break
+            case Screens.BATTLE:
+                content = (<BattleScreen onNavigate={this.changeScreen}/>)
+                break
+            case Screens.WORLD:
+                content = (<Window map={this.state.Map}/>)
+                break
         };
+
+        return (
+            <Overlay
+                handleMove={this.move}
+            >
+                {content}
+            </Overlay>
+        )
     }
 }
-
-const styles = StyleSheet.create({
-    display: {
-        width: '100%',
-        maxWidth: 512,
-        height: '100%',
-        maxHeight: 736,
-    },
-    lock_position: {
-        position: 'absolute',
-        bottom: 0,
-        width: '95%'
-    }
-});

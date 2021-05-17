@@ -3,20 +3,27 @@ import { Image } from 'react-native';
 
 export default class Tile {
     Source: any
+
     CanWalkThrough: boolean
+
+    IsTransition: boolean
+    TransitionCallback: () => any
+
     OffsetX: number
     OffsetY: number
 
     UpperHalf: boolean
     LowerHalf: boolean
 
-    constructor(source: any, canWalkThrough: boolean, upperHalf: boolean = false, lowerHalf: boolean = false) {
+    constructor(source: any, canWalkThrough: boolean) {
         this.Source = source
         this.CanWalkThrough = canWalkThrough
         this.OffsetX = 0
         this.OffsetY = 0
-        this.UpperHalf = upperHalf
-        this.LowerHalf = lowerHalf
+        this.UpperHalf = false
+        this.LowerHalf = false
+        this.IsTransition = false
+        this.TransitionCallback = () => {}
     }
 
     getImage() {

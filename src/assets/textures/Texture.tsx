@@ -1,4 +1,4 @@
-import Tile from './Tile';
+import Tile from '../../components/world/tiles/Tile';
 
 export enum TextureLevel {
     BASE = 0,
