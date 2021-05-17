@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import Character from '../../assets/textures/characters/Character';
+import Character from '../../assets/characters/Character';
 import { blocks, styles } from './Window'
 
 interface Props {

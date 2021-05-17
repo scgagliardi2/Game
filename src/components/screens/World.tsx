@@ -1,12 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, Animated} from 'react-native';
-import Player from '../Player';
-import InputsContainer from '../inputs/InputsContainer';
 import Chunk from '../world/Chunk';
-import PurpleStore from "../../assets/textures/purple_store/PurpleStore";
 
 interface Props {
-    onNavigate: (screen: string) => any,
 }
 
 interface State {
@@ -72,7 +68,6 @@ export default class World extends React.Component<Props, State> {
         return (
             <View style={styles.world}>
                 <View style={styles.centerPlayer} >
-                    <Player direction={this.state.player_direction}/>
                 </View>
             </View> 
         );

@@ -4,7 +4,7 @@ import InputsContainer from './components/inputs/InputsContainer';
 import BattleScreen from './components/screens/BattleScreen';
 import Menu from './components/screens/Menu';
 import World from './components/screens/World';
-import { MoveSetType } from './assets/textures/characters/MoveSet';
+import { MoveSetType } from './assets/characters/MoveSet';
 
 
 interface Props {
@@ -22,7 +22,7 @@ export default class Display extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.changeScreen = this.changeScreen.bind(this);
+        this.handlePress = this.handlePress.bind(this);
         this.move = this.move.bind(this);
 
         this.state = {
@@ -30,6 +30,10 @@ export default class Display extends React.Component<Props, State> {
             world_position: [100, 100],
             active_chunk: 0
         }
+    }
+
+    handlePress(button: string) {
+        console.log(button)
     }
 
     changeScreen(screen: string) {
@@ -47,23 +51,38 @@ export default class Display extends React.Component<Props, State> {
             case 'Menu':
                 return (
                     <View style={styles.display}>
-                        <Menu onNavigate={this.changeScreen}/>
-                        <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
+                        <Menu/>
+                        <InputsContainer 
+                            inputDpadTap={this.move} 
+                            inputDpadLongPress={this.move} 
+                            displayMenuButton={false}
+                            buttonPressed={this.handlePress}
+                        />
                     </View>
                 );
             case 'BattleScreen':
                 return (
                     <View style={styles.display}>
-                        <BattleScreen onNavigate={this.changeScreen}/>
-                        <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
+                        <BattleScreen/>
+                        <InputsContainer 
+                            inputDpadTap={this.move} 
+                            inputDpadLongPress={this.move} 
+                            displayMenuButton={false}
+                            buttonPressed={this.handlePress}
+                        />
                     </View>
                 );
             case 'World':
                 return (
                     <View style={styles.display}>
-                        <World onNavigate={this.changeScreen}/>
+                        <World/>
                         <View style={styles.lock_position}>
-                            <InputsContainer inputDpadTap={this.move} inputDpadLongPress={this.move}/>
+                            <InputsContainer 
+                                inputDpadTap={this.move} 
+                                inputDpadLongPress={this.move} 
+                                displayMenuButton={true}
+                                buttonPressed={this.handlePress}
+                            />
                         </View>
                     </View>
                 );

@@ -9,7 +9,7 @@ interface Props {
 interface State {
 }
 
-export default class A_Button extends React.Component<Props, State> {
+export default class MenuButton extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
@@ -22,11 +22,11 @@ export default class A_Button extends React.Component<Props, State> {
     render() {
         return (
             <TouchableOpacity 
-                style={styles.A_Button}
-                onPress={() => this.props.pressed('A')}
+                style={styles.MenuButton}
+                onPress={() => this.props.pressed('Menu')}
             >
                 <Text style={styles.Letter}>
-                    A
+                    Menu
                 </Text>
             </TouchableOpacity>
         );
@@ -34,12 +34,10 @@ export default class A_Button extends React.Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-    A_Button: {
-        width: 60,
-        height: 60,
-        marginLeft: 40,
-        marginBottom: 20,
-        borderRadius:30,
+    MenuButton: {
+        width: 40,
+        height: 20,
+        borderRadius:10,
         borderWidth: .5,
         borderColor: 'white',
         alignItems: 'center',
@@ -53,6 +51,6 @@ const styles = StyleSheet.create({
     },
     Letter: {
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 10
     }
 });

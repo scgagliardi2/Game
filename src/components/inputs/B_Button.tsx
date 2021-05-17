@@ -3,6 +3,7 @@ import { Text, StyleSheet, TouchableOpacity} from 'react-native';
 import GlobalConstants from '../../GlobalConstants';
 
 interface Props {
+    pressed: (button: string) => any
 }
 
 interface State {
@@ -18,15 +19,11 @@ export default class B_Button extends React.Component<Props, State> {
         
     }
 
-    onPress = () => {
-        console.log('b pressed');
-    };
-
     render() {
         return (
             <TouchableOpacity 
                 style={styles.B_Button}
-                onPress={this.onPress}
+                onPress={() => this.props.pressed('B')}
             >
                 <Text style={styles.Letter}>
                     B

@@ -2,7 +2,6 @@ import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
 interface Props {
-    onNavigate: (screen: string) => any,
 }
 
 interface State {
@@ -27,9 +26,8 @@ export default class BattleScreen extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1,
-        padding: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'lightblue'
     },
 });

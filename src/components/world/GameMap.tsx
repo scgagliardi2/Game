@@ -1,8 +1,8 @@
 import App from "../../../App";
-import Character from "../../assets/textures/characters/Character";
-import { MoveSetType } from "../../assets/textures/characters/MoveSet";
-import Red from "../../assets/textures/characters/Red";
-import Texture, { TextureLevel } from "../../assets/textures/Texture";
+import Character from "../../assets/characters/Character";
+import { MoveSetType } from "../../assets/characters/MoveSet";
+import Red from "../../assets/characters/Red";
+import Texture, { TextureLevel } from "../../assets/Texture";
 
 
 export default class GameMap {
