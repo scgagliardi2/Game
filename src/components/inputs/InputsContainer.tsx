@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet} from 'react-native';
-import { MoveSetType } from '../../assets/characters/MoveSet';
+import { MoveSetType } from '../..//assets/characters/player/MoveSet';
 import ButtonsContainer from './ButtonsContainer';
 import D_Pad from './D_Pad';
 import MenuButton from './Menu_Button';

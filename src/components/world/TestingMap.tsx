@@ -1,6 +1,5 @@
 import GameMap from "./GameMap";
 import Grass1 from "../../assets/textures/ground/Grass1";
-import PurpleStore from "../../assets/textures/purple_store/PurpleStore";
 
 export default class TestingMap extends GameMap {
 
@@ -13,7 +12,5 @@ export default class TestingMap extends GameMap {
                 this.addTexture(new Grass1(r, c))
             }
         }
-
-        this.addTexture(new PurpleStore(3, 0, transition))
     }
 }

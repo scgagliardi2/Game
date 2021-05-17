@@ -1,6 +1,6 @@
-import Character from "../../assets/characters/Character";
-import { MoveSetType } from "../../assets/characters/MoveSet";
-import Red from "../../assets/characters/Red";
+import Character from "../../assets/characters/player/Character";
+import { MoveSetType } from "../../assets/characters/player/MoveSet";
+import Red from "../../assets/characters/player/Red";
 import Texture from "../../assets/Texture";
 import Tileset from "./tiles/Tileset";
 

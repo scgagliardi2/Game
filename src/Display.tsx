@@ -5,7 +5,7 @@ import Overlay from './Overlay'
 import Window from './components/world/Window';
 import GameMap from './components/world/GameMap';
 import TestingMap from './components/world/TestingMap';
-import { MoveSetType } from './assets/characters/MoveSet';
+import { MoveSetType } from './assets/characters/player/MoveSet';
 
 interface Props {
 }

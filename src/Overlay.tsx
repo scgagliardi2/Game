@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import { MoveSetType } from './assets/characters/MoveSet';
+import { MoveSetType } from './assets/characters/player/MoveSet';
 import InputsContainer from './components/inputs/InputsContainer';
 import constants from './GlobalConstants'
 

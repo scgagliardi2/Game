@@ -1,6 +1,6 @@
 import MoveSet, { MoveSetType } from './MoveSet';
-import { cellSize } from '../../components/world/Window'
-import Texture, { TextureLevel } from '../Texture';
+import { cellSize } from '../../../components/world/Window'
+import Texture, { TextureLevel } from '../../Texture';
 import Tile from '../../../components/world/tiles/Tile';
 
 export default class Character extends Texture {
