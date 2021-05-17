@@ -4,7 +4,7 @@ import InputsContainer from './components/inputs/InputsContainer';
 import BattleScreen from './components/screens/BattleScreen';
 import Menu from './components/screens/Menu';
 import World from './components/screens/World';
-import { MoveSetType } from './assets/characters/MoveSet';
+import { MoveSetType } from './assets/player/MoveSet';
 
 
 interface Props {

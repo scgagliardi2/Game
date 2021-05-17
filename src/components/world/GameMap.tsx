@@ -1,7 +1,7 @@
 import App from "../../../App";
-import Character from "../../assets/characters/Character";
-import { MoveSetType } from "../../assets/characters/MoveSet";
-import Red from "../../assets/characters/Red";
+import Character from "../../assets/player/Character";
+import { MoveSetType } from "../../assets/player/MoveSet";
+import Red from "../../assets/player/Red";
 import Texture, { TextureLevel } from "../../assets/Texture";
 
 
