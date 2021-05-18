@@ -4,7 +4,7 @@ import Grass1 from "../../assets/textures/ground/Grass1";
 export default class TestingMap extends GameMap {
 
     constructor(transition: () => any) {
-        super('Testing Map', 12, 12)
+        super('Testing Map', 14, 25, [4,9])
 
         // add the grass
         for (let r = 0; r < this.Width; r++) {

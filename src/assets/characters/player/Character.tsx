@@ -1,5 +1,5 @@
 import MoveSet, { MoveSetType } from './MoveSet';
-import { cellSize } from '../../../components/world/Window'
+import { cellSize } from '../../../components/world/World'
 import Texture, { TextureLevel } from '../../Texture';
 import Tile from '../../../components/world/tiles/Tile';
 

@@ -35,8 +35,8 @@ export default class MenuButton extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
     MenuButton: {
-        width: 40,
-        height: 20,
+        width: 50,
+        height: 30,
         borderRadius:10,
         borderWidth: .5,
         borderColor: 'white',
