@@ -6,8 +6,10 @@ export default {
         accent: 'black',
     },
     size: {
-        width: Dimensions.get('window').width * .5,
-        height: Dimensions.get('window').height * .6,
-        windowTiles: 12
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        windowTiles: 12,
+        cellCountWidth: 9,
+        cellCountHeight: 21
     }
 }

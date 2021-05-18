@@ -16,11 +16,11 @@ export default class GameMap {
     Width: number
     Height: number
 
-    constructor(name: string, width: number, height: number) {
+    constructor(name: string, width: number, height: number, player_start: [number, number]) {
         this.Tiles = [[]]
 
-        // add the player to the game
-        this.Player = new Red(5, 6)
+        // add the player to the games
+        this.Player = new Red(player_start[0], player_start[1])
         this.addTexture(this.Player)
 
         this.Name = name

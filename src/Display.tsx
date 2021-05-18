@@ -1,10 +1,12 @@
 import React from 'react';
+import {View, StyleSheet} from 'react-native';
 import BattleScreen from './components/screens/BattleScreen';
 import Menu from './components/screens/Menu';
-import Overlay from './Overlay'
-import Window from './components/world/Window';
+import World from './components/world/World';
 import GameMap from './components/world/GameMap';
 import TestingMap from './components/world/TestingMap';
+import constants from './GlobalConstants';
+import InputsContainer from './components/inputs/InputsContainer';
 import { MoveSetType } from './components/world/textures/MoveSet';
 
 interface Props {
@@ -13,7 +15,8 @@ interface Props {
 interface State {
     Content: Screens,
     Map: GameMap,
-    UpdateKey: number
+    UpdateKey: number,
+    displayMenu: boolean
 }
 
 export enum Screens {
@@ -44,7 +47,8 @@ export default class Display extends React.Component<Props, State> {
         this.state = {
             Content: Screens.WORLD,
             Map: new TestingMap(trans),
-            UpdateKey: 1
+            UpdateKey: 1,
+            displayMenu: true
         }
     }
 
@@ -54,9 +58,18 @@ export default class Display extends React.Component<Props, State> {
     }
 
     changeScreen(screen: Screens) {
-        this.setState({
-            Content: screen,
-        });
+
+        if (this.state.displayMenu) {
+            this.setState({
+                Content: screen,
+                displayMenu: false
+            });
+        } else {
+            this.setState({
+                Content: screen,
+                displayMenu: true
+            });
+        }
     }
 
     move(direction: MoveSetType, tap: boolean) {
@@ -75,23 +88,36 @@ export default class Display extends React.Component<Props, State> {
 
         switch (this.state.Content) {
             case Screens.MENU:
-                content = (<Menu onNavigate={this.changeScreen}/>)
+                content = (<Menu onNavigate={this.changeScreen}/>);
                 break
             case Screens.BATTLE:
                 content = (<BattleScreen onNavigate={this.changeScreen}/>)
                 break
             case Screens.WORLD:
-                content = (<Window map={this.state.Map}/>)
+                content = (<World map={this.state.Map}/>)
                 break
         };
 
         return (
-            <Overlay
-                handleMove={this.move}
-                handlePress={this.handlePress}
-            >
+            <View style={styles.display}>
                 {content}
-            </Overlay>
+                <InputsContainer 
+                    inputDpadTap={this.move} 
+                    inputDpadLongPress={this.move}
+                    displayMenuButton={this.state.displayMenu}
+                    buttonPressed={this.handlePress}
+                />
+            </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    display: {
+        width: constants.size.width,
+        maxWidth: constants.size.cellCountWidth*50,
+        height: constants.size.height,
+        maxHeight: constants.size.cellCountHeight*50,
+        backgroundColor: 'rgb(200, 200, 200)'
+    }
+});

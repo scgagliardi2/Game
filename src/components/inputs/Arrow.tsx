@@ -81,8 +81,8 @@ export default class Arrow extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
     Arrow: {
-        flex: 1,
-        width: 60,
+        width: 50,
+        height: 30,
         margin: 5,
         borderRadius: 8,
         borderWidth: .5,

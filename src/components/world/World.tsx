@@ -11,7 +11,7 @@ interface Props {
 interface State {
 }
 
-export default class Window extends React.Component<Props, State> {
+export default class World extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
@@ -37,7 +37,7 @@ export default class Window extends React.Component<Props, State> {
     renderRow(row: number, textureLevel: TextureLevel) {
         var cells = []
 
-        for (let column = 0; column < constants.size.windowTiles; column++) {
+        for (let column = 0; column < this.props.map.Width; column++) {
             cells.push(this.renderCell(row, column, textureLevel))
         }
 
@@ -51,7 +51,7 @@ export default class Window extends React.Component<Props, State> {
     renderTextures(textureLevel: TextureLevel) {
         var rows = []
 
-        for (let r = 0; r < constants.size.windowTiles; r++) {
+        for (let r = 0; r < this.props.map.Height; r++) {
             rows.push(this.renderRow(r, textureLevel))
         }
 
@@ -64,7 +64,7 @@ export default class Window extends React.Component<Props, State> {
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View >
                 {this.renderTextures(TextureLevel.BASE)}
                 {this.renderTextures(TextureLevel.LOWLANDSCAPE)}
                 {this.renderTextures(TextureLevel.SPRITES)}
@@ -75,12 +75,11 @@ export default class Window extends React.Component<Props, State> {
     }
 }
 
-export const windowWidth = constants.size.width * .8 > 512 ? 512 : constants.size.width * .8
-export const cellSize = windowWidth / constants.size.windowTiles
+export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width * 1
+export const cellSize = windowWidth / constants.size.cellCountWidth
 
 export const styles = StyleSheet.create({
     cell: {
-        flex: 1, 
         flexDirection: 'column', 
         width: cellSize, 
         height: cellSize,
@@ -90,14 +89,13 @@ export const styles = StyleSheet.create({
         borderRightWidth: 1
     },
     row: {
-        flex: 1, 
         flexDirection: 'row', 
-        width: windowWidth, 
+        width: '100%', 
         height: cellSize
     },
     window: {
-        width: windowWidth,
-        height: windowWidth,
+        width: '100%',
+        height: '100%',
         position: 'absolute'
     }
 });
