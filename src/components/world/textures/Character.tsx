@@ -1,7 +1,7 @@
 import MoveSet, { MoveSetType } from './MoveSet';
-import { cellSize } from '../../components/world/Window'
-import Texture, { TextureLevel } from '../Texture';
-import Tile from '../../../components/world/tiles/Tile';
+import { cellSize } from '../Window'
+import Texture, { TextureLevel } from './Texture';
+import Tile from '../tiles/Tile';
 
 export default class Character extends Texture {
     DownMoveSet: MoveSet
@@ -67,7 +67,7 @@ export default class Character extends Texture {
 
             var dx: number = 0
             var dy: number = 0
-    
+
             switch (this.Facing) {
                 case MoveSetType.DOWN:
                     dy = 1
@@ -82,9 +82,9 @@ export default class Character extends Texture {
                     dy = -1
                     break;
             }
-    
+
             var moving = setInterval(() => { 
-    
+
                 // increment animation index
                 this.AnimationIndex++
 

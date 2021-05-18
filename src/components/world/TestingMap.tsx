@@ -1,6 +1,9 @@
+import MartPurple from "../../assets/buildings/stores/MartPurple/MartPurple";
+import PokeCenter from "../../assets/buildings/stores/PokeCenter/PokeCenter";
+import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import GameMap from "./GameMap";
-import Grass1 from "../../assets/textures/ground/Grass1";
-import PurpleStore from "../../assets/textures/purple_store/PurpleStore";
+import Texture, { TextureLevel } from "./textures/Texture";
+
 
 export default class TestingMap extends GameMap {
 
@@ -10,10 +13,11 @@ export default class TestingMap extends GameMap {
         // add the grass
         for (let r = 0; r < this.Width; r++) {
             for (let c = 0; c < this.Height; c++) {
-                this.addTexture(new Grass1(r, c))
+                this.addTexture(new GrassBase(r, c, TextureLevel.BASE))
             }
         }
 
-        this.addTexture(new PurpleStore(3, 0, transition))
+        this.addTexture(new MartPurple(3, 0, TextureLevel.HIGHLANDSCAPE, transition))
+        this.addTexture(new PokeCenter(7, 0, TextureLevel.HIGHLANDSCAPE, transition))
     }
 }

@@ -1,5 +1,5 @@
-import Tile from '../../../components/world/tiles/Tile'
-import Texture, { TextureLevel } from '../../Texture'
+import Tile from '../tiles/Tile'
+import Texture, { TextureLevel } from './Texture'
 
 export default class Grass1 extends Texture {
     constructor(xpos: number, ypos: number) {
@@ -10,7 +10,7 @@ export default class Grass1 extends Texture {
             [
                 [
                     new Tile(
-                        require('../../terrain/ground/grass/grass_base_tile.png'),
+                        require('../../../assets/terrain/ground/grass/grass_base_tile.png'),
                         false
                     )
                 ]

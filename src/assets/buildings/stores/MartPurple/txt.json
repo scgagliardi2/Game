@@ -1,0 +1,8 @@
+{
+    "type": "building",
+    "width": 4,
+    "height": 5,
+    "transitions": [
+        [4, 2]
+    ]
+}
