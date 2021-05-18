@@ -1,7 +1,7 @@
 import MoveSet, { MoveSetType } from './MoveSet';
 import { cellSize } from '../Window'
 import Texture, { TextureLevel } from './Texture';
-import Tile from './tiles/Tile';
+import Tile from '../tiles/Tile';
 
 export default class Character extends Texture {
     DownMoveSet: MoveSet
