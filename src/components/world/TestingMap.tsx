@@ -9,7 +9,7 @@ import Texture, { TextureLevel } from "./textures/Texture";
 export default class TestingMap extends GameMap {
 
     constructor(transition: () => any) {
-        super('Testing Map', 14, 25, [4,9])
+        super('Testing Map', 10, 10, [5,5])
 
         // add the grass
         for (let r = 0; r < this.Width; r++) {
@@ -20,7 +20,6 @@ export default class TestingMap extends GameMap {
 
         this.addTexture(new MedBrownTree(1, 2, TextureLevel.HIGHLANDSCAPE))
 
-        this.addTexture(new MartPurple(3, 0, TextureLevel.HIGHLANDSCAPE, transition))
-        this.addTexture(new PokeCenter(7, 0, TextureLevel.HIGHLANDSCAPE, transition))
+        this.addTexture(new MartPurple(6, 0, TextureLevel.HIGHLANDSCAPE, transition))
     }
 }

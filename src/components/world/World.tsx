@@ -21,7 +21,16 @@ export default class World extends React.Component<Props, State> {
     }
 
     renderCell(row: number, col: number, textureLevel: TextureLevel) {
-        var tile = this.props.map.Tiles[col][row].Tiles.get(textureLevel)
+        
+        if (this.props.map.Tiles[col] == undefined || this.props.map.Tiles[col][row] == undefined) {
+            return (
+                <View style={styles.cell} key={col}>
+                    <View/>
+                </View>
+            )
+        }
+
+        var tile = this.props.map.getPlayerAdjustedTile(col, row, textureLevel)
 
         return (
             <View style={styles.cell} key={col}>
@@ -37,7 +46,7 @@ export default class World extends React.Component<Props, State> {
     renderRow(row: number, textureLevel: TextureLevel) {
         var cells = []
 
-        for (let column = 0; column < this.props.map.Width; column++) {
+        for (let column = 0; column < constants.size.windowTiles; column++) {
             cells.push(this.renderCell(row, column, textureLevel))
         }
 
@@ -51,7 +60,7 @@ export default class World extends React.Component<Props, State> {
     renderTextures(textureLevel: TextureLevel) {
         var rows = []
 
-        for (let r = 0; r < this.props.map.Height; r++) {
+        for (let r = 0; r < constants.size.windowTiles; r++) {
             rows.push(this.renderRow(r, textureLevel))
         }
 
@@ -64,16 +73,24 @@ export default class World extends React.Component<Props, State> {
 
     render() {
         return (
-            <View >
-                {this.renderTextures(TextureLevel.BASE)}
-                {this.renderTextures(TextureLevel.LOWLANDSCAPE)}
-                {this.renderTextures(TextureLevel.SPRITES)}
-                {this.renderTextures(TextureLevel.HIGHLANDSCAPE)}
-            </View>
-
+            <View>
+                <View 
+                    style={{
+                        top: `${this.props.map.OffsetY}px`,
+                        left: `${this.props.map.OffsetX}px`
+                    }}
+                >
+                    {this.renderTextures(TextureLevel.BASE)}
+                    {this.renderTextures(TextureLevel.LOWLANDSCAPE)}
+                    {this.renderTextures(TextureLevel.SPRITES)}
+                    {this.renderTextures(TextureLevel.HIGHLANDSCAPE)}
+                </View>
+                <View style={styles.border}/>
+            </View>    
         );
     }
 }
+
 
 export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width * 1
 export const cellSize = windowWidth / constants.size.cellCountWidth
@@ -85,13 +102,22 @@ export const styles = StyleSheet.create({
         height: cellSize,
         borderBottomColor: 'grey',
         borderRightColor: 'grey',
-        borderBottomWidth: 1,
-        borderRightWidth: 1
+        borderBottomWidth: 0,
+        borderRightWidth: 0
     },
     row: {
         flexDirection: 'row', 
         width: '100%', 
         height: cellSize
+    },
+    border: {
+        width: `${(constants.size.windowTiles) * cellSize}px`,
+        height: `${(constants.size.windowTiles) * cellSize}px`,
+        top: `0px`,
+        left: `0px`,
+        position: 'absolute',
+        borderColor: 'black',
+        borderWidth: cellSize
     },
     window: {
         width: '100%',

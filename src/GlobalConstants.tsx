@@ -8,7 +8,8 @@ export default {
     size: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-        windowTiles: 12,
+        // Must be on ODD sized screen so player is in the center
+        windowTiles: 9,
         cellCountWidth: 9,
         cellCountHeight: 21
     }

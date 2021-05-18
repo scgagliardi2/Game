@@ -9,8 +9,6 @@ export default class Character extends Texture {
     RightMoveSet: MoveSet
     UpMoveSet: MoveSet
 
-    IsMoving: boolean
-
     Facing: MoveSetType
     AnimationIndex: number
 
@@ -32,7 +30,6 @@ export default class Character extends Texture {
         this.LeftMoveSet = lms
         this.RightMoveSet = rms
         this.UpMoveSet = ums
-        this.IsMoving = false
     }
 
     look(direction: MoveSetType, update: () => void, updateTile: (texture: Texture) => void): number[] {
@@ -61,83 +58,33 @@ export default class Character extends Texture {
         }
     }
 
-    walk(update: () => void, updateTile: (texture: Texture) => void, remove: (texture: Texture) => void) {
-        if (!this.IsMoving) {
-            this.IsMoving = true;
+    nextTile() {
+        this.AnimationIndex = (this.AnimationIndex + 1) % 4
 
-            var dx: number = 0
-            var dy: number = 0
+        var offsetX = 0
+        var offsetY = 0
 
-            switch (this.Facing) {
-                case MoveSetType.DOWN:
-                    dy = 1
-                    break;
-                case MoveSetType.LEFT:
-                    dx = -1
-                    break;
-                case MoveSetType.RIGHT:
-                    dx = 1
-                    break;
-                case MoveSetType.UP:
-                    dy = -1
-                    break;
-            }
+        switch (this.Facing) {
+            case MoveSetType.DOWN:
+                offsetY = this.AnimationIndex * (cellSize / 4)
+                break
+            case MoveSetType.UP:
+                offsetY = -1 * this.AnimationIndex * (cellSize / 4)
+                break
+            case MoveSetType.LEFT:
+                offsetX = -1 * this.AnimationIndex * (cellSize / 4)
+                break
+            case MoveSetType.RIGHT:
+                offsetX = this.AnimationIndex * (cellSize / 4)
+                break
+        }
 
-            var moving = setInterval(() => { 
+        let tile = this.getTile()
 
-                // increment animation index
-                this.AnimationIndex++
+        tile.OffsetX = offsetX
+        tile.OffsetY = offsetY
 
-                var offsetX = 0
-                var offsetY = 0
-
-                if (this.AnimationIndex == 4) {
-                    
-                    remove(this)
-
-                    this.AnimationIndex = 0
-                    this.Xpos += dx 
-                    this.Ypos += dy
-
-                    this.IsMoving = false
-
-                    offsetX = 0
-                    offsetY = 0
-
-                    clearInterval(moving)
-
-                }
-                else {
-                    // set offsets
-                    switch (this.Facing) {
-                        case MoveSetType.DOWN:
-                            offsetY = this.AnimationIndex * (cellSize / 4)
-                            break
-                        case MoveSetType.UP:
-                            offsetY = -1 * this.AnimationIndex * (cellSize / 4)
-                            break
-                        case MoveSetType.LEFT:
-                            offsetX = -1 * this.AnimationIndex * (cellSize / 4)
-                            break
-                        case MoveSetType.RIGHT:
-                            offsetX = this.AnimationIndex * (cellSize / 4)
-                            break
-                    }
-                }
-
-                // update display tile
-                let tile = this.getTile()
-
-                tile.OffsetX = offsetX
-                tile.OffsetY = offsetY
-
-                this.Tiles[0][0] = tile
-
-                updateTile(this)
-                update()
-            },
-            200)
-        }    
+        this.Tiles[0][0] = tile
     }
 
     getTile(): Tile {
