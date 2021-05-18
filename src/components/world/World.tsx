@@ -20,10 +20,6 @@ export default class World extends React.Component<Props, State> {
         }
     }
 
-    defineCamera (player_pos: []) {
-
-    }
-
     renderCell(row: number, col: number, textureLevel: TextureLevel) {
         var tile = this.props.map.Tiles[col][row].Tiles.get(textureLevel)
 
