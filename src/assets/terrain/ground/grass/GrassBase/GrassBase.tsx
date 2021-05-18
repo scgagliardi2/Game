@@ -1,5 +1,5 @@
 import Texture, { TextureLevel } from "../../../../../components/world/textures/Texture"
-import Tile from "../../../../../components/world/tiles/Tile"
+import Tile from "../../../../../components/world/textures/tiles/Tile"
 
 export default class GrassBase extends Texture {
 

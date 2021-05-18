@@ -1,6 +1,6 @@
 import Texture, { TextureLevel } from "../../../../components/world/textures/Texture"
-import Tile from "../../../../components/world/tiles/Tile"
-import TransitionTile from "../../../../components/world/tiles/TransitionTile"
+import Tile from "../../../../components/world/textures/tiles/Tile"
+import TransitionTile from "../../../../components/world/textures/tiles/TransitionTile"
 
 export default class PokeCenter extends Texture {
 

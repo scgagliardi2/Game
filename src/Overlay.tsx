@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import { MoveSetType } from './assets/characters/MoveSet';
 import InputsContainer from './components/inputs/InputsContainer';
+import { MoveSetType } from './components/world/textures/MoveSet';
 import constants from './GlobalConstants'
 
 interface Props {

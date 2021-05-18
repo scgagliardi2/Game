@@ -1,4 +1,4 @@
-import Texture, { TextureLevel } from '../textures/Texture';
+import Texture, { TextureLevel } from '../Texture';
 import Tile from './Tile';
 
 export default class Tileset {

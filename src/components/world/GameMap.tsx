@@ -2,7 +2,7 @@ import Red from "../../assets/player/Red/Red";
 import Character from "./textures/Character";
 import { MoveSetType } from "./textures/MoveSet";
 import Texture from "./textures/Texture";
-import Tileset from "./tiles/Tileset";
+import Tileset from "./textures/tiles/Tileset";
 
 
 export default class GameMap {

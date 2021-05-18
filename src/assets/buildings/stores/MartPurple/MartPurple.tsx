@@ -1,6 +1,6 @@
 import Texture, { TextureLevel } from "../../../../components/world/textures/Texture"
-import Tile from "../../../../components/world/tiles/Tile"
-import TransitionTile from "../../../../components/world/tiles/TransitionTile"
+import Tile from "../../../.../../../../components/world/textures/tiles/TransitionTile
+import TransitionT../../../../components/world/textures/tiles/Tiletiles/TransitionTile"
 
 export default class MartPurple extends Texture {
 
