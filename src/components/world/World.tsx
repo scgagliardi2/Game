@@ -12,7 +12,7 @@ interface State {
 }
 
 export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width
-export const cellSize = windowWidth / constants.size.cellCountWidth
+export const cellSize = windowWidth / constants.size.windowTiles
 
 export default class World extends React.Component<Props, State> {
 
@@ -24,25 +24,36 @@ export default class World extends React.Component<Props, State> {
     }
 
     renderCell(row: number, col: number, textureLevel: TextureLevel) {
+        
+        if (this.props.map.Tiles[col] == undefined || this.props.map.Tiles[col][row] == undefined) {
+            return (
+                <View style={styles.cell} key={col}/>
+            )
+        }
 
-        var tile = this.props.map.getTile(row, col, textureLevel)
+        var tile = this.props.map.Tiles[col][row].Tiles.get(textureLevel)
 
-        return (
-            <View style={styles.cell} key={col}>
-                {tile == undefined ? 
-                    (<View/>)
-                    :
-                    tile.getImage()
-                }
-            </View>
-        )
+        if (tile == undefined) {
+            return (
+                <View style={styles.cell} key={col}/>
+            )
+        }
+        else {
+            return (
+                <View style={styles.cell} key={col}>
+                    {tile.getImage()}
+                </View>
+            )
+        } 
     }
 
     renderRow(row: number, textureLevel: TextureLevel) {
         var cells = []
 
         for (let column = 0; column < this.props.map.Width; column++) {
-            cells.push(this.renderCell(row, column, textureLevel))
+            if (this.props.map.isColVisible(column)){
+                cells.push(this.renderCell(row, column, textureLevel))
+            }
         }
 
         return (
@@ -56,7 +67,9 @@ export default class World extends React.Component<Props, State> {
         var rows = []
 
         for (let r = 0; r < this.props.map.Height; r++) {
-            rows.push(this.renderRow(r, textureLevel))
+            if (this.props.map.isRowVisible(r)) {
+                rows.push(this.renderRow(r, textureLevel))
+            }
         }
 
         return (
@@ -67,15 +80,12 @@ export default class World extends React.Component<Props, State> {
     }
 
     render() {
-        var offY = this.props.map.OffsetY
-        var offX = this.props.map.OffsetX
-
         return (
             <View>
                 <View 
                     style={{
-                        top: offY,
-                        left: offX
+                        top: this.props.map.OffsetY * cellSize,
+                        left: this.props.map.OffsetX * cellSize
                     }}
                 >
                     {this.renderTextures(TextureLevel.BASE)}
@@ -92,17 +102,17 @@ export default class World extends React.Component<Props, State> {
 export const styles = StyleSheet.create({
     cell: {
         flexDirection: 'column', 
-        width: cellSize, 
+        width: cellSize , 
         height: cellSize,
-        borderBottomColor: 'grey',
-        borderRightColor: 'grey',
-        borderBottomWidth: 1,
-        borderRightWidth: 1
+        // NECESSARY FOR IOS TO NOT HAVE RANDOM WHITE LINES
+        marginRight: -0.5
     },
     row: {
         flexDirection: 'row', 
         width: windowWidth, 
-        height: cellSize
+        height: cellSize,
+        // NECESSARY FOR IOS TO NOT HAVE RANDOM WHITE LINES
+        marginBottom: -0.5
     },    
     border: {
         width: constants.size.windowTiles * cellSize,
@@ -111,7 +121,8 @@ export const styles = StyleSheet.create({
         left: 0,
         position: 'absolute',
         borderColor: 'black',
-        borderWidth: cellSize
+        // NECESSARY TO COMPENSATE FOR IOS WHITE LINE ISSUE
+        borderWidth: cellSize + (constants.size.windowTiles / 2)
     },
     window: {
         width: windowWidth,

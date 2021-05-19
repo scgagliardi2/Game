@@ -4,7 +4,7 @@ import BattleScreen from './components/screens/BattleScreen';
 import Menu from './components/screens/Menu';
 import World from './components/world/World';
 import GameMap from './components/world/GameMap';
-import TestingMap from './components/world/TestingMap';
+import TestingMap from './TestingMap';
 import constants from './GlobalConstants';
 import InputsContainer from './components/inputs/InputsContainer';
 import { MoveSetType } from './components/world/textures/MoveSet';

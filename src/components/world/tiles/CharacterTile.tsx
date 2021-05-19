@@ -6,5 +6,7 @@ export default class CharacterTile extends Tile {
 
     constructor(source: any) {
         super(source, false)
+
+        this.IsSprite = true
     }
 }
