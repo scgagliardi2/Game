@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
+import { cellSize } from '../World';
 
 export default class Tile {
     Source: any
@@ -31,46 +32,46 @@ export default class Tile {
 
         if (this.OffsetY > 0) {
             style = {
-                width: '100%',
-                height: '100%',
+                width: cellSize,
+                height: cellSize,
                 resizeMode: 'cover',
-                top: `${this.OffsetY}px`
+                top: this.OffsetY
             }
         }
         else if (this.OffsetY < 0) {
             style = {
-                width: '100%',
-                height: '100%',
+                width: cellSize,
+                height: cellSize,
                 resizeMode: 'cover',
-                bottom: `${-1 * this.OffsetY}px`
+                bottom: -1 * this.OffsetY
             }
         }
         else if (this.OffsetX < 0) {
             style = {
-                width: '100%',
-                height: '100%',
+                width: cellSize,
+                height: cellSize,
                 resizeMode: 'cover',
-                right: `${-1 * this.OffsetX}px`
+                right: -1 * this.OffsetX
             }
         }
         else if (this.OffsetX > 0) {
             style = {
-                width: '100%',
-                height: '100%',
+                width: cellSize,
+                height: cellSize,
                 resizeMode: 'cover',
-                left: `${this.OffsetX}px`
+                left: this.OffsetX
             }
         }
         else if (this.UpperHalf) {
             style = {
-                width: '100%',
+                width: cellSize,
                 height: '50%',
                 resizeMode: 'cover'
             }
         }
         else if (this.LowerHalf) {
             style = {
-                width: '100%',
+                width: cellSize,
                 height: '50%',
                 resizeMode: 'cover',
                 top: '50%'
@@ -78,8 +79,8 @@ export default class Tile {
         }
         else {
             style = {
-                width: '100%',
-                height: '100%',
+                width: cellSize,
+                height: cellSize,
                 resizeMode: 'cover'
             }
         }

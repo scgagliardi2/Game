@@ -11,6 +11,9 @@ interface Props {
 interface State {
 }
 
+export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width
+export const cellSize = windowWidth / constants.size.cellCountWidth
+
 export default class World extends React.Component<Props, State> {
 
     constructor(props: Props) {
@@ -21,16 +24,8 @@ export default class World extends React.Component<Props, State> {
     }
 
     renderCell(row: number, col: number, textureLevel: TextureLevel) {
-        
-        if (this.props.map.Tiles[col] == undefined || this.props.map.Tiles[col][row] == undefined) {
-            return (
-                <View style={styles.cell} key={col}>
-                    <View/>
-                </View>
-            )
-        }
 
-        var tile = this.props.map.getPlayerAdjustedTile(col, row, textureLevel)
+        var tile = this.props.map.getTile(row, col, textureLevel)
 
         return (
             <View style={styles.cell} key={col}>
@@ -46,7 +41,7 @@ export default class World extends React.Component<Props, State> {
     renderRow(row: number, textureLevel: TextureLevel) {
         var cells = []
 
-        for (let column = 0; column < constants.size.windowTiles; column++) {
+        for (let column = 0; column < this.props.map.Width; column++) {
             cells.push(this.renderCell(row, column, textureLevel))
         }
 
@@ -60,7 +55,7 @@ export default class World extends React.Component<Props, State> {
     renderTextures(textureLevel: TextureLevel) {
         var rows = []
 
-        for (let r = 0; r < constants.size.windowTiles; r++) {
+        for (let r = 0; r < this.props.map.Height; r++) {
             rows.push(this.renderRow(r, textureLevel))
         }
 
@@ -72,12 +67,15 @@ export default class World extends React.Component<Props, State> {
     }
 
     render() {
+        var offY = this.props.map.OffsetY
+        var offX = this.props.map.OffsetX
+
         return (
             <View>
                 <View 
                     style={{
-                        top: `${this.props.map.OffsetY}px`,
-                        left: `${this.props.map.OffsetX}px`
+                        top: offY,
+                        left: offX
                     }}
                 >
                     {this.renderTextures(TextureLevel.BASE)}
@@ -91,10 +89,6 @@ export default class World extends React.Component<Props, State> {
     }
 }
 
-
-export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width * 1
-export const cellSize = windowWidth / constants.size.cellCountWidth
-
 export const styles = StyleSheet.create({
     cell: {
         flexDirection: 'column', 
@@ -102,26 +96,26 @@ export const styles = StyleSheet.create({
         height: cellSize,
         borderBottomColor: 'grey',
         borderRightColor: 'grey',
-        borderBottomWidth: 0,
-        borderRightWidth: 0
+        borderBottomWidth: 1,
+        borderRightWidth: 1
     },
     row: {
         flexDirection: 'row', 
-        width: '100%', 
+        width: windowWidth, 
         height: cellSize
-    },
+    },    
     border: {
-        width: `${(constants.size.windowTiles) * cellSize}px`,
-        height: `${(constants.size.windowTiles) * cellSize}px`,
-        top: `0px`,
-        left: `0px`,
+        width: constants.size.windowTiles * cellSize,
+        height: constants.size.windowTiles * cellSize,
+        top: 0,
+        left: 0,
         position: 'absolute',
         borderColor: 'black',
         borderWidth: cellSize
     },
     window: {
-        width: '100%',
-        height: '100%',
+        width: windowWidth,
+        height: windowWidth,
         position: 'absolute'
     }
 });

@@ -44,10 +44,5 @@ const styles = StyleSheet.create({
         maxWidth: 512,
         height: constants.size.height,
         maxHeight: 736,
-    },
-    lock_position: {
-        position: 'relative',
-        width: '95%',
-        bottom: '0px'
     }
 });

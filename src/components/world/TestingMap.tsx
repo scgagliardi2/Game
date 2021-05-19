@@ -3,7 +3,7 @@ import PokeCenter from "../../assets/buildings/stores/PokeCenter/PokeCenter";
 import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
 import GameMap from "./GameMap";
-import Texture, { TextureLevel } from "./textures/Texture";
+import { TextureLevel } from "./textures/Texture";
 
 
 export default class TestingMap extends GameMap {
@@ -18,7 +18,7 @@ export default class TestingMap extends GameMap {
             }
         }
 
-        this.addTexture(new MedBrownTree(1, 2, TextureLevel.HIGHLANDSCAPE))
+        this.addTexture(new MedBrownTree(0, 2, TextureLevel.HIGHLANDSCAPE))
 
         this.addTexture(new MartPurple(6, 0, TextureLevel.HIGHLANDSCAPE, transition))
     }
