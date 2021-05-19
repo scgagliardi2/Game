@@ -110,8 +110,8 @@ export const styles = StyleSheet.create({
         top: 0,
         left: 0,
         position: 'absolute',
-        borderColor: 'black',
-        borderWidth: cellSize
+        //borderColor: 'black',
+        //borderWidth: cellSize
     },
     window: {
         width: windowWidth,
