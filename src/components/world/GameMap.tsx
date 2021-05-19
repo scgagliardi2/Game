@@ -49,6 +49,39 @@ export default class GameMap {
         this.removeTexture = this.removeTexture.bind(this)
     }
 
+    isRowVisible(y: number): boolean {
+        var r: number[] = []
+
+        if (this.Player.Ypos - half < 0) {
+            r = [0, constants.size.windowTiles - 2]
+        }
+        else if (this.Height < this.Player.Ypos + half) {
+            r = [this.Height - constants.size.windowTiles + 1, this.Height - 1]
+        }
+        else {
+            r = [this.Player.Ypos - half, this.Player.Ypos + half]
+        }
+
+        return y >= r[0] && y <= r[1]
+    }
+
+    isColVisible(x: number): boolean {
+
+        var r: number[] = []
+
+        if (this.Player.Xpos - half < 0) {
+            r = [0, constants.size.windowTiles - 2]
+        }
+        else if (this.Width < this.Player.Xpos + half) {
+            r = [this.Width - constants.size.windowTiles + 1, this.Width - 1]
+        }
+        else {
+            r = [this.Player.Xpos - half, this.Player.Xpos + half]
+        }
+
+        return x >= r[0] && x <= r[1]
+    }
+
     getTile(x: number, y: number, textureLevel: TextureLevel): Tile | undefined {
         if (this.Tiles[y] == undefined || this.Tiles[y][x] == undefined) {
             return undefined
@@ -114,24 +147,49 @@ export default class GameMap {
         this.calculateFinalOffset()
     }
 
-    calculateFinalOffset() {
-        if (this.Player.Xpos - half <= -1) {
-            this.OffsetX = cellSize
+    getPlayerAdjustedTile(x: number, y: number, level: TextureLevel): Tile {
+
+        var cx: number = this.Player.Xpos
+        var cy: number = this.Player.Ypos
+
+        if (cx - half <= 0) {
+            cx = half
         }
-        else if (this.Player.Xpos + half <= this.Width) {
-            this.OffsetX = -1 * cellSize * (this.Player.Xpos - half)
+        else if (cx + half >= this.Width) {
+            cx = this.Width - half - 1
         }
 
-        if (this.Player.Ypos - half <= -1) {
-            this.OffsetY = cellSize
+        if (cy - half <= 0) {
+            cy = half
         }
-        else if (this.Player.Ypos + half <= this.Height) {
-            this.OffsetY = -1 * cellSize * (this.Player.Ypos - half)
+        else if (cy + half >= this.Height) {
+            cy = this.Height - half - 1
+        }
+
+        var dx = Math.floor(cx - half)
+        var dy = Math.floor(cy - half)
+
+        return this.Tiles[x + dx][y + dy].Tiles.get(level)!
+    }
+
+    calculateFinalOffset() {
+        if (this.Player.Xpos - half < 0) {
+            this.OffsetX = 1
+        }
+        else {
+            this.OffsetX = 0
+        }
+
+        if (this.Player.Ypos - half < 0) {
+            this.OffsetY = 1
+        }
+        else {
+            this.OffsetY = 0
         }
     }
 
     calculateWindowOffsetDuringMove(direction: MoveSetType) {
-        var increment = (cellSize / 4)
+        var increment = 1 / 4
 
         if (direction == MoveSetType.DOWN || direction == MoveSetType.UP) {
             var cantY = 

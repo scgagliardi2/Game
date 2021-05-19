@@ -1,11 +1,14 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { cellSize } from '../World';
+import TileImage from './TileImage';
 
 export default class Tile {
     Source: any
 
     CanWalkThrough: boolean
+
+    IsSprite: boolean
 
     IsTransition: boolean
     TransitionCallback: () => any
@@ -24,6 +27,7 @@ export default class Tile {
         this.UpperHalf = false
         this.LowerHalf = false
         this.IsTransition = false
+        this.IsSprite = false
         this.TransitionCallback = () => {}
     }
 
@@ -86,9 +90,10 @@ export default class Tile {
         }
 
         return (
-            <Image 
+            <TileImage 
                 source={this.Source} 
                 style={style}
+                isSprite={this.IsSprite}
             />
         )
     }
