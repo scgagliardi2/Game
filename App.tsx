@@ -1,5 +1,6 @@
 import React from 'react';
-import Display from './src/Display';
+import Display from './src/components/Display';
+import Player from './src/components/Player';
 
 interface Props {
 }
@@ -17,7 +18,7 @@ export default class App extends React.Component<Props, AppState> {
 
   render() {
     return (
-      <Display/>
+      <Display player={new Player('name')}/>
     )
   }
 }

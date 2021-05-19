@@ -1,15 +1,17 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import BattleScreen from './components/screens/BattleScreen';
-import Menu from './components/screens/Menu';
-import World from './components/world/World';
-import GameMap from './components/world/GameMap';
-import TestingMap from './components/world/TestingMap';
-import constants from './GlobalConstants';
-import InputsContainer from './components/inputs/InputsContainer';
-import { MoveSetType } from './components/world/textures/MoveSet';
+import BattleScreen from './screens/BattleScreen';
+import Menu from './screens/Menu';
+import World from './world/World';
+import GameMap from './world/GameMap';
+import TestingMap from './world/TestingMap';
+import constants from '../GlobalConstants';
+import InputsContainer from './inputs/InputsContainer';
+import { MoveSetType } from './world/textures/MoveSet';
+import Player from './Player'
 
 interface Props {
+    player: Player
 }
 
 interface State {

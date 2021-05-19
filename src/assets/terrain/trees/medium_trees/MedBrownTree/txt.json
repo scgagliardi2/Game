@@ -1,5 +1,8 @@
 {
     "type": "landscape",
     "width": 1,
-    "height": 2
+    "height": 2,
+    "walkable": [
+        [0, 0]
+    ]
 }

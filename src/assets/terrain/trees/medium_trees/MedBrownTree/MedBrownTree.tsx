@@ -6,7 +6,7 @@ export default class MedBrownTree extends Texture {
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
 		super(xpos, ypos, level, [
 			[
-				new Tile(require('./0-0.png'), false)
+				new Tile(require('./0-0.png'), true)
 			],
 			[
 				new Tile(require('./1-0.png'), false)

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import { Screens } from '../../Display';
+import { Screens } from '../Display';
 
 interface Props {
     onNavigate: (screen: Screens) => any,

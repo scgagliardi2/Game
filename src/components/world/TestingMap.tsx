@@ -21,5 +21,7 @@ export default class TestingMap extends GameMap {
         this.addTexture(new MedBrownTree(0, 2, TextureLevel.HIGHLANDSCAPE))
 
         this.addTexture(new MartPurple(6, 0, TextureLevel.HIGHLANDSCAPE, transition))
+
+        this.addTexture(new PokeCenter(0, 3, TextureLevel.HIGHLANDSCAPE, transition))
     }
 }

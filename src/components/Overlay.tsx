@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import InputsContainer from './components/inputs/InputsContainer';
-import { MoveSetType } from './components/world/textures/MoveSet';
-import constants from './GlobalConstants'
+import InputsContainer from './inputs/InputsContainer';
+import { MoveSetType } from './world/textures/MoveSet';
+import constants from '../GlobalConstants'
 
 interface Props {
     children: any,

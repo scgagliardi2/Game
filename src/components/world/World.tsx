@@ -93,11 +93,7 @@ export const styles = StyleSheet.create({
     cell: {
         flexDirection: 'column', 
         width: cellSize, 
-        height: cellSize,
-        borderBottomColor: 'grey',
-        borderRightColor: 'grey',
-        borderBottomWidth: 1,
-        borderRightWidth: 1
+        height: cellSize
     },
     row: {
         flexDirection: 'row', 
@@ -110,8 +106,8 @@ export const styles = StyleSheet.create({
         top: 0,
         left: 0,
         position: 'absolute',
-        //borderColor: 'black',
-        //borderWidth: cellSize
+        borderColor: 'black',
+        borderWidth: cellSize
     },
     window: {
         width: windowWidth,

@@ -1,85 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import GlobalConstants from '../GlobalConstants';
+import constants from '../GlobalConstants'
 
-interface Props {
-    direction: string
-}
+export default class Player {
 
-interface State {
-}
+    Name: String
 
-export default class Player extends React.Component<Props, State> {
+    Pack: Object
+    Pokemon: Object
 
-    constructor(props: Props) {
-        super(props);
+    constructor(name: string) {
 
-        this.state = {
+        this.Name = name
+
+        this.Pack = {
+            money: 0,
+            items: {}
         }
-    }
 
-    render() {
-        switch (this.props.direction) {
-
-            case 'left':
-
-                return (
-                    <View style={
-                        [
-                            styles.Player,
-                            {
-                                position: 'absolute',
-                                borderLeftWidth: 2
-                            }
-                        ]}></View> 
-                );
-
-            case 'right':
-
-                return (
-                    <View style={
-                        [
-                            styles.Player,
-                            {
-                                position: 'absolute',
-                                borderRightWidth: 2
-                            }
-                        ]}></View> 
-                );
-
-            case 'up':
-
-                return (
-                    <View style={
-                        [
-                            styles.Player,
-                            {
-                                position: 'absolute',
-                                borderTopWidth: 2
-                            }
-                        ]}></View> 
-                );
-
-            case 'down':
-
-                return (
-                    <View style={
-                        [
-                            styles.Player,
-                            {
-                                position: 'absolute',
-                                borderBottomWidth: 2
-                            }
-                        ]}></View> 
-                );
-        };
+        this.Pokemon = {}
     }
 }
-
-const styles = StyleSheet.create({
-    Player: {
-        width: 20,
-        height: 20,
-        backgroundColor: 'red',
-    }
-});
