@@ -9,7 +9,7 @@ import { TextureLevel } from "./textures/Texture";
 export default class TestingMap extends GameMap {
 
     constructor(transition: () => any) {
-        super('Testing Map', 10, 10, [5,5])
+        super('Testing Map', 14, 14, [5,5])
 
         // add the grass
         for (let r = 0; r < this.Width; r++) {
