@@ -1,4 +1,4 @@
-import Texture, { TextureLevel } from '../textures/Texture';
+import { TextureLevel } from '../textures/Texture';
 import Tile from './Tile';
 
 export default class Tileset {
@@ -9,13 +9,13 @@ export default class Tileset {
         this.Tiles = new Map<number, Tile>()
     }
 
-    addTile(tile: Tile, fromTexture: Texture) {
-        this.Tiles.set(fromTexture.Level.valueOf(), tile)
+    addTile(tile: Tile, textureLevel: TextureLevel) {
+        this.Tiles.set(textureLevel, tile)
     }
 
     willTransition(): boolean {
         for (const tile of this.Tiles) {
-            if (tile[1].IsTransition) {
+            if (tile[1] != undefined && tile[1].IsTransition) {
                 return true
             }
         }
@@ -25,7 +25,7 @@ export default class Tileset {
 
     callTransition() {
         this.Tiles.forEach((tile: Tile) => {
-            if (tile.IsTransition) {
+            if (tile != undefined && tile.IsTransition) {
                 tile.TransitionCallback()
                 return
             }

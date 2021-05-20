@@ -19,7 +19,7 @@ export default class App extends React.Component<Props, AppState> {
 
   render() {
     return (
-      <Display player={new Player('name', new Red(5, 5))}/>
+      <Display player={new Player('name', new Red(4, 4))}/>
     )
   }
 }

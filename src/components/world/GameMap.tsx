@@ -1,11 +1,10 @@
-import Red from "../../assets/player/Red/Red";
-import Character from "./textures/Character";
-import { MoveSetType } from "../inputs/MoveSet";
-import Texture, { TextureLevel } from "./textures/Texture";
-import Tileset from "./tiles/Tileset";
 import constants from '../../GlobalConstants'
-import { increment } from './World';
-import Tile from "./tiles/Tile";
+import { MoveSetType } from '../inputs/MoveSet'
+import Player from '../Player'
+import Texture, { TextureLevel } from './textures/Texture'
+import Tile from './tiles/Tile'
+import { cellSize, increment } from './World'
+import Layers from './textures/Layers'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
 
@@ -13,191 +12,212 @@ export default class GameMap {
 
     Name: string
 
-    Tiles: Tileset[][]
+    Layers: Layers
+
+    Left: number
+    Top: number
 
     Width: number
     Height: number
 
-    X: number
-    Y: number
-    OffsetX: number
-    OffsetY: number
-
-    constructor(name: string, width: number, height: number, topLeftIndex: [number, number]) {
-        this.Tiles = [[]]
+    constructor(name: string, width: number, height: number, startX: number, startY: number) {
+        this.Layers = new Layers()
 
         this.Name = name
         this.Width = width
         this.Height = height
 
-        this.X = topLeftIndex[0]
-        this.Y = topLeftIndex[1]
-        this.OffsetX = 0
-        this.OffsetY = 0
+        this.Left = startX
+        this.Top = startY
 
         this.addTexture = this.addTexture.bind(this)
-        this.updateTexture = this.updateTexture.bind(this)
-        this.removeTexture = this.removeTexture.bind(this)
+        this.getConvertedNextPosition = this.getConvertedNextPosition.bind(this)
+        this.getConvertedPosition = this.getConvertedPosition.bind(this)
+    }
+
+    maxLeft() {
+        return this.Width - constants.size.windowTiles + 1
+    }
+
+    maxTop() {
+        return this.Height - constants.size.windowTiles + 1
+    }
+
+    getStyle() {
+        var t = -1 * this.Top % 1
+        var l = -1 * this.Left % 1
+
+        if (this.Top == -1) {
+            t = 1
+        }
+        else if (this.Top == this.maxTop()) {
+            t = 0
+        }
+
+        if (this.Left == -1) {
+            l = 1
+        }
+        else if (this.Left == this.maxLeft()) {
+            l = 0
+        }
+
+        return {
+            top: t * cellSize,
+            left: l * cellSize,
+        }
     }
 
     isRowVisible(y: number): boolean {
-        return y >= this.Y && y <= this.Y + constants.size.windowTiles - 1
+        if (this.Top == -1) {
+            return y >= 0 && y <= constants.size.windowTiles - 2
+        }
+        else if (this.Top == this.maxTop()) {
+            return y >= this.Top && y <= this.Top + constants.size.windowTiles - 1
+        }
+        else {
+            return y >= Math.floor(this.Top) && y <= this.Top + constants.size.windowTiles - 1
+        }
     }
 
     isColVisible(x: number): boolean {
-        return x >= this.X && x <= this.X + constants.size.windowTiles - 1
-    }
-
-    getTile(x: number, y: number, textureLevel: TextureLevel): Tile | undefined {
-        if (this.Tiles[y] == undefined || this.Tiles[y][x] == undefined) {
-            return undefined
+        if (this.Left == -1) {
+            return x >= 0 && x <= constants.size.windowTiles - 2
         }
-
-        return this.Tiles[y][x].Tiles.get(textureLevel)
-    }
-
-    getTileSet(x: number, y: number): Tileset | undefined {
-        if (this.Tiles[y] == undefined || this.Tiles[y][x] == undefined) {
-            return undefined
+        else if (this.Left == this.maxLeft()) {
+            return x >= this.Left && x <= this.Left + constants.size.windowTiles - 1
         }
-
-        return this.Tiles[y][x]
+        else {
+            return x >= Math.floor(this.Left) && x <= this.Left + constants.size.windowTiles - 1
+        }
     }
 
-    isCenteredVertically(y: number): boolean {
-        return y == this.Y + half
-    }
-
-    isCenteredHorizontally(x: number): boolean {
-        return x == this.X + half
-    }
-
-    canMove(direction: MoveSetType): boolean {
+    canMove(direction: MoveSetType, player: Player): boolean {
         switch (direction) {
             case MoveSetType.DOWN:
-                if (this.Y + constants.size.windowTiles > this.Height) {
+                if (this.Top + constants.size.windowTiles >= this.Height + 1) {
                     return false
                 }
                 break
             case MoveSetType.LEFT:
-                if (this.X <= -1) {
+                if (this.Left <= -1) {
                     return false
                 }
                 break
             case MoveSetType.RIGHT:
-                if (this.X + constants.size.windowTiles > this.Width) {
+                if (this.Left + constants.size.windowTiles >= this.Width + 1) {
                     return false
                 }
                 break
             case MoveSetType.UP:
-                if (this.Y <= -1) {
+                if (this.Top <= -1) {
                     return false
                 }
                 break
+        }
+
+        var position: [number, number] = this.getConvertedPosition(
+            player.Texture.X,
+            player.Texture.Y
+        )
+
+        if (
+            (direction == MoveSetType.LEFT && position[0] != this.Left + half - 1)|| 
+            (direction == MoveSetType.RIGHT && position[0] != this.Left + half)
+        ) {
+            return false
+        }
+
+        if (
+            (direction == MoveSetType.UP && position[1] != this.Top + half - 1)|| 
+            (direction == MoveSetType.DOWN && position[1] != this.Top + half)
+        ) {
+            return false
         }
 
         return true
     }
 
+    getConvertedNextPosition(x: number, y: number, direction: MoveSetType): [number, number] {
+        switch (direction) {
+            case MoveSetType.DOWN:
+                var x: number = Math.floor(this.Left) + Math.floor(x)
+                var y: number = Math.floor(this.Top) + Math.floor(y + 1)
+                return [x, y]
+            case MoveSetType.RIGHT:
+                var x: number = Math.floor(this.Left) + Math.floor(x + 1)
+                var y: number = Math.floor(this.Top) + Math.floor(y)
+                return [x, y]
+            case MoveSetType.LEFT:
+                var x: number = Math.ceil(x - 1) + Math.ceil(this.Left)
+                var y: number = Math.ceil(y) + Math.ceil(this.Top)
+                return [x, y]
+            case MoveSetType.UP:
+                var x: number = Math.ceil(x) + Math.ceil(this.Left)
+                var y: number = Math.ceil(y - 1) + Math.ceil(this.Top)
+                return [x, y]
+        }
+    }
+
+    getConvertedPosition(x: number, y: number): [number, number] {
+        var x: number = Math.floor(x) + this.Left
+        var y: number = Math.floor(y) + this.Top
+
+        return [x, y]
+    }
+
     move(direction: MoveSetType) {
         switch (direction) {
             case MoveSetType.DOWN:
-                this.OffsetY -= increment
+                this.Top += increment
                 break
             case MoveSetType.LEFT:
-                this.OffsetX += increment
+                this.Left -= increment
                 break
             case MoveSetType.RIGHT:
-                this.OffsetX -= increment
+                this.Left += increment
                 break
             case MoveSetType.UP:
-                this.OffsetY += increment
+                this.Top -= increment
                 break
         }
     }
 
-    resetOffsetsAfterMove(direction: MoveSetType) {
-        // get the new top corner (X,Y)
-        switch (direction) {
-            case MoveSetType.LEFT:
-                this.OffsetX = this.OffsetX == 0 ? 1 : this.OffsetX
-                
-                this.X -= this.OffsetX
+    isWalkable(x: number, y: number): boolean {
 
-                this.OffsetX = this.X == -1 ? 1 : 0  
-                break
-            case MoveSetType.RIGHT:
-                this.OffsetX = this.OffsetX == 0 ? -1 : this.OffsetX
-                
-                this.X -= this.OffsetX
-
-                this.OffsetX = this.X == -1 ? 1 : 0  
-                break
-            case MoveSetType.DOWN:
-          
-                this.OffsetY = this.OffsetY == 0 ? -1 : this.OffsetY
-
-                this.Y -= this.OffsetY
-
-                this.OffsetY = this.Y == -1 ? 1 : 0  
-                break
-            case MoveSetType.UP:
-                this.OffsetY = this.OffsetY == 0 ? 1 : this.OffsetY
-
-                this.Y -= this.OffsetY
-
-                this.OffsetY = this.Y == -1 ? 1 : 0  
-                break
+        if (x < 0 || x > this.Width - 1) {
+            return false
         }
+
+        if (y < 0 || y > this.Height - 1) {
+            return false
+        }
+
+        return this.Layers.isWalkable(x, y)
     }
 
-
-    removeTexture(texture: Texture) {
-        for (let x = 0; x < texture.Width; x++) {
-            for (let y = 0; y < texture.Height; y++) {
-                // is there a tileset here to remove a tile from
-                if (this.Tiles[x + texture.X] != undefined && this.Tiles[x + texture.X][y + texture.Y] != undefined) {
-                    var tileset: Tileset = this.Tiles[x + texture.X][y + texture.Y]
-                    
-                    tileset.Tiles.delete(texture.Level)
-                }
-            }
+    getTile(x: number, y: number, textureLevel: TextureLevel): Tile | undefined {
+        if (this.Layers.get(textureLevel) == undefined) {
+            return undefined
         }
-    }
 
-    updateTexture(texture: Texture) {
-        for (let x = 0; x < texture.Width; x++) {
-            for (let y = 0; y < texture.Height; y++) {
-                // is there a tileset here to remove a tile from
-                if (this.Tiles[x + texture.X] != undefined && this.Tiles[x + texture.X][y + texture.Y] != undefined) {
-                    var tileset: Tileset = this.Tiles[x + texture.X][y + texture.Y]
-
-                    tileset.addTile(texture.Tiles[y][x], texture)
-                }
-            }
-        }
+        return this.Layers.get(textureLevel)!.getTile(x, y)
     }
 
     addTexture(texture: Texture) {
-        if ((texture.X + texture.Width > this.Width) || (texture.Y + texture.Height > this.Height)) {
-            throw new Error(`Texture is out of map bounds. Map name ${this.Name}`)
-        }   
+        // create a new Layer if we don't have one
+        if (!this.Layers.hasLayer(texture.Level)) {
+            this.Layers.create(texture.Level)
+        }
 
+        // loop over the tiles
         for (let x = 0; x < texture.Width; x++) {
             for (let y = 0; y < texture.Height; y++) {
-                // do we have a list?
-                if (this.Tiles[x + texture.X] == undefined) {
-                    this.Tiles[x + texture.X] = []
-                }
-
-                // do we have a Tileset here?
-                if (this.Tiles[x + texture.X][y + texture.Y] == undefined) {
-                    this.Tiles[x + texture.X][y + texture.Y] = new Tileset()
-                }
-
-                // add the tile to the set
-                var tileset: Tileset = this.Tiles[x + texture.X][y + texture.Y]
-                tileset.addTile(texture.Tiles[y][x], texture)
+                // add the tile to the layer
+                this.Layers.get(texture.Level)!.addTile(
+                    x + texture.X,
+                    y + texture.Y,
+                    texture.Tiles[y][x]
+                )
             }
         }
     }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import GameMap from './GameMap';
 import constants from '../../GlobalConstants'
 import { TextureLevel } from './textures/Texture';
 import Player from '../Player';
+import GameMap from './GameMap';
 
 interface Props {
     map: GameMap,
@@ -13,7 +13,7 @@ interface Props {
 interface State {
 }
 
-export const iosAdjustment = 0.4 * (constants.size.windowTiles - 1)
+export const iosAdjustment = 0.5 * (constants.size.windowTiles - 1)
 export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width
 export const cellSize = windowWidth / constants.size.windowTiles
 export const increment = 1 / 4
@@ -29,13 +29,7 @@ export default class World extends React.Component<Props, State> {
 
     renderCell(row: number, col: number, textureLevel: TextureLevel) {
         
-        if (this.props.map.Tiles[col] == undefined || this.props.map.Tiles[col][row] == undefined) {
-            return (
-                <View style={styles.cell} key={col}/>
-            )
-        }
-
-        var tile = this.props.map.Tiles[col][row].Tiles.get(textureLevel)
+        var tile = this.props.map.getTile(col, row, textureLevel)
 
         if (tile == undefined) {
             return (
@@ -80,10 +74,10 @@ export default class World extends React.Component<Props, State> {
             <View 
                 style={{
                     ...styles.window,
+                    ...this.props.map.getStyle(),
                     position: 'absolute',
-                    top: this.props.map.OffsetY * cellSize,
-                    left: this.props.map.OffsetX * cellSize,
-                    margin: iosAdjustment / 2
+                    paddingTop: iosAdjustment / 2,
+                    paddingLeft: iosAdjustment / 2
                 }}
             >
                 {rows}
@@ -94,12 +88,15 @@ export default class World extends React.Component<Props, State> {
     renderPlayer() {
         var player: Player = this.props.player
 
+        var x = player.Texture.X
+        var y = player.Texture.Y
+
         return (
             <View 
                 style={{
                     position: 'absolute',
-                    top: (player.Texture.Y) * cellSize - (iosAdjustment / 2),
-                    left: (player.Texture.X) * cellSize - (iosAdjustment / 2)
+                    top: y * (cellSize),
+                    left: x * (cellSize)
                 }} 
             >
                 {player.Texture.getTile().getImage()}
