@@ -13,8 +13,8 @@ export default class Texture {
     Height: number
     Width: number
 
-    Xpos: number
-    Ypos: number
+    X: number
+    Y: number
 
     Level: TextureLevel
 
@@ -22,8 +22,8 @@ export default class Texture {
         this.Tiles = tiles
         this.Height = tiles.length
         this.Width = tiles[0].length
-        this.Xpos = xpos
-        this.Ypos = ypos
+        this.X = xpos
+        this.Y = ypos
         this.Level = level
     }
 }

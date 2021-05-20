@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity} from 'react-native';
 import GlobalConstants from '../../GlobalConstants';
+import { MoveSetType } from './MoveSet';
 
 interface Props {
-    direction: string,
+    direction: MoveSetType,
     width: number,
-    arrowPress: (direction: string) => any,
-    arrowLongPress: (direction: string) => any,
+    onTap: (direction: MoveSetType) => any,
+    onHold: (e: any, direction: MoveSetType) => any,
+    onHoldEnd: (e: any, direction: MoveSetType) => any
 }
 
 interface State {
@@ -14,68 +16,52 @@ interface State {
 
 export default class Arrow extends React.Component<Props, State> {
 
+    Timer: number
+    WalkTimer: any
+    EndInterval: boolean
+
     constructor(props: Props) {
         super(props);
+
+        this.Timer = 0
+        this.WalkTimer = undefined
+        this.EndInterval = false
 
         this.state = {
         }
     }
 
     render() {
+        var style: any
+
         switch (this.props.direction) {
-            case 'up' :
-                return (
-                <View style={{width: this.props.width, alignItems: 'center'}}>
-                    <TouchableOpacity 
-                        style={styles.Arrow}
-                        delayLongPress={35}
-                        onPress={() => this.props.arrowPress(this.props.direction)}
-                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
-                    >
-                        <View style={styles.up}></View>
-                    </TouchableOpacity> 
-                </View>
-                )
-            case 'down' :
-                return (
-                <View style={{width: this.props.width, alignItems: 'center'}}>
-                    <TouchableOpacity 
-                        style={styles.Arrow}
-                        delayLongPress={35}
-                        onPress={() => this.props.arrowPress(this.props.direction)}
-                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
-                    >
-                        <View style={styles.down}></View>
-                    </TouchableOpacity> 
-                </View>
-                )
-            case 'left' :
-                return (
-                <View style={{width: this.props.width, alignItems: 'center'}}>
-                    <TouchableOpacity 
-                        style={styles.Arrow}
-                        delayLongPress={35}
-                        onPress={() => this.props.arrowPress(this.props.direction)}
-                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
-                    >
-                        <View style={styles.left}></View>
-                    </TouchableOpacity> 
-                </View>
-                )
-            case 'right' :
-                return (
-                <View style={{width: this.props.width, alignItems: 'center'}}>
-                    <TouchableOpacity 
-                        style={styles.Arrow}
-                        delayLongPress={35}
-                        onPress={() => this.props.arrowPress(this.props.direction)}
-                        onLongPress={() => this.props.arrowLongPress(this.props.direction)}
-                    >
-                        <View style={styles.right}></View>
-                    </TouchableOpacity> 
-                </View>
-                )
+            case MoveSetType.UP:
+                style = styles.up
+                break
+            case MoveSetType.DOWN:
+                style = styles.down
+                break
+            case MoveSetType.LEFT:
+                style = styles.left
+                break
+            case MoveSetType.RIGHT:
+                style = styles.right
+                break
         }
+
+        return (
+            <View style={{width: this.props.width, alignItems: 'center'}}>
+                <TouchableOpacity 
+                    style={styles.Arrow}
+                    delayLongPress={35}
+                    onPress={() => { this.props.onTap(this.props.direction)}}
+                    onPressIn={(e: any) => { this.props.onHold(e, this.props.direction) }}
+                    onPressOut={(e: any) => { this.props.onHoldEnd(e, this.props.direction) }}
+                >
+                    <View style={style}></View>
+                </TouchableOpacity> 
+            </View>
+        )
     }
 }
 

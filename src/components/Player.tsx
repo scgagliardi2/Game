@@ -1,4 +1,5 @@
 import constants from '../GlobalConstants'
+import Character from './world/textures/Character'
 
 export default class Player {
 
@@ -7,7 +8,9 @@ export default class Player {
     Pack: Object
     Pokemon: Object
 
-    constructor(name: string) {
+    Texture: Character
+
+    constructor(name: string, texture: Character) {
 
         this.Name = name
 
@@ -17,5 +20,7 @@ export default class Player {
         }
 
         this.Pokemon = {}
+
+        this.Texture = texture
     }
 }

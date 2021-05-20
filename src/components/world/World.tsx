@@ -3,16 +3,20 @@ import { View, StyleSheet } from 'react-native';
 import GameMap from './GameMap';
 import constants from '../../GlobalConstants'
 import { TextureLevel } from './textures/Texture';
+import Player from '../Player';
 
 interface Props {
-    map: GameMap
+    map: GameMap,
+    player: Player
 }
 
 interface State {
 }
 
+export const iosAdjustment = 0.4 * (constants.size.windowTiles - 1)
 export const windowWidth = constants.size.width > 512 ? 512 : constants.size.width
 export const cellSize = windowWidth / constants.size.windowTiles
+export const increment = 1 / 4
 
 export default class World extends React.Component<Props, State> {
 
@@ -73,26 +77,44 @@ export default class World extends React.Component<Props, State> {
         }
 
         return (
-            <View style={styles.window}>
+            <View 
+                style={{
+                    ...styles.window,
+                    position: 'absolute',
+                    top: this.props.map.OffsetY * cellSize,
+                    left: this.props.map.OffsetX * cellSize,
+                    margin: iosAdjustment / 2
+                }}
+            >
                 {rows}
             </View> 
         )
     }
 
+    renderPlayer() {
+        var player: Player = this.props.player
+
+        return (
+            <View 
+                style={{
+                    position: 'absolute',
+                    top: (player.Texture.Y) * cellSize - (iosAdjustment / 2),
+                    left: (player.Texture.X) * cellSize - (iosAdjustment / 2)
+                }} 
+            >
+                {player.Texture.getTile().getImage()}
+            </View>
+        )
+    }
+
     render() {
         return (
-            <View>
-                <View 
-                    style={{
-                        top: this.props.map.OffsetY * cellSize,
-                        left: this.props.map.OffsetX * cellSize
-                    }}
-                >
-                    {this.renderTextures(TextureLevel.BASE)}
-                    {this.renderTextures(TextureLevel.LOWLANDSCAPE)}
-                    {this.renderTextures(TextureLevel.SPRITES)}
-                    {this.renderTextures(TextureLevel.HIGHLANDSCAPE)}
-                </View>
+            <View style={styles.window}>
+                {this.renderTextures(TextureLevel.BASE)}
+                {this.renderTextures(TextureLevel.LOWLANDSCAPE)}
+                {this.renderTextures(TextureLevel.SPRITES)}
+                {this.renderPlayer()}
+                {this.renderTextures(TextureLevel.HIGHLANDSCAPE)}
                 <View style={styles.border}/>
             </View>    
         );
@@ -105,11 +127,15 @@ export const styles = StyleSheet.create({
         width: cellSize , 
         height: cellSize,
         // NECESSARY FOR IOS TO NOT HAVE RANDOM WHITE LINES
-        marginRight: -0.5
+        marginRight: -0.5,
+        borderBottomColor: 'grey',
+        borderBottomWidth: 1,
+        borderRightColor: 'grey',
+        borderRightWidth: 1
     },
     row: {
         flexDirection: 'row', 
-        width: windowWidth, 
+        width: '100%', 
         height: cellSize,
         // NECESSARY FOR IOS TO NOT HAVE RANDOM WHITE LINES
         marginBottom: -0.5
@@ -122,11 +148,11 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         borderColor: 'black',
         // NECESSARY TO COMPENSATE FOR IOS WHITE LINE ISSUE
-        borderWidth: cellSize + (constants.size.windowTiles / 2)
+        borderWidth: 1// cellSize + (iosHeightAdjustment)
     },
     window: {
-        width: windowWidth,
-        height: windowWidth,
+        width: '100%',
+        height: '100%',
         position: 'absolute'
     }
 });

@@ -1,6 +1,6 @@
 import Character from "../../../components/world/textures/Character"
 import CharacterTile from "../../../components/world/tiles/CharacterTile"
-import MoveSet from "../../../components/world/textures/MoveSet"
+import MoveSet from "../../../components/inputs/MoveSet"
 
 export default class Red extends Character {
 

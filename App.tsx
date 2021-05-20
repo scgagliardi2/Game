@@ -1,4 +1,5 @@
 import React from 'react';
+import Red from './src/assets/player/Red/Red';
 import Display from './src/components/Display';
 import Player from './src/components/Player';
 
@@ -18,7 +19,7 @@ export default class App extends React.Component<Props, AppState> {
 
   render() {
     return (
-      <Display player={new Player('name')}/>
+      <Display player={new Player('name', new Red(5, 5))}/>
     )
   }
 }

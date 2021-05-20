@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import GlobalConstants from '../../GlobalConstants';
+import { View, StyleSheet } from 'react-native';
+import { MoveSetType } from './MoveSet';
 import Arrow from './Arrow';
 
 interface Props {
-    dpad_input_Tap: (direction: string) => any,
-    dpad_input_LongPress: (direction: string) => any,
+    onTap: (direction: MoveSetType) => any,
+    onHold: (e: any, direction: MoveSetType) => any,
+    onHoldEnd: (e: any, direction: MoveSetType) => any
 }
 
 interface State {
@@ -21,21 +22,13 @@ export default class D_Pad extends React.Component<Props, State> {
         }
     }
 
-    handleArrowPress = (direction: string) => {
-        this.props.dpad_input_Tap(direction);
-    }
-
-    handleLongArrowPress = (direction: string) => {
-        this.props.dpad_input_LongPress(direction);
-    }
-
     render() {
         return (
             <View style={styles.D_Pad}>
-                <Arrow direction={'up'} width={200} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
-                <Arrow direction={'left'} width={100} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
-                <Arrow direction={'right'} width={100} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
-                <Arrow direction={'down'} width={200} arrowPress={this.handleArrowPress} arrowLongPress={this.handleLongArrowPress}/>
+                <Arrow direction={MoveSetType.UP} width={200} onTap={this.props.onTap} onHold={this.props.onHold} onHoldEnd={this.props.onHoldEnd}/>
+                <Arrow direction={MoveSetType.LEFT} width={100} onTap={this.props.onTap} onHold={this.props.onHold} onHoldEnd={this.props.onHoldEnd}/>
+                <Arrow direction={MoveSetType.RIGHT} width={100} onTap={this.props.onTap} onHold={this.props.onHold} onHoldEnd={this.props.onHoldEnd}/>
+                <Arrow direction={MoveSetType.DOWN} width={200} onTap={this.props.onTap} onHold={this.props.onHold} onHoldEnd={this.props.onHoldEnd}/>
             </View>   
         );
     }

@@ -1,7 +1,7 @@
-import MoveSet, { MoveSetType } from './MoveSet';
+import MoveSet, { MoveSetType } from '../../inputs/MoveSet';
 import Texture, { TextureLevel } from './Texture';
 import Tile from '../tiles/Tile';
-import { cellSize } from '../World';
+import { increment } from '../World';
 
 export default class Character extends Texture {
     DownMoveSet: MoveSet
@@ -10,12 +10,13 @@ export default class Character extends Texture {
     UpMoveSet: MoveSet
 
     Facing: MoveSetType
-    AnimationIndex: number
 
-    constructor(xpos: number, ypos: number, dms: MoveSet, lms: MoveSet, rms: MoveSet, ums: MoveSet) {
+    TileIndex: number
+
+    constructor(x: number, y: number, dms: MoveSet, lms: MoveSet, rms: MoveSet, ums: MoveSet) {
         super(
-            xpos, 
-            ypos,
+            x, 
+            y,
             TextureLevel.SPRITES,
             [
                 [
@@ -25,78 +26,68 @@ export default class Character extends Texture {
         )
 
         this.Facing = MoveSetType.DOWN
-        this.AnimationIndex = 0
+
+        this.TileIndex = 0
+
         this.DownMoveSet = dms
         this.LeftMoveSet = lms
         this.RightMoveSet = rms
         this.UpMoveSet = ums
     }
 
-    look(direction: MoveSetType, update: () => void, updateTile: (texture: Texture) => void): number[] {
-        if (!this.IsMoving) {
+    look(direction: MoveSetType): [number, number] {
+          // change facing direction
+          this.Facing = direction
 
-            // change facing direction
-            this.Facing = direction
-
-            // change display tile
-            this.Tiles[0][0] = this.getTile()
-
-            updateTile(this)
-            update()
-        }
+          // change display tile
+          this.Tiles[0][0] = this.getTile()
 
         // return the block we are looking at
         switch (this.Facing) {
             case MoveSetType.DOWN:
-                return [this.Xpos, this.Ypos + 1]
+                return [this.X, this.Y + 1]
             case MoveSetType.LEFT:
-                return [this.Xpos - 1, this.Ypos]
+                return [this.X - 1, this.Y]
             case MoveSetType.RIGHT:
-                return [this.Xpos + 1, this.Ypos]
+                return [this.X + 1, this.Y]
             case MoveSetType.UP:
-                return [this.Xpos, this.Ypos - 1]
+                return [this.X, this.Y - 1]
+        }
+    }
+
+    move(direction: MoveSetType) {
+        switch (direction) {
+            case MoveSetType.DOWN:
+                this.Y += increment
+                break
+            case MoveSetType.LEFT:
+                this.X -= increment
+                break
+            case MoveSetType.RIGHT:
+                this.X += increment
+                break
+            case MoveSetType.UP:
+                this.Y -= increment
+                break
         }
     }
 
     nextTile() {
-        this.AnimationIndex = (this.AnimationIndex + 1) % 4
+        this.TileIndex = (this.TileIndex + 1) % 4
 
-        var offsetX = 0
-        var offsetY = 0
-
-        switch (this.Facing) {
-            case MoveSetType.DOWN:
-                offsetY = this.AnimationIndex * (cellSize / 4)
-                break
-            case MoveSetType.UP:
-                offsetY = -1 * this.AnimationIndex * (cellSize / 4)
-                break
-            case MoveSetType.LEFT:
-                offsetX = -1 * this.AnimationIndex * (cellSize / 4)
-                break
-            case MoveSetType.RIGHT:
-                offsetX = this.AnimationIndex * (cellSize / 4)
-                break
-        }
-
-        let tile = this.getTile()
-
-        tile.OffsetX = offsetX
-        tile.OffsetY = offsetY
-
-        this.Tiles[0][0] = tile
+        this.Tiles[0][0] = this.getTile()
     }
 
     getTile(): Tile {
         switch (this.Facing) {
             case MoveSetType.DOWN:
-                return this.DownMoveSet.Source[this.AnimationIndex]
+                return this.DownMoveSet.Source[this.TileIndex]
             case MoveSetType.LEFT:
-                return this.LeftMoveSet.Source[this.AnimationIndex]
+                return this.LeftMoveSet.Source[this.TileIndex]
             case MoveSetType.RIGHT:
-                return this.RightMoveSet.Source[this.AnimationIndex]
+                return this.RightMoveSet.Source[this.TileIndex]
             case MoveSetType.UP:
-                return this.UpMoveSet.Source[this.AnimationIndex]
+                return this.UpMoveSet.Source[this.TileIndex]
         }
     }
 }
