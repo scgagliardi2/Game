@@ -41,32 +41,4 @@ export default class Layers {
 
         return true
     }
-
-    transitionCallback(x: number, y: number): any {
-        if (this.hasLayer(TextureLevel.HIGHLANDSCAPE)) {
-            var trans = this.get(TextureLevel.HIGHLANDSCAPE)!.getTransition(x, y)
-
-            if (trans != undefined) {
-                return trans
-            }
-        }
-
-        if (this.hasLayer(TextureLevel.LOWLANDSCAPE)) {
-            var trans = this.get(TextureLevel.LOWLANDSCAPE)!.getTransition(x, y)
-
-            if (trans != undefined) {
-                return trans
-            }
-        }
-
-        if (this.hasLayer(TextureLevel.BASE)) {
-            var trans = this.get(TextureLevel.BASE)!.getTransition(x, y)
-
-            if (trans != undefined) {
-                return trans
-            }
-        }
-
-        return undefined
-    }
 }

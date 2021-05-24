@@ -2,7 +2,7 @@
     "type": "building",
     "width": 4,
     "height": 5,
-    "transitions": [
+    "empty": [
         [4, 2]
     ]
 }

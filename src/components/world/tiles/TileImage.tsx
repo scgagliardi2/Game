@@ -1,8 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import GameMap from './GameMap';
-import constants from '../../GlobalConstants'
-import { TextureLevel } from './textures/Texture';
+import { Image } from 'react-native';
 
 interface Props {
     source: any,

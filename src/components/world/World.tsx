@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         borderColor: 'black',
         // NECESSARY TO COMPENSATE FOR IOS WHITE LINE ISSUE
-        borderWidth: 1// cellSize + (iosHeightAdjustment)
+        borderWidth: 1// cellSize + (iosAdjustment / 2) + 1
     },
     window: {
         width: '100%',

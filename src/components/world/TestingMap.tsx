@@ -1,7 +1,9 @@
+import GlassDoor from "../../assets/buildings/doors/GlassDoor/GlassDoor";
 import MartPurple from "../../assets/buildings/stores/MartPurple/MartPurple";
 import PokeCenter from "../../assets/buildings/stores/PokeCenter/PokeCenter";
 import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
+import { MoveSetType } from "../inputs/MoveSet";
 import GameMap from "./GameMap";
 import { TextureLevel } from "./textures/Texture";
 
@@ -20,12 +22,12 @@ export default class TestingMap extends GameMap {
 
         this.addTexture(new MedBrownTree(0, 0, TextureLevel.HIGHLANDSCAPE))
 
-        this.addTexture(new MartPurple(6, 0, TextureLevel.HIGHLANDSCAPE, () => {
-            transition(12, 12)
-        }))
+        this.addTexture(new MartPurple(6, 0, TextureLevel.HIGHLANDSCAPE))
+        this.addTexture(new GlassDoor(8, 4, TextureLevel.LOWLANDSCAPE))
 
-        this.addTexture(new PokeCenter(0, 3, TextureLevel.HIGHLANDSCAPE, () => {
-            transition(1, 1)
-        }))
+        this.addTexture(new PokeCenter(0, 3, TextureLevel.HIGHLANDSCAPE))
+        this.addTexture(new GlassDoor(1, 7, TextureLevel.LOWLANDSCAPE))
+
+        this.addTransition(8, 4, MoveSetType.UP, () => { console.log('test')}, true)
     }
 }

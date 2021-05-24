@@ -5,6 +5,7 @@ import Texture, { TextureLevel } from './textures/Texture'
 import Tile from './tiles/Tile'
 import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
+import Transition, { getTransitionKey } from './tiles/Transition'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
 
@@ -20,19 +21,20 @@ export default class GameMap {
     Width: number
     Height: number
 
+    Transitions: Map<string, Transition>
+
     constructor(name: string, width: number, height: number, startX: number, startY: number) {
         this.Layers = new Layers()
 
         this.Name = name
+        
         this.Width = width
         this.Height = height
 
         this.Left = startX
         this.Top = startY
 
-        this.addTexture = this.addTexture.bind(this)
-        this.getConvertedNextPosition = this.getConvertedNextPosition.bind(this)
-        this.getConvertedPosition = this.getConvertedPosition.bind(this)
+        this.Transitions = new Map<string, Transition>()
     }
 
     maxLeft() {
@@ -94,44 +96,25 @@ export default class GameMap {
     canMove(direction: MoveSetType, player: Player): boolean {
         switch (direction) {
             case MoveSetType.DOWN:
-                if (this.Top + constants.size.windowTiles >= this.Height + 1) {
+                if (this.Top + constants.size.windowTiles >= this.Height + 1 || player.Texture.Y < half) {
                     return false
                 }
                 break
             case MoveSetType.LEFT:
-                if (this.Left <= -1) {
+                if (this.Left <= -1 || player.Texture.X > half) {
                     return false
                 }
                 break
             case MoveSetType.RIGHT:
-                if (this.Left + constants.size.windowTiles >= this.Width + 1) {
+                if (this.Left + constants.size.windowTiles >= this.Width + 1 || player.Texture.X < half) {
                     return false
                 }
                 break
             case MoveSetType.UP:
-                if (this.Top <= -1) {
+                if (this.Top <= -1 || player.Texture.Y > half) {
                     return false
                 }
                 break
-        }
-
-        var position: [number, number] = this.getConvertedPosition(
-            player.Texture.X,
-            player.Texture.Y
-        )
-
-        if (
-            (direction == MoveSetType.LEFT && position[0] != this.Left + half - 1)|| 
-            (direction == MoveSetType.RIGHT && position[0] != this.Left + half)
-        ) {
-            return false
-        }
-
-        if (
-            (direction == MoveSetType.UP && position[1] != this.Top + half - 1)|| 
-            (direction == MoveSetType.DOWN && position[1] != this.Top + half)
-        ) {
-            return false
         }
 
         return true
@@ -220,5 +203,17 @@ export default class GameMap {
                 )
             }
         }
+    }
+
+    addTransition(x: number, y: number, direction: MoveSetType, callback: () => void, walkOnTrigged: boolean = true) {
+        var trans: Transition = new Transition(x, y, direction, callback, walkOnTrigged)
+        this.Transitions.set(
+            trans.Key,
+            trans
+        )
+    }
+
+    getTransition(x: number, y: number, direction: MoveSetType, walkOnTrigged: boolean): Transition | undefined {
+        return this.Transitions.get(getTransitionKey(x, y, direction, walkOnTrigged))
     }
 }

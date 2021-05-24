@@ -29,14 +29,4 @@ export default class TextureLayer {
 
         this.Tiles[x][y] = tile
     }
-
-    getTransition(x: number, y: number) {
-        var tile = this.getTile(x, y)
-
-        if (tile != undefined && tile.IsTransition) {
-            return tile.TransitionCallback
-        }
-
-        return undefined
-    }
 }

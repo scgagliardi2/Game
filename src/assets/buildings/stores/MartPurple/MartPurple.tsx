@@ -1,10 +1,9 @@
 import Texture, { TextureLevel } from "../../../../components/world/textures/Texture"
 import Tile from "../../../../components/world/tiles/Tile"
-import TransitionTile from "../../../../components/world/tiles/TransitionTile"
 
 export default class MartPurple extends Texture {
 
-	constructor(xpos: number, ypos: number, level: TextureLevel, transition_1: () => any) {
+	constructor(xpos: number, ypos: number, level: TextureLevel) {
 		super(xpos, ypos, level, [
 			[
 				new Tile(require('./0-0.png'), false),
@@ -33,7 +32,7 @@ export default class MartPurple extends Texture {
 			[
 				new Tile(require('./4-0.png'), false),
 				new Tile(require('./4-1.png'), false),
-				new TransitionTile(require('./4-2-door.png'), transition_1),
+				new Tile(undefined, true),
 				new Tile(require('./4-3.png'), false)
 			]
 		])

@@ -98,7 +98,7 @@ export default class Display extends React.Component<Props, State> {
             this.MoveCounter = 0
 
             this.MoveInterval = setInterval(
-                () => { this.checkMove(direction) },
+                () => { this.moveCycle(direction) },
                 100
             )
         }
@@ -108,7 +108,7 @@ export default class Display extends React.Component<Props, State> {
         this.EndMove = true
     }
 
-    checkMove(direction: MoveSetType) {
+    moveCycle(direction: MoveSetType) {
 
         if (!this.EndMove || this.MoveCounter > 0) {
             this.move(direction)
@@ -122,43 +122,62 @@ export default class Display extends React.Component<Props, State> {
 
     move(direction: MoveSetType) {
 
-        var nextTilePosition: [number, number] = this.state.Map.getConvertedNextPosition(
-            this.props.player.Texture.X, this.props.player.Texture.Y, direction
+        // get the player's position in map coordinates
+        var currentTilePosition: [number, number] = this.state.Map.getConvertedPosition(
+            this.props.player.Texture.X, this.props.player.Texture.Y
         )
 
-        var canMoveToTile: boolean = this.state.Map.isWalkable(nextTilePosition[0], nextTilePosition[1])
+        // check if there is a walk off transition at the players current location
+        var walkOffTransition = this.state.Map.getTransition(
+            currentTilePosition[0], currentTilePosition[1], direction, false
+        )
 
-        if (canMoveToTile) {
-            var transitionCallback = this.state.Map.Layers.transitionCallback(nextTilePosition[0], nextTilePosition[1])
+        // if a transition is triggered when the player leaves this tile
+        if (walkOffTransition != undefined) {
+            walkOffTransition.Callback()
+        }
+        else {
+            // get the next tile position in map coordinates
+            var nextTilePosition: [number, number] = this.state.Map.getConvertedNextPosition(
+                this.props.player.Texture.X, this.props.player.Texture.Y, direction
+            )
 
-            if (transitionCallback != undefined && this.MoveCounter > 1) {
-                this.MoveCounter = -1
-                this.EndMove = true
+            // check if there is a walk on transition at the next location
+            var walkOnTransition = this.state.Map.getTransition(
+                nextTilePosition[0], nextTilePosition[1], direction, true
+            )
 
-                this.props.player.Texture.TileIndex = -1
-                this.props.player.Texture.nextTile()
-
-                transitionCallback()
+            // if a transition is triggered when the player walks on the next tile
+            // only trigger right before the player lands
+            if (walkOnTransition != undefined && this.MoveCounter == 3) {
+                walkOnTransition!.Callback()
             }
-            else {
+
+            // check if the player can walk on the next tile
+            var canMoveToTile: boolean = this.state.Map.isWalkable(nextTilePosition[0], nextTilePosition[1])
+
+            if (canMoveToTile) {
+                // check if the map can move
                 var shouldMapMove: boolean = this.state.Map.canMove(direction, this.props.player)
 
+                // move either the map or the player, never both
                 if (shouldMapMove) {
                     this.state.Map.move(direction)
                 }
                 else {
                     this.props.player.Texture.move(direction)
                 }
-                
+
                 // update the player's tile
                 this.props.player.Texture.nextTile()
             
+                // update the state to trigger a refresh
                 this.setState({
                     Map: this.state.Map,
                     UpdateKey: (this.state.UpdateKey + 1) % 2
                 })
-            }
-        }    
+            } 
+        }
 
         this.MoveCounter = (this.MoveCounter + 1) % 4
     }

@@ -25,7 +25,6 @@ def write_exporter(directory, filenames):
 
     data = json.load(open(directory + get_os_separator() + "txt.json"))
     type = data['type']
-    hasTransitions = 'transitions' in data and len(data['transitions']) > 0
 
     tilePaths = []
 
@@ -38,12 +37,10 @@ def write_exporter(directory, filenames):
     text = build_header(
         depthString, 
         name, 
-        type,
-        hasTransitions
+        type
     )
 
     text += build_constructor(
-        hasTransitions,
         data,
         tilePaths
     )
@@ -54,21 +51,17 @@ def write_exporter(directory, filenames):
     f.write(text)
     f.close()
 
-
-def build_header(depthString, name, type, hasTransitions):
+def build_header(depthString, name, type):
     text = ""
     
     # imports
     if type == 'character':
         text += f"import Character from \"{depthString}components/world/textures/Character\"\n"
         text += f"import CharacterTile from \"{depthString}components/world/tiles/CharacterTile\"\n"
-        text += f"import MoveSet from \"{depthString}components/world/textures/MoveSet\"\n"
+        text += f"import MoveSet from \"{depthString}components/inputs/MoveSet\"\n"
     else:
         text += f"import Texture, {{ TextureLevel }} from \"{depthString}components/world/textures/Texture\"\n"
         text += f"import Tile from \"{depthString}components/world/tiles/Tile\"\n"
-
-    if (hasTransitions):
-        text += f"import TransitionTile from \"{depthString}components/world/tiles/TransitionTile\"\n"
 
     text += "\n"
 
@@ -80,8 +73,7 @@ def build_header(depthString, name, type, hasTransitions):
 
     return text + "\n"
 
-
-def build_constructor(hasTransitions, data, tilePaths):
+def build_constructor(data, tilePaths):
     text = ""
 
     if data['type'] == 'character':
@@ -97,19 +89,6 @@ def build_constructor(hasTransitions, data, tilePaths):
         width = data["width"]
         height = data["height"]
 
-        transitionArgs = ""
-        transitionIndexes = []
-
-        if hasTransitions:
-            transitions = data['transitions']
-
-            for x in range(len(transitions)):
-                transitionArgs += f", transition_{x + 1}: () => any"
-
-                transition = transitions[x]
-
-                transitionIndexes.append(transition[0] * width + transition[1])
-
         walkableIndexes = []
 
         if "walkable" in data:
@@ -118,33 +97,40 @@ def build_constructor(hasTransitions, data, tilePaths):
             for x in range(len(walkables)):
                 walkable = walkables[x]
 
-                walkableIndexes.append(walkable[0] * width + walkable[1])
+                walkableIndexes.append(f"{walkable[0]}, {walkable[1]}")
 
-        text += f"\tconstructor(xpos: number, ypos: number, level: TextureLevel{transitionArgs}) {{\n"
+        emptyIndexes = []
+
+        if "empty" in data:
+            emptys = data['empty']
+
+            for x in range(len(emptys)):
+                empty = emptys[x]
+
+                emptyIndexes.append(f"{empty[0]}, {empty[1]}")
+
+        text += f"\tconstructor(xpos: number, ypos: number, level: TextureLevel) {{\n"
 
         tiles = "[\n"
 
         index = 0
-        transitionIndex = 0
 
         for r in range(height):
             tiles += "\t\t\t[\n"
 
             for c in range(width):
-                if index in transitionIndexes:
-                    tiles += f"\t\t\t\tnew TransitionTile(require('{tilePaths[index]}'), transition_{transitionIndex + 1})"
-
-                    transitionIndex += 1
-                else:
-                    canWalkOn = 'true' if index in walkableIndexes else 'false'
+                if f"{r}, {c}" not in emptyIndexes:
+                    canWalkOn = 'true' if f"{r}, {c}" in walkableIndexes else 'false'
                     tiles += f"\t\t\t\tnew Tile(require('{tilePaths[index]}'), {canWalkOn})"
+
+                    index += 1
+                else:
+                    tiles += f"\t\t\t\tnew Tile(undefined, true)"
 
                 if c != width - 1:
                     tiles += ","
 
                 tiles += "\n"
-
-                index += 1
 
             tiles += "\t\t\t]"
 
@@ -159,7 +145,6 @@ def build_constructor(hasTransitions, data, tilePaths):
 
 
     return text + "\t}\n"
-
 
 def build_moveset(start_index, tilePaths):
     ms = "\t\t\tnew MoveSet([\n"
