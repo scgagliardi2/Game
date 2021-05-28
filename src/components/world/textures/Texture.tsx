@@ -1,6 +1,7 @@
 import Tile from '../tiles/Tile';
 
 export enum TextureLevel {
+    BARRIER = -1,
     BASE = 0,
     LOWLANDSCAPE = 1,
     SPRITES = 2,

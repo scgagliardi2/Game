@@ -1,3 +1,4 @@
+import { MoveSetType } from "../../inputs/MoveSet";
 import { TextureLevel } from "./Texture";
 import TextureLayer from "./TextureLayer";
 
@@ -21,21 +22,50 @@ export default class Layers {
         this.Layers.set(level, new TextureLayer())
     }
 
-    isWalkable(x: number, y: number): boolean {
+    isWalkable(x: number, y: number, direction: MoveSetType): boolean {
 
-        if (this.hasLayer(TextureLevel.HIGHLANDSCAPE) && !this.Layers.get(TextureLevel.HIGHLANDSCAPE)!.canWalkOn(x , y)){
+        if (this.hasLayer(TextureLevel.HIGHLANDSCAPE) && !this.Layers.get(TextureLevel.HIGHLANDSCAPE)!.canWalkOn(x , y, direction)){
             return false
         }
 
-        if (this.hasLayer(TextureLevel.SPRITES) && !this.Layers.get(TextureLevel.SPRITES)!.canWalkOn(x , y)){
+        if (this.hasLayer(TextureLevel.SPRITES) && !this.Layers.get(TextureLevel.SPRITES)!.canWalkOn(x , y, direction)){
             return false
         }
 
-        if (this.hasLayer(TextureLevel.LOWLANDSCAPE) && !this.Layers.get(TextureLevel.LOWLANDSCAPE)!.canWalkOn(x , y)){
+        if (this.hasLayer(TextureLevel.LOWLANDSCAPE) && !this.Layers.get(TextureLevel.LOWLANDSCAPE)!.canWalkOn(x , y, direction)){
             return false
         }
 
-        if (this.hasLayer(TextureLevel.BASE) && !this.Layers.get(TextureLevel.BASE)!.canWalkOn(x , y)){
+        if (this.hasLayer(TextureLevel.BASE) && !this.Layers.get(TextureLevel.BASE)!.canWalkOn(x , y, direction)){
+            return false
+        }
+
+        if (this.hasLayer(TextureLevel.BARRIER) && !this.Layers.get(TextureLevel.BARRIER)!.canWalkOn(x , y, direction)){
+            return false
+        }
+
+        return true
+    }
+
+    isLeavable(x: number, y: number, direction: MoveSetType): boolean {
+
+        if (this.hasLayer(TextureLevel.HIGHLANDSCAPE) && !this.Layers.get(TextureLevel.HIGHLANDSCAPE)!.canLeave(x , y, direction)){
+            return false
+        }
+
+        if (this.hasLayer(TextureLevel.SPRITES) && !this.Layers.get(TextureLevel.SPRITES)!.canLeave(x , y, direction)){
+            return false
+        }
+
+        if (this.hasLayer(TextureLevel.LOWLANDSCAPE) && !this.Layers.get(TextureLevel.LOWLANDSCAPE)!.canLeave(x , y, direction)){
+            return false
+        }
+
+        if (this.hasLayer(TextureLevel.BASE) && !this.Layers.get(TextureLevel.BASE)!.canLeave(x , y, direction)){
+            return false
+        }
+
+        if (this.hasLayer(TextureLevel.BARRIER) && !this.Layers.get(TextureLevel.BARRIER)!.canLeave(x , y, direction)){
             return false
         }
 

@@ -1,15 +1,16 @@
 import Texture, { TextureLevel } from "../../../components/world/textures/Texture"
 import Tile from "../../../components/world/tiles/Tile"
+import { MoveSetType } from "../../../components/inputs/MoveSet"
 
 export default class BenchVerticalWood extends Texture {
 
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
 		super(xpos, ypos, level, [
 			[
-				new Tile(require('./0-0.png'), false)
+				new Tile(require('./0-0.png'))
 			],
 			[
-				new Tile(require('./1-0.png'), false)
+				new Tile(require('./1-0.png'))
 			]
 		])
 	}

@@ -1,25 +1,40 @@
 import React from 'react';
 import { View } from 'react-native';
+import { MoveSetType } from '../../inputs/MoveSet';
 import { cellSize } from '../World';
 import TileImage from './TileImage';
 
 export default class Tile {
     Source: any
 
-    CanWalkThrough: boolean
+    BlockedOnDirections: MoveSetType[]
+    BlockedOffDirections: MoveSetType[]
 
     IsSprite: boolean
 
-    UpperHalf: boolean
-    LowerHalf: boolean
-
-    constructor(source: any, canWalkThrough: boolean) {
+    constructor(source: any, blockedOnDirections: MoveSetType[] = [], blockedOffDirections: MoveSetType[] = []) {
         this.Source = source
         
-        this.CanWalkThrough = canWalkThrough
+        if (blockedOnDirections == undefined) {
+            blockedOnDirections = [
+                MoveSetType.DOWN,
+                MoveSetType.LEFT,
+                MoveSetType.RIGHT,
+                MoveSetType.UP
+            ]
+        }
 
-        this.UpperHalf = false
-        this.LowerHalf = false
+        if (blockedOffDirections == undefined) {
+            blockedOffDirections = [
+                MoveSetType.DOWN,
+                MoveSetType.LEFT,
+                MoveSetType.RIGHT,
+                MoveSetType.UP
+            ]
+        }
+
+        this.BlockedOnDirections = blockedOnDirections
+        this.BlockedOffDirections = blockedOffDirections
 
         this.IsSprite = false
     }
@@ -27,27 +42,10 @@ export default class Tile {
     getImage() {
         let style: any
 
-        if (this.UpperHalf) {
-            style = {
-                width: cellSize,
-                height: '50%',
-                resizeMode: 'cover'
-            }
-        }
-        else if (this.LowerHalf) {
-            style = {
-                width: cellSize,
-                height: '50%',
-                resizeMode: 'cover',
-                top: '50%'
-            }
-        }
-        else {
-            style = {
-                width: cellSize,
-                height: cellSize,
-                resizeMode: 'cover'
-            }
+        style = {
+            width: cellSize,
+            height: cellSize,
+            resizeMode: 'cover'
         }
 
         if (this.Source == undefined) {

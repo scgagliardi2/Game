@@ -1,4 +1,4 @@
-import { MoveSetType } from "../../inputs/MoveSet";
+import { MoveSetType } from "../inputs/MoveSet";
 
 export default class Transition {
     Direction: MoveSetType

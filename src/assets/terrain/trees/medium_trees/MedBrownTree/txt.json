@@ -2,7 +2,13 @@
     "type": "landscape",
     "width": 1,
     "height": 2,
-    "walkable": [
-        [0, 0]
-    ]
+    "walkable": {
+        "default": false,
+        "onChanges":[
+            [0,0]
+        ],
+        "offChanges":[
+            [0,0]
+        ]
+    }
 }

@@ -1,3 +1,4 @@
+import { MoveSetType } from "../../inputs/MoveSet";
 import Tile from "../tiles/Tile";
 
 export default class TextureLayer {
@@ -8,10 +9,16 @@ export default class TextureLayer {
         this.Tiles = []
     }
 
-    canWalkOn(x: number, y: number): boolean {
+    canWalkOn(x: number, y: number, direction: MoveSetType): boolean {
         var tile: Tile = this.getTile(x, y)!
 
-        return tile == undefined || tile.CanWalkThrough
+        return tile == undefined || !(tile.BlockedOnDirections.includes(direction))
+    }
+
+    canLeave(x: number, y: number, direction: MoveSetType): boolean {
+        var tile: Tile = this.getTile(x, y)!
+
+        return tile == undefined || !(tile.BlockedOffDirections.includes(direction))
     }
 
     getTile(x: number, y: number): Tile | undefined {

@@ -29,7 +29,7 @@ export default class Testing2Map extends GameMap {
         this.addTransition(12, 7, MoveSetType.UP, (doneCallback: () => any) => { 
             MovementManager.transition(
                 new TestingMap(0, 0),
-                4, 8,
+                6, 7,
                 MoveSetType.DOWN
             ) 
 

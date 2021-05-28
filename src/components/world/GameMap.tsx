@@ -5,7 +5,7 @@ import Texture, { TextureLevel } from './textures/Texture'
 import Tile from './tiles/Tile'
 import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
-import Transition, { getTransitionKey } from './tiles/Transition'
+import Transition, { getTransitionKey } from './Transition'
 import GameState from '../../GameState'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
@@ -142,11 +142,25 @@ export default class GameMap {
         }
     }
 
-    getConvertedPosition(x: number, y: number): [number, number] {
-        var x: number = Math.floor(x) + this.Left
-        var y: number = Math.floor(y) + this.Top
-
-        return [x, y]
+    getConvertedPosition(x: number, y: number, direction: MoveSetType): [number, number] {
+        switch (direction) {
+            case MoveSetType.DOWN:
+                var x: number = Math.floor(this.Left) + Math.floor(x)
+                var y: number = Math.floor(this.Top) + Math.floor(y)
+                return [x, y]
+            case MoveSetType.RIGHT:
+                var x: number = Math.floor(this.Left) + Math.floor(x)
+                var y: number = Math.floor(this.Top) + Math.floor(y)
+                return [x, y]
+            case MoveSetType.LEFT:
+                var x: number = Math.ceil(x) + Math.ceil(this.Left)
+                var y: number = Math.ceil(y) + Math.ceil(this.Top)
+                return [x, y]
+            case MoveSetType.UP:
+                var x: number = Math.ceil(x) + Math.ceil(this.Left)
+                var y: number = Math.ceil(y) + Math.ceil(this.Top)
+                return [x, y]
+        }
     }
 
     move(direction: MoveSetType) {
@@ -166,7 +180,7 @@ export default class GameMap {
         }
     }
 
-    isWalkable(x: number, y: number): boolean {
+    isWalkable(x: number, y: number, direction: MoveSetType): boolean {
 
         if (x < 0 || x > this.Width - 1) {
             return false
@@ -176,7 +190,11 @@ export default class GameMap {
             return false
         }
 
-        return this.Layers.isWalkable(x, y)
+        return this.Layers.isWalkable(x, y, direction)
+    }
+
+    isLeavable(x: number, y: number, direction: MoveSetType): boolean {
+        return this.Layers.isLeavable(x, y, direction)
     }
 
     getTile(x: number, y: number, textureLevel: TextureLevel): Tile | undefined {

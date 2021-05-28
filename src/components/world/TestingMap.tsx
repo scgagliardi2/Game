@@ -1,8 +1,9 @@
+import BridgeHorizontalWood from "../../assets/bridge/BridgeHorizontalWood/BridgeHorizontalWood";
+import BridgeVerticalWood from "../../assets/bridge/BridgeVerticalWood/BridgeVerticalWood";
 import GlassDoor from "../../assets/buildings/doors/GlassDoor/GlassDoor";
 import PokeCenter from "../../assets/buildings/stores/PokeCenter/PokeCenter";
 import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
-import GameState from "../../GameState";
 import { MoveSetType } from "../inputs/MoveSet";
 import MovementManager from "../MovementManager";
 import GameMap from "./GameMap";
@@ -23,10 +24,14 @@ export default class TestingMap extends GameMap {
 
         this.addTexture(new MedBrownTree(0, 0, TextureLevel.HIGHLANDSCAPE))
 
-        this.addTexture(new PokeCenter(3, 3, TextureLevel.HIGHLANDSCAPE))
-        this.addTexture(new GlassDoor(4, 7, TextureLevel.LOWLANDSCAPE))
+        this.addTexture(new PokeCenter(5, 2, TextureLevel.HIGHLANDSCAPE))
+        this.addTexture(new GlassDoor(6, 6, TextureLevel.LOWLANDSCAPE))
 
-        this.addTransition(4, 7, MoveSetType.UP, (doneCallback: () => any) => { 
+        this.addTexture(new BridgeHorizontalWood(6, 8, TextureLevel.LOWLANDSCAPE, 4))
+
+        this.addTexture(new BridgeVerticalWood(1, 4, TextureLevel.LOWLANDSCAPE, 4))
+
+        this.addTransition(6, 6, MoveSetType.UP, (doneCallback: () => any) => { 
             
             MovementManager.transition(
                 new Testing2Map(4, 2),

@@ -42,7 +42,7 @@ export default class MovementManager {
 
         // get the player's position in map coordinates
         var currentTilePosition: [number, number] = GameState.Map.getConvertedPosition(
-            GameState.Player.Texture.X, GameState.Player.Texture.Y
+            GameState.Player.Texture.X, GameState.Player.Texture.Y, direction
         )
 
         // check if there is a walk off transition at the players current location
@@ -89,9 +89,18 @@ export default class MovementManager {
                 }
 
                 // check if the player can walk on the next tile
-                var canMoveToTile: boolean = GameState.Map.isWalkable(nextTilePosition[0], nextTilePosition[1])
+                var canMoveToTile: boolean = GameState.Map.isWalkable(nextTilePosition[0], nextTilePosition[1], direction)
 
-                if (canMoveToTile) {
+                // check if the player can walk on the next tile
+                var tilePosition: [number, number] = GameState.Map.getConvertedPosition(
+                    GameState.Player.Texture.X, GameState.Player.Texture.Y, direction
+                )
+
+                var canLeaveTile: boolean = GameState.Map.isLeavable(tilePosition[0], tilePosition[1], direction)
+
+                console.log(tilePosition)
+
+                if (canMoveToTile && canLeaveTile) {
                     // check if the GameState.Map can move
                     var shouldMapMove: boolean = GameState.Map.canMove(direction)
 

@@ -1,0 +1,20 @@
+{
+    "type": "landscape",
+    "width": 3,
+    "height": 3,
+    "walkable": {
+        "default": true,
+        "onChanges": [
+            [0,0, ["RIGHT"]], [1,0, ["RIGHT"]], [2,0, ["RIGHT"]],
+            [0,2, ["LEFT"]], [1,2, ["LEFT"]], [2,2, ["LEFT"]]
+        ],
+        "offChanges": [
+            [0,0, ["LEFT"]], [1,0, ["LEFT"]], [2,0, ["LEFT"]],
+            [0,2, ["RIGHT"]], [1,2, ["RIGHT"]], [2,2, ["RIGHT"]]
+        ]
+    },
+    "stretch": {
+        "horizontal": false,
+        "repeatIndex": 1
+    }
+}
