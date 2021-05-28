@@ -27,12 +27,14 @@ export enum Screens {
 export default class Display extends React.Component<Props, State> {
 
     MoveInterval: any
+    QueuedInterval: any
     MoveManager: MovementManager
 
     constructor(props: Props) {
         super(props);
 
         this.MoveInterval = undefined
+        this.QueuedInterval = undefined
 
         this.handleHoldStart = this.handleHoldStart.bind(this);
         this.handleHoldEnd = this.handleHoldEnd.bind(this);
@@ -112,25 +114,42 @@ export default class Display extends React.Component<Props, State> {
     }
 
     handleHoldStart(e: any, direction: MoveSetType) {
-        // only do stuff when the previous interval is wiped
-        if (this.MoveInterval == undefined) {      
-            GameState.Player.Texture.look(direction)
-
-            this.setState({
-                UpdateKey: (this.state.UpdateKey + 1) % 2
-            })
-
-            this.MoveManager.setReadyToMove()
-
-            this.MoveInterval = setInterval(
-                () => { this.moveCycle(direction) },
-                100
-            )
+        // wipe old queue press
+        if (this.QueuedInterval != undefined) {
+            clearInterval(this.QueuedInterval)
+            this.QueuedInterval = undefined
         }
+
+        // wait for previous move to complete
+        this.QueuedInterval = setInterval(
+            () => {
+                if (this.MoveInterval == undefined) {    
+                    clearInterval(this.QueuedInterval)  
+                    this.directionPressed(direction)
+                    this.QueuedInterval = undefined
+                }
+            },
+            10
+        )
     }
 
     handleHoldEnd(e: any, direction: MoveSetType) {
         this.MoveManager.EndMove = true
+    }
+
+    directionPressed(direction: MoveSetType) {
+        GameState.Player.Texture.look(direction)
+
+        this.setState({
+            UpdateKey: (this.state.UpdateKey + 1) % 2
+        })
+
+        this.MoveManager.setReadyToMove()
+
+        this.MoveInterval = setInterval(
+            () => { this.moveCycle(direction) },
+            100
+        )
     }
 
     moveCycle(direction: MoveSetType) {

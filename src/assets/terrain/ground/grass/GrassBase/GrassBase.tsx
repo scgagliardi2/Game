@@ -7,7 +7,7 @@ export default class GrassBase extends Texture {
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
 		super(xpos, ypos, level, [
 			[
-				new Tile(require('./grass_base_tile.png'))
+				new Tile(require('./grass_base_tile.png'), [], [])
 			]
 		])
 	}

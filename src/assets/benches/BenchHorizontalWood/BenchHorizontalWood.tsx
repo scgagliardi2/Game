@@ -7,8 +7,8 @@ export default class BenchHorizontalWood extends Texture {
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
 		super(xpos, ypos, level, [
 			[
-				new Tile(require('./0-0.png')),
-				new Tile(require('./0-1.png'))
+				new Tile(require('./0-0.png'), [], []),
+				new Tile(require('./0-1.png'), [], [])
 			]
 		])
 	}

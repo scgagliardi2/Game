@@ -98,8 +98,6 @@ export default class MovementManager {
 
                 var canLeaveTile: boolean = GameState.Map.isLeavable(tilePosition[0], tilePosition[1], direction)
 
-                console.log(tilePosition)
-
                 if (canMoveToTile && canLeaveTile) {
                     // check if the GameState.Map can move
                     var shouldMapMove: boolean = GameState.Map.canMove(direction)

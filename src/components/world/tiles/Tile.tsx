@@ -12,7 +12,7 @@ export default class Tile {
 
     IsSprite: boolean
 
-    constructor(source: any, blockedOnDirections: MoveSetType[] = [], blockedOffDirections: MoveSetType[] = []) {
+    constructor(source: any, blockedOnDirections: MoveSetType[] | undefined, blockedOffDirections: MoveSetType[] | undefined) {
         this.Source = source
         
         if (blockedOnDirections == undefined) {

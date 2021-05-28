@@ -240,7 +240,9 @@ def build_constructor(data, tilePaths):
                             if i < len(on) - 1:
                                 on_str += ", "
                         on_str += "]"
-
+                    else:
+                        on_str = ", []"
+                        
                 off_str = ""
 
                 if off is not None:
@@ -255,6 +257,8 @@ def build_constructor(data, tilePaths):
                             if i < len(on) - 1:
                                 off_str += ", "
                         off_str += "]"
+                    else:
+                        off_str = ", []"
 
                 if f"{r}, {c}" not in emptyIndexes:
                     tiles += f"\t\t\t\tnew Tile(require('{tilePaths[index]}'){on_str}{off_str})"

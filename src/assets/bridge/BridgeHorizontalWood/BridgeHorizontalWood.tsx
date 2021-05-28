@@ -13,9 +13,9 @@ export default class BridgeHorizontalWood extends StretchTexture {
 				new Tile(require('./0-2.png'), [MoveSetType.DOWN], [MoveSetType.UP])
 			],
 			[
-				new Tile(require('./1-0.png')),
-				new Tile(require('./1-1.png')),
-				new Tile(require('./1-2.png'))
+				new Tile(require('./1-0.png'), [], []),
+				new Tile(require('./1-1.png'), [], []),
+				new Tile(require('./1-2.png'), [], [])
 			],
 			[
 				new Tile(require('./2-0.png'), [MoveSetType.UP], [MoveSetType.DOWN]),
