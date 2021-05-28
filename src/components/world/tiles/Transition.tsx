@@ -10,9 +10,9 @@ export default class Transition {
 
     Key: string
     
-    Callback: () => void
+    Callback: (doneCallback: () => any) => void
 
-    constructor(x: number, y: number, direction: MoveSetType, callback: () => void, walkOnTrigged: boolean = false) {
+    constructor(x: number, y: number, direction: MoveSetType, callback: (doneCallback: () => any) => void, walkOnTrigged: boolean = false) {
         this.Key = getTransitionKey(x, y, direction, walkOnTrigged)
         this.X = x
         this.Y = y

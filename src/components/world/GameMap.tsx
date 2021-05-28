@@ -6,6 +6,7 @@ import Tile from './tiles/Tile'
 import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
 import Transition, { getTransitionKey } from './tiles/Transition'
+import GameState from '../../GameState'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
 
@@ -93,25 +94,25 @@ export default class GameMap {
         }
     }
 
-    canMove(direction: MoveSetType, player: Player): boolean {
+    canMove(direction: MoveSetType): boolean {
         switch (direction) {
             case MoveSetType.DOWN:
-                if (this.Top + constants.size.windowTiles >= this.Height + 1 || player.Texture.Y < half) {
+                if (this.Top + constants.size.windowTiles >= this.Height + 1 || GameState.Player.Texture.Y < half) {
                     return false
                 }
                 break
             case MoveSetType.LEFT:
-                if (this.Left <= -1 || player.Texture.X > half) {
+                if (this.Left <= -1 || GameState.Player.Texture.X > half) {
                     return false
                 }
                 break
             case MoveSetType.RIGHT:
-                if (this.Left + constants.size.windowTiles >= this.Width + 1 || player.Texture.X < half) {
+                if (this.Left + constants.size.windowTiles >= this.Width + 1 || GameState.Player.Texture.X < half) {
                     return false
                 }
                 break
             case MoveSetType.UP:
-                if (this.Top <= -1 || player.Texture.Y > half) {
+                if (this.Top <= -1 || GameState.Player.Texture.Y > half) {
                     return false
                 }
                 break
@@ -205,7 +206,7 @@ export default class GameMap {
         }
     }
 
-    addTransition(x: number, y: number, direction: MoveSetType, callback: () => void, walkOnTrigged: boolean = true) {
+    addTransition(x: number, y: number, direction: MoveSetType, callback: (doneCallback: () => any) => void, walkOnTrigged: boolean = true) {
         var trans: Transition = new Transition(x, y, direction, callback, walkOnTrigged)
         this.Transitions.set(
             trans.Key,

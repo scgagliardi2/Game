@@ -6,10 +6,10 @@ export default class MartPurple extends Texture {
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
 		super(xpos, ypos, level, [
 			[
-				new Tile(require('./0-0.png'), false),
-				new Tile(require('./0-1.png'), false),
-				new Tile(require('./0-2.png'), false),
-				new Tile(require('./0-3.png'), false)
+				new Tile(require('./0-0.png'), true),
+				new Tile(require('./0-1.png'), true),
+				new Tile(require('./0-2.png'), true),
+				new Tile(require('./0-3.png'), true)
 			],
 			[
 				new Tile(require('./1-0.png'), false),

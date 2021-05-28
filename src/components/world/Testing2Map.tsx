@@ -1,18 +1,18 @@
 import GlassDoor from "../../assets/buildings/doors/GlassDoor/GlassDoor";
-import PokeCenter from "../../assets/buildings/stores/PokeCenter/PokeCenter";
+import MartPurple from "../../assets/buildings/stores/MartPurple/MartPurple";
 import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
-import GameState from "../../GameState";
+import TestingMap from "./TestingMap";
 import { MoveSetType } from "../inputs/MoveSet";
-import MovementManager from "../MovementManager";
 import GameMap from "./GameMap";
-import Testing2Map from "./Testing2Map";
 import { TextureLevel } from "./textures/Texture";
+import MovementManager from "../MovementManager";
 
-export default class TestingMap extends GameMap {
+
+export default class Testing2Map extends GameMap {
 
     constructor(startX: number, startY: number) {
-        super('Testing Map', 14, 14, startX, startY)
+        super('Testing 2 Map', 18, 18, startX, startY)
 
         // add the grass
         for (let r = 0; r < this.Width; r++) {
@@ -23,18 +23,17 @@ export default class TestingMap extends GameMap {
 
         this.addTexture(new MedBrownTree(0, 0, TextureLevel.HIGHLANDSCAPE))
 
-        this.addTexture(new PokeCenter(3, 3, TextureLevel.HIGHLANDSCAPE))
-        this.addTexture(new GlassDoor(4, 7, TextureLevel.LOWLANDSCAPE))
+        this.addTexture(new MartPurple(10, 3, TextureLevel.HIGHLANDSCAPE))
+        this.addTexture(new GlassDoor(12, 7, TextureLevel.LOWLANDSCAPE))
 
-        this.addTransition(4, 7, MoveSetType.UP, (doneCallback: () => any) => { 
-            
+        this.addTransition(12, 7, MoveSetType.UP, (doneCallback: () => any) => { 
             MovementManager.transition(
-                new Testing2Map(4, 2),
-                8, 6,
+                new TestingMap(0, 0),
+                4, 8,
                 MoveSetType.DOWN
             ) 
-            
+
             doneCallback()
-        }, true)
+         }, true)
     }
 }

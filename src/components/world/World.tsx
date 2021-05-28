@@ -7,7 +7,8 @@ import GameMap from './GameMap';
 
 interface Props {
     map: GameMap,
-    player: Player
+    player: Player,
+    transitionOpacity: number
 }
 
 interface State {
@@ -105,6 +106,8 @@ export default class World extends React.Component<Props, State> {
     }
 
     render() {
+        var color = `rgba(0, 0, 0, ${this.props.transitionOpacity})`
+
         return (
             <View style={styles.window}>
                 {this.renderTextures(TextureLevel.BASE)}
@@ -113,6 +116,14 @@ export default class World extends React.Component<Props, State> {
                 {this.renderPlayer()}
                 {this.renderTextures(TextureLevel.HIGHLANDSCAPE)}
                 <View style={styles.border}/>
+                <View 
+                    style={{
+                        width: constants.size.windowTiles * cellSize,
+                        height: constants.size.windowTiles * cellSize, 
+                        backgroundColor: color,
+                        position: 'absolute'
+                    }}
+                />
             </View>    
         );
     }
@@ -124,11 +135,7 @@ export const styles = StyleSheet.create({
         width: cellSize , 
         height: cellSize,
         // NECESSARY FOR IOS TO NOT HAVE RANDOM WHITE LINES
-        marginRight: -0.5,
-        borderBottomColor: 'grey',
-        borderBottomWidth: 1,
-        borderRightColor: 'grey',
-        borderRightWidth: 1
+        marginRight: -0.5
     },
     row: {
         flexDirection: 'row', 
@@ -145,11 +152,11 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         borderColor: 'black',
         // NECESSARY TO COMPENSATE FOR IOS WHITE LINE ISSUE
-        borderWidth: 1// cellSize + (iosAdjustment / 2) + 1
+        borderWidth: cellSize + (iosAdjustment / 2) + 1
     },
     window: {
-        width: '100%',
-        height: '100%',
+        width: constants.size.windowTiles * cellSize,
+        height: constants.size.windowTiles * cellSize,
         position: 'absolute'
     }
 });
