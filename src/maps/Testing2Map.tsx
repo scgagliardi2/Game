@@ -1,18 +1,20 @@
-import GlassDoor from "../../assets/buildings/doors/GlassDoor/GlassDoor";
-import MartPurple from "../../assets/buildings/stores/MartPurple/MartPurple";
-import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
-import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
+import GlassDoor from "../assets/buildings/doors/GlassDoor/GlassDoor";
+import MartPurple from "../assets/buildings/stores/MartPurple/MartPurple";
+import GrassBase from "../assets/terrain/ground/grass/GrassBase/GrassBase";
+import MedBrownTree from "../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
 import TestingMap from "./TestingMap";
-import { MoveSetType } from "../inputs/MoveSet";
-import GameMap from "../world/GameMap";
-import { TextureLevel } from "../world/textures/Texture";
-import MovementManager from "../MovementManager";
+import { MoveSetType } from "../game/inputs/MoveSet";
+import GameMap from "../game/world/GameMap";
+import { TextureLevel } from "../game/world/textures/Texture";
+import MovementManager from "../game/MovementManager";
+import { TestingMapName } from "./TestingMap";
 
+export let Testing2MapName = "Testing 2 Map"
 
 export default class Testing2Map extends GameMap {
 
     constructor(startX: number, startY: number) {
-        super('Testing 2 Map', 18, 18, startX, startY)
+        super(Testing2MapName, 18, 18, startX, startY)
 
         // add the grass
         for (let r = 0; r < this.Width; r++) {
@@ -28,7 +30,8 @@ export default class Testing2Map extends GameMap {
 
         this.addTransition(12, 7, MoveSetType.UP, (doneCallback: () => any) => { 
             MovementManager.transition(
-                new TestingMap(0, 0),
+                TestingMapName,
+                0, 0,
                 6, 7,
                 MoveSetType.DOWN
             ) 

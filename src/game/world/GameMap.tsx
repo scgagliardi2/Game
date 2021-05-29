@@ -5,7 +5,7 @@ import Tile from './tiles/Tile'
 import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
 import Transition, { getTransitionKey } from './Transition'
-import GameState from '../GameState'
+import { GameData } from '../Game'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
 
@@ -96,22 +96,22 @@ export default class GameMap {
     canMove(direction: MoveSetType): boolean {
         switch (direction) {
             case MoveSetType.DOWN:
-                if (this.Top + constants.size.windowTiles >= this.Height + 1 || GameState.Player.Texture.Y < half) {
+                if (this.Top + constants.size.windowTiles >= this.Height + 1 || GameData().Player.Texture.Y < half) {
                     return false
                 }
                 break
             case MoveSetType.LEFT:
-                if (this.Left <= -1 || GameState.Player.Texture.X > half) {
+                if (this.Left <= -1 || GameData().Player.Texture.X > half) {
                     return false
                 }
                 break
             case MoveSetType.RIGHT:
-                if (this.Left + constants.size.windowTiles >= this.Width + 1 || GameState.Player.Texture.X < half) {
+                if (this.Left + constants.size.windowTiles >= this.Width + 1 || GameData().Player.Texture.X < half) {
                     return false
                 }
                 break
             case MoveSetType.UP:
-                if (this.Top <= -1 || GameState.Player.Texture.Y > half) {
+                if (this.Top <= -1 || GameData().Player.Texture.Y > half) {
                     return false
                 }
                 break

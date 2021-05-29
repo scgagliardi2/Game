@@ -9,7 +9,7 @@ export default class Player {
 
     Texture: Character
 
-    constructor(name: string, texture: Character) {
+    constructor(name: string, texture: Character | undefined) {
 
         this.Name = name
 
@@ -20,6 +20,6 @@ export default class Player {
 
         this.Pokemon = {}
 
-        this.Texture = texture
+        this.Texture = texture!
     }
 }

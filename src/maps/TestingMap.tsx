@@ -1,20 +1,21 @@
-import BridgeHorizontalWood from "../../assets/bridge/BridgeHorizontalWood/BridgeHorizontalWood";
-import BridgeVerticalWood from "../../assets/bridge/BridgeVerticalWood/BridgeVerticalWood";
-import GlassDoor from "../../assets/buildings/doors/GlassDoor/GlassDoor";
-import PokeCenter from "../../assets/buildings/stores/PokeCenter/PokeCenter";
-import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
-import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
-import { MoveSetType } from "../inputs/MoveSet";
-import MovementManager from "../MovementManager";
-import GameMap from "../world/GameMap";
-import { TextureLevel } from "../world/textures/Texture";
-import Testing2Map from "./Testing2Map";
+import BridgeHorizontalWood from "../assets/bridge/BridgeHorizontalWood/BridgeHorizontalWood";
+import BridgeVerticalWood from "../assets/bridge/BridgeVerticalWood/BridgeVerticalWood";
+import GlassDoor from "../assets/buildings/doors/GlassDoor/GlassDoor";
+import PokeCenter from "../assets/buildings/stores/PokeCenter/PokeCenter";
+import GrassBase from "../assets/terrain/ground/grass/GrassBase/GrassBase";
+import MedBrownTree from "../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
+import { MoveSetType } from "../game/inputs/MoveSet";
+import MovementManager from "../game/MovementManager";
+import GameMap from "../game/world/GameMap";
+import { TextureLevel } from "../game/world/textures/Texture";
+import { Testing2MapName } from "./Testing2Map";
 
+export let TestingMapName = "Testing Map"
 
 export default class TestingMap extends GameMap {
 
     constructor(startX: number, startY: number) {
-        super('Testing Map', 14, 14, startX, startY)
+        super(TestingMapName, 14, 14, startX, startY)
 
         // add the grass
         for (let r = 0; r < this.Width; r++) {
@@ -35,7 +36,8 @@ export default class TestingMap extends GameMap {
         this.addTransition(6, 6, MoveSetType.UP, (doneCallback: () => any) => { 
             
             MovementManager.transition(
-                new Testing2Map(4, 2),
+                Testing2MapName,
+                4, 2,
                 8, 6,
                 MoveSetType.DOWN
             ) 

@@ -6,7 +6,7 @@ import World, { cellSize, windowWidth } from './world/World';
 import InputsContainer from './inputs/InputsContainer';
 import { MoveSetType } from './inputs/MoveSet';
 import MovementManager from './MovementManager';
-import GameState from './GameState';
+import { GameData } from './Game';
 
 interface Props {
 }
@@ -138,7 +138,7 @@ export default class Display extends React.Component<Props, State> {
     }
 
     directionPressed(direction: MoveSetType) {
-        GameState.Player.Texture.look(direction)
+        GameData().Player.Texture.look(direction)
 
         this.setState({
             UpdateKey: (this.state.UpdateKey + 1) % 2
@@ -175,8 +175,8 @@ export default class Display extends React.Component<Props, State> {
             case Screens.WORLD:
                 content = (
                     <World 
-                        map={GameState.Map} 
-                        player={GameState.Player} 
+                        map={GameData().Map} 
+                        player={GameData().Player} 
                         transitionOpacity={this.state.TransitionOpacity}
                     />
                 )

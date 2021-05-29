@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity} from 'react-native';
-import GlobalConstants from '../../GlobalConstants';
+import GlobalConstants from '../GlobalConstants';
 import { MoveSetType } from './MoveSet';
 
 interface Props {

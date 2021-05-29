@@ -1,7 +1,8 @@
 import React from 'react';
 import Display from './src/game/Display';
-import GameState from './src/game/GameState';
 import Builder from './src/mapBuilder/Builder';
+import TestingGame from './src/maps/TestingGame';
+import { setGame } from './src/game/Game'
 
 interface Props {
 }
@@ -13,7 +14,7 @@ export default class App extends React.Component<Props, AppState> {
   constructor(props: Props) {
     super(props);
     
-    GameState.initializeGameState()
+    setGame(new TestingGame())
 
     this.state = {
     }
@@ -22,7 +23,7 @@ export default class App extends React.Component<Props, AppState> {
 
   render() {
     return (
-      <Builder/>
+      <Display/>
     )
   }
 }

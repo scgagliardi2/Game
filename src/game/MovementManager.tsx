@@ -1,6 +1,5 @@
-import GameState from "../game/GameState"
-import { MoveSetType } from "./inputs/MoveSet"
-import GameMap from "../game/world/GameMap"
+import { MoveSetType } from "../game/inputs/MoveSet"
+import { GameData } from "./Game"
 
 export default class MovementManager {
 
@@ -29,24 +28,31 @@ export default class MovementManager {
         this.MoveCounter = 0
     }
 
-    public static transition(newMap: GameMap, playerX: number, playerY: number, playerDirection: MoveSetType) {
-        GameState.Player.Texture.X = playerX
-        GameState.Player.Texture.Y = playerY
-        GameState.Player.Texture.nextTile()
-        GameState.Player.Texture.look(playerDirection)
+    public static transition(
+        newMapName: string, mapX: number, mapY: number, 
+        playerX: number, playerY: number, playerDirection: MoveSetType
+    ) {
+        GameData().Player.Texture.X = playerX
+        GameData().Player.Texture.Y = playerY
+        GameData().Player.Texture.nextTile()
+        GameData().Player.Texture.look(playerDirection)
 
-        GameState.Map = newMap
+        var map = GameData().Maps.get(newMapName)!
+        map.Top = mapY
+        map.Left = mapX
+
+        GameData().Map = map
     }
 
     move(direction: MoveSetType) {
 
         // get the player's position in map coordinates
-        var currentTilePosition: [number, number] = GameState.Map.getConvertedPosition(
-            GameState.Player.Texture.X, GameState.Player.Texture.Y, direction
+        var currentTilePosition: [number, number] = GameData().Map.getConvertedPosition(
+            GameData().Player.Texture.X, GameData().Player.Texture.Y, direction
         )
 
         // check if there is a walk off transition at the players current location
-        var walkOffTransition = GameState.Map.getTransition(
+        var walkOffTransition = GameData().Map.getTransition(
             currentTilePosition[0], currentTilePosition[1], direction, false
         )
 
@@ -62,13 +68,13 @@ export default class MovementManager {
             })
         }
         else {
-            // get the next tile position in GameState.Map coordinates
-            var nextTilePosition: [number, number] = GameState.Map.getConvertedNextPosition(
-                GameState.Player.Texture.X, GameState.Player.Texture.Y, direction
+            // get the next tile position in GameData().Map coordinates
+            var nextTilePosition: [number, number] = GameData().Map.getConvertedNextPosition(
+                GameData().Player.Texture.X, GameData().Player.Texture.Y, direction
             )
 
             // check if there is a walk on transition at the next location
-            var walkOnTransition = GameState.Map.getTransition(
+            var walkOnTransition = GameData().Map.getTransition(
                 nextTilePosition[0], nextTilePosition[1], direction, true
             )
 
@@ -89,29 +95,29 @@ export default class MovementManager {
                 }
 
                 // check if the player can walk on the next tile
-                var canMoveToTile: boolean = GameState.Map.isWalkable(nextTilePosition[0], nextTilePosition[1], direction)
+                var canMoveToTile: boolean = GameData().Map.isWalkable(nextTilePosition[0], nextTilePosition[1], direction)
 
                 // check if the player can walk on the next tile
-                var tilePosition: [number, number] = GameState.Map.getConvertedPosition(
-                    GameState.Player.Texture.X, GameState.Player.Texture.Y, direction
+                var tilePosition: [number, number] = GameData().Map.getConvertedPosition(
+                    GameData().Player.Texture.X, GameData().Player.Texture.Y, direction
                 )
 
-                var canLeaveTile: boolean = GameState.Map.isLeavable(tilePosition[0], tilePosition[1], direction)
+                var canLeaveTile: boolean = GameData().Map.isLeavable(tilePosition[0], tilePosition[1], direction)
 
                 if (canMoveToTile && canLeaveTile) {
-                    // check if the GameState.Map can move
-                    var shouldMapMove: boolean = GameState.Map.canMove(direction)
+                    // check if the GameData().Map can move
+                    var shouldMapMove: boolean = GameData().Map.canMove(direction)
 
-                    // move either the GameState.Map or the player, never both
+                    // move either the GameData().Map or the player, never both
                     if (shouldMapMove) {
-                        GameState.Map.move(direction)
+                        GameData().Map.move(direction)
                     }
                     else {
-                        GameState.Player.Texture.move(direction)
+                        GameData().Player.Texture.move(direction)
                     }
 
                     // update the player's tile
-                    GameState.Player.Texture.nextTile()
+                    GameData().Player.Texture.nextTile()
                 
                     // update the state to trigger a refresh
                     this.ShouldRefreshCallback()

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity} from 'react-native';
-import GlobalConstants from '../../GlobalConstants';
+import GlobalConstants from '../GlobalConstants';
 
 interface Props {
     pressed: (button: string) => any
