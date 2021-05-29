@@ -4,8 +4,8 @@ import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
 import TestingMap from "./TestingMap";
 import { MoveSetType } from "../inputs/MoveSet";
-import GameMap from "./GameMap";
-import { TextureLevel } from "./textures/Texture";
+import GameMap from "../world/GameMap";
+import { TextureLevel } from "../world/textures/Texture";
 import MovementManager from "../MovementManager";
 
 

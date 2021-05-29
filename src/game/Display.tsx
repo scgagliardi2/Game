@@ -6,7 +6,7 @@ import World, { cellSize, windowWidth } from './world/World';
 import InputsContainer from './inputs/InputsContainer';
 import { MoveSetType } from './inputs/MoveSet';
 import MovementManager from './MovementManager';
-import GameState from '../GameState';
+import GameState from './GameState';
 
 interface Props {
 }

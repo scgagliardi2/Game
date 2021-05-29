@@ -4,6 +4,9 @@ import json
 from PIL import Image
 
 def main():
+    all_textures = []
+
+    index = 0
     for (dirpath, dirnames, filenames) in os.walk(os.getcwd()):
         # remove old exporters
         for filename in filenames:
@@ -12,7 +15,33 @@ def main():
 
         # only write exports for the image folders
         if "txt.json" in filenames:
-            write_exporter(dirpath, filenames)  
+            data, name = write_exporter(dirpath, filenames)
+            all_textures.append((index, dirpath, data, name))
+            index += 1
+
+    all_t_text = "let textures = new Map()\n\n"
+
+    for index, path, data, name in all_textures:
+        path = path.replace(os.getcwd(), ".").replace("\\", "/")
+
+        if index != 0:
+            all_t_text += "\n\n"
+
+        all_t_text += f"textures.set('{name}', {{\n"
+
+        all_t_text += f"\tname: '{name}',\n"
+        all_t_text += f"\ttype: '{data['type']}',\n"
+        all_t_text += f"\twidth: {data['width'] if 'width' in data else 1},\n"
+        all_t_text += f"\theight: {data['height'] if 'width' in data else 1},\n"
+        all_t_text += f"\tsource: require('{path}/texture.png')\n"
+
+        all_t_text += "})"
+
+    all_t_text += "\nexport default { textures: textures }"
+
+    f = open(os.getcwd() + get_os_separator() + "textures.tsx", "w")
+    f.write(all_t_text)
+    f.close()
 
 def write_exporter(directory, filenames):
     depth = len(directory.replace(os.getcwd(), "").split(get_os_separator()))
@@ -52,9 +81,13 @@ def write_exporter(directory, filenames):
 
     text += "}\n"
 
-    f = open(directory + get_os_separator() + name + ".tsx", "w")
+    import_path = directory + get_os_separator() + name
+
+    f = open(import_path + ".tsx", "w")
     f.write(text)
     f.close()
+
+    return data, name
 
 def create_texture_image(path, filenames, data):
     images = []
@@ -100,19 +133,19 @@ def build_header(depthString, name, type, data):
     
     # imports
     if type == 'character':
-        text += f"import Character from \"{depthString}components/world/textures/Character\"\n"
-        text += f"import CharacterTile from \"{depthString}components/world/tiles/CharacterTile\"\n"
-        text += f"import MoveSet from \"{depthString}components/inputs/MoveSet\"\n"
+        text += f"import Character from \"{depthString}game/world/textures/Character\"\n"
+        text += f"import CharacterTile from \"{depthString}game/world/tiles/CharacterTile\"\n"
+        text += f"import MoveSet from \"{depthString}game/inputs/MoveSet\"\n"
     elif "stretch" in data:
-        text += f"import StretchTexture from \"{depthString}components/world/textures/StretchTexture\"\n"
-        text += f"import {{ TextureLevel }} from \"{depthString}components/world/textures/Texture\"\n"
-        text += f"import Tile from \"{depthString}components/world/tiles/Tile\"\n"
-        text += f"import {{ MoveSetType }} from \"{depthString}components/inputs/MoveSet\"\n"
+        text += f"import StretchTexture from \"{depthString}game/world/textures/StretchTexture\"\n"
+        text += f"import {{ TextureLevel }} from \"{depthString}game/world/textures/Texture\"\n"
+        text += f"import Tile from \"{depthString}game/world/tiles/Tile\"\n"
+        text += f"import {{ MoveSetType }} from \"{depthString}game/inputs/MoveSet\"\n"
 
     else:
-        text += f"import Texture, {{ TextureLevel }} from \"{depthString}components/world/textures/Texture\"\n"
-        text += f"import Tile from \"{depthString}components/world/tiles/Tile\"\n"
-        text += f"import {{ MoveSetType }} from \"{depthString}components/inputs/MoveSet\"\n"
+        text += f"import Texture, {{ TextureLevel }} from \"{depthString}game/world/textures/Texture\"\n"
+        text += f"import Tile from \"{depthString}game/world/tiles/Tile\"\n"
+        text += f"import {{ MoveSetType }} from \"{depthString}game/inputs/MoveSet\"\n"
 
 
     text += "\n"

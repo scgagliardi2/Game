@@ -1,5 +1,4 @@
-import constants from '../GlobalConstants'
-import Character from './world/textures/Character'
+import Character from '../game/world/textures/Character'
 
 export default class Player {
 

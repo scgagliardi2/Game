@@ -1,12 +1,11 @@
-import constants from '../../GlobalConstants'
+import constants from '../GlobalConstants'
 import { MoveSetType } from '../inputs/MoveSet'
-import Player from '../Player'
 import Texture, { TextureLevel } from './textures/Texture'
 import Tile from './tiles/Tile'
 import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
 import Transition, { getTransitionKey } from './Transition'
-import GameState from '../../GameState'
+import GameState from '../GameState'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
 

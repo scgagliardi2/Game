@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import constants from '../../GlobalConstants'
+import constants from '../GlobalConstants'
 import { TextureLevel } from './textures/Texture';
 import Player from '../Player';
 import GameMap from './GameMap';

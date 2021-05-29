@@ -6,9 +6,10 @@ import GrassBase from "../../assets/terrain/ground/grass/GrassBase/GrassBase";
 import MedBrownTree from "../../assets/terrain/trees/medium_trees/MedBrownTree/MedBrownTree";
 import { MoveSetType } from "../inputs/MoveSet";
 import MovementManager from "../MovementManager";
-import GameMap from "./GameMap";
+import GameMap from "../world/GameMap";
+import { TextureLevel } from "../world/textures/Texture";
 import Testing2Map from "./Testing2Map";
-import { TextureLevel } from "./textures/Texture";
+
 
 export default class TestingMap extends GameMap {
 

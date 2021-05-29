@@ -1,7 +1,7 @@
-import StretchTexture from "../../../components/world/textures/StretchTexture"
-import { TextureLevel } from "../../../components/world/textures/Texture"
-import Tile from "../../../components/world/tiles/Tile"
-import { MoveSetType } from "../../../components/inputs/MoveSet"
+import StretchTexture from "../../../game/world/textures/StretchTexture"
+import { TextureLevel } from "../../../game/world/textures/Texture"
+import Tile from "../../../game/world/tiles/Tile"
+import { MoveSetType } from "../../../game/inputs/MoveSet"
 
 export default class BridgeVerticalWood extends StretchTexture {
 

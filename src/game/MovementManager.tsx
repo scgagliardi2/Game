@@ -1,6 +1,6 @@
-import GameState from "../GameState"
+import GameState from "../game/GameState"
 import { MoveSetType } from "./inputs/MoveSet"
-import GameMap from "./world/GameMap"
+import GameMap from "../game/world/GameMap"
 
 export default class MovementManager {
 
