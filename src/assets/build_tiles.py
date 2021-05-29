@@ -17,6 +17,8 @@ def main():
 def write_exporter(directory, filenames):
     depth = len(directory.replace(os.getcwd(), "").split(get_os_separator()))
 
+    filenames.sort()
+
     depthString = ""
     for x in range(depth):
         depthString += "../"
