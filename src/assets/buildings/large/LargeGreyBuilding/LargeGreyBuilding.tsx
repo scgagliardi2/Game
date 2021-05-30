@@ -56,9 +56,9 @@ export default class LargeGreyBuilding extends Texture {
 				new Tile(require('./5-1.png'), undefined, undefined),
 				new Tile(require('./5-2.png'), undefined, undefined),
 				new Tile(undefined, [], undefined),
-				new Tile(require('./5-3-door.png'), undefined, undefined),
 				new Tile(require('./5-4.png'), undefined, undefined),
-				new Tile(require('./5-5.png'), undefined, undefined)
+				new Tile(require('./5-5.png'), undefined, undefined),
+				new Tile(require('./5-6.png'), undefined, undefined)
 			]
 		])
 	}
