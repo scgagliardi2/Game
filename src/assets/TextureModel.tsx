@@ -3,5 +3,6 @@ export default interface TextureModel {
     type: string,
     width: number,
     height: number,
-    source: any
+    source: any,
+    class: any
 }

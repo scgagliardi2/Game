@@ -6,8 +6,81 @@ import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
 import Transition, { getTransitionKey } from './Transition'
 import { GameData } from '../Game'
+import MapModel, { InputTextureModel } from './MapModel'
+import {textures} from '../../assets/textures'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
+
+export function buildFrom(model: MapModel): GameMap {
+    var map = new GameMap(model.id, model.width, model.height, 0, 0)
+
+    model.textures.barrier.forEach((texture: InputTextureModel) => {
+        var cls = getTextureClass(texture.class)
+
+        map.addTexture(
+            new cls(texture.x, texture.y, texture.width, texture.height)
+        )
+    })
+
+    model.textures.base.forEach((texture: InputTextureModel) => {
+        var cls = getTextureClass(texture.class)
+
+        if (texture.stretches) {
+            map.addTexture(
+                new cls(texture.x, texture.y, TextureLevel.BASE, texture.length)
+            )
+        }
+        else {
+            map.addTexture(
+                new cls(texture.x, texture.y, TextureLevel.BASE)
+            )
+        }
+    })
+
+    model.textures.low.forEach((texture: InputTextureModel) => {
+        var cls = getTextureClass(texture.class)
+
+        if (texture.stretches) {
+            map.addTexture(
+                new cls(texture.x, texture.y, TextureLevel.LOWLANDSCAPE, texture.length)
+            )
+        }
+        else {
+            map.addTexture(
+                new cls(texture.x, texture.y, TextureLevel.LOWLANDSCAPE)
+            )
+        }
+    })
+
+    model.textures.sprite.forEach((texture: InputTextureModel) => {
+        var cls = getTextureClass(texture.class)
+
+        map.addTexture(
+            new cls(texture.x, texture.y)
+        )
+    })
+
+    model.textures.high.forEach((texture: InputTextureModel) => {
+        var cls = getTextureClass(texture.class)
+        
+        if (texture.stretches) {
+            map.addTexture(
+                new cls(texture.x, texture.y, TextureLevel.HIGHLANDSCAPE, texture.length)
+            )
+        }
+        else {
+            map.addTexture(
+                new cls(texture.x, texture.y, TextureLevel.HIGHLANDSCAPE)
+            )
+        }
+    })
+
+    return map
+}
+
+function getTextureClass(className: string): any {
+    return textures.get(className)?.class
+}
 
 export default class GameMap {
 

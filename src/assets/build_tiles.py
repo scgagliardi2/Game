@@ -10,7 +10,7 @@ def main():
     for (dirpath, dirnames, filenames) in os.walk(os.getcwd()):
         # remove old exporters
         for filename in filenames:
-            if ".tsx" in filename:
+            if ".tsx" in filename and 'TextureModel' not in filename:
                 os.remove(dirpath + get_os_separator() + filename)
 
         # only write exports for the image folders
@@ -19,9 +19,14 @@ def main():
             all_textures.append((index, dirpath, data, name))
             index += 1
 
-    all_t_text = "import TextureModel from \"./TextureModel\"\n\n"
+    all_t_text = "import TextureModel from \"./TextureModel\"\n"
 
-    all_t_text += "let textures = new Map<string, TextureModel>()\n\n"
+    for index, path, data, name in all_textures:
+        path = path.replace(os.getcwd(), ".").replace("\\", "/")
+
+        all_t_text += f"import {name} from '{path}/{name}'\n"
+
+    all_t_text += "\nexport let textures = new Map<string, TextureModel>()\n\n"
 
     for index, path, data, name in all_textures:
         path = path.replace(os.getcwd(), ".").replace("\\", "/")
@@ -35,7 +40,8 @@ def main():
         all_t_text += f"\ttype: '{data['type']}',\n"
         all_t_text += f"\twidth: {data['width'] if 'width' in data else 1},\n"
         all_t_text += f"\theight: {data['height'] if 'width' in data else 1},\n"
-        all_t_text += f"\tsource: require('{path}/texture.png')\n"
+        all_t_text += f"\tsource: require('{path}/texture.png'),\n"
+        all_t_text += f"\tclass: {name}\n"
 
         all_t_text += "})"
 

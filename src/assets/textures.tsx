@@ -1,13 +1,29 @@
 import TextureModel from "./TextureModel"
+import BenchHorizontalWood from './benches/BenchHorizontalWood/BenchHorizontalWood'
+import BenchVerticalWood from './benches/BenchVerticalWood/BenchVerticalWood'
+import BridgeHorizontalWood from './bridge/BridgeHorizontalWood/BridgeHorizontalWood'
+import BridgeVerticalWood from './bridge/BridgeVerticalWood/BridgeVerticalWood'
+import GlassDoor from './buildings/doors/GlassDoor/GlassDoor'
+import GloorDoubleDoor from './buildings/doors/GloorDoubleDoor/GloorDoubleDoor'
+import LargeBlueBuilding from './buildings/large/LargeBlueBuilding/LargeBlueBuilding'
+import LargeBrownBuilding from './buildings/large/LargeBrownBuilding/LargeBrownBuilding'
+import LargeGreenBuilding from './buildings/large/LargeGreenBuilding/LargeGreenBuilding'
+import LargeGreyBuilding from './buildings/large/LargeGreyBuilding/LargeGreyBuilding'
+import MartPurple from './buildings/stores/MartPurple/MartPurple'
+import PokeCenter from './buildings/stores/PokeCenter/PokeCenter'
+import Red from './player/Red/Red'
+import GrassBase from './terrain/ground/grass/GrassBase/GrassBase'
+import MedBrownTree from './terrain/trees/medium_trees/MedBrownTree/MedBrownTree'
 
-let textures = new Map<string, TextureModel>()
+export let textures = new Map<string, TextureModel>()
 
 textures.set('BenchHorizontalWood', {
 	name: 'BenchHorizontalWood',
 	type: 'landscape',
 	width: 2,
 	height: 1,
-	source: require('./benches/BenchHorizontalWood/texture.png')
+	source: require('./benches/BenchHorizontalWood/texture.png'),
+	class: BenchHorizontalWood
 })
 
 textures.set('BenchVerticalWood', {
@@ -15,7 +31,8 @@ textures.set('BenchVerticalWood', {
 	type: 'landscape',
 	width: 1,
 	height: 2,
-	source: require('./benches/BenchVerticalWood/texture.png')
+	source: require('./benches/BenchVerticalWood/texture.png'),
+	class: BenchVerticalWood
 })
 
 textures.set('BridgeHorizontalWood', {
@@ -23,7 +40,8 @@ textures.set('BridgeHorizontalWood', {
 	type: 'landscape',
 	width: 3,
 	height: 3,
-	source: require('./bridge/BridgeHorizontalWood/texture.png')
+	source: require('./bridge/BridgeHorizontalWood/texture.png'),
+	class: BridgeHorizontalWood
 })
 
 textures.set('BridgeVerticalWood', {
@@ -31,7 +49,8 @@ textures.set('BridgeVerticalWood', {
 	type: 'landscape',
 	width: 3,
 	height: 3,
-	source: require('./bridge/BridgeVerticalWood/texture.png')
+	source: require('./bridge/BridgeVerticalWood/texture.png'),
+	class: BridgeVerticalWood
 })
 
 textures.set('GlassDoor', {
@@ -39,7 +58,8 @@ textures.set('GlassDoor', {
 	type: 'building',
 	width: 1,
 	height: 1,
-	source: require('./buildings/doors/GlassDoor/texture.png')
+	source: require('./buildings/doors/GlassDoor/texture.png'),
+	class: GlassDoor
 })
 
 textures.set('GloorDoubleDoor', {
@@ -47,7 +67,8 @@ textures.set('GloorDoubleDoor', {
 	type: 'building',
 	width: 1,
 	height: 1,
-	source: require('./buildings/doors/GloorDoubleDoor/texture.png')
+	source: require('./buildings/doors/GloorDoubleDoor/texture.png'),
+	class: GloorDoubleDoor
 })
 
 textures.set('LargeBlueBuilding', {
@@ -55,7 +76,8 @@ textures.set('LargeBlueBuilding', {
 	type: 'building',
 	width: 7,
 	height: 6,
-	source: require('./buildings/large/LargeBlueBuilding/texture.png')
+	source: require('./buildings/large/LargeBlueBuilding/texture.png'),
+	class: LargeBlueBuilding
 })
 
 textures.set('LargeBrownBuilding', {
@@ -63,7 +85,8 @@ textures.set('LargeBrownBuilding', {
 	type: 'building',
 	width: 7,
 	height: 6,
-	source: require('./buildings/large/LargeBrownBuilding/texture.png')
+	source: require('./buildings/large/LargeBrownBuilding/texture.png'),
+	class: LargeBrownBuilding
 })
 
 textures.set('LargeGreenBuilding', {
@@ -71,7 +94,8 @@ textures.set('LargeGreenBuilding', {
 	type: 'building',
 	width: 7,
 	height: 6,
-	source: require('./buildings/large/LargeGreenBuilding/texture.png')
+	source: require('./buildings/large/LargeGreenBuilding/texture.png'),
+	class: LargeGreenBuilding
 })
 
 textures.set('LargeGreyBuilding', {
@@ -79,7 +103,8 @@ textures.set('LargeGreyBuilding', {
 	type: 'building',
 	width: 7,
 	height: 6,
-	source: require('./buildings/large/LargeGreyBuilding/texture.png')
+	source: require('./buildings/large/LargeGreyBuilding/texture.png'),
+	class: LargeGreyBuilding
 })
 
 textures.set('MartPurple', {
@@ -87,7 +112,8 @@ textures.set('MartPurple', {
 	type: 'building',
 	width: 4,
 	height: 5,
-	source: require('./buildings/stores/MartPurple/texture.png')
+	source: require('./buildings/stores/MartPurple/texture.png'),
+	class: MartPurple
 })
 
 textures.set('PokeCenter', {
@@ -95,7 +121,8 @@ textures.set('PokeCenter', {
 	type: 'building',
 	width: 4,
 	height: 5,
-	source: require('./buildings/stores/PokeCenter/texture.png')
+	source: require('./buildings/stores/PokeCenter/texture.png'),
+	class: PokeCenter
 })
 
 textures.set('Red', {
@@ -103,7 +130,8 @@ textures.set('Red', {
 	type: 'character',
 	width: 1,
 	height: 1,
-	source: require('./player/Red/texture.png')
+	source: require('./player/Red/texture.png'),
+	class: Red
 })
 
 textures.set('GrassBase', {
@@ -111,7 +139,8 @@ textures.set('GrassBase', {
 	type: 'ground',
 	width: 1,
 	height: 1,
-	source: require('./terrain/ground/grass/GrassBase/texture.png')
+	source: require('./terrain/ground/grass/GrassBase/texture.png'),
+	class: GrassBase
 })
 
 textures.set('MedBrownTree', {
@@ -119,6 +148,7 @@ textures.set('MedBrownTree', {
 	type: 'landscape',
 	width: 1,
 	height: 2,
-	source: require('./terrain/trees/medium_trees/MedBrownTree/texture.png')
+	source: require('./terrain/trees/medium_trees/MedBrownTree/texture.png'),
+	class: MedBrownTree
 })
 export default { textures: textures }

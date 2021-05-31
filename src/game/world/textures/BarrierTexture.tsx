@@ -14,7 +14,7 @@ export default class BarrierTexture extends Texture {
             }
 
             for (var c = 0; c < width; c++) {
-                tiles[r][c] = new Tile(undefined, undefined)
+                tiles[r][c] = new Tile(undefined, undefined, undefined)
             }
         }
 
