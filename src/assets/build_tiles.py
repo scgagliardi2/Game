@@ -19,7 +19,9 @@ def main():
             all_textures.append((index, dirpath, data, name))
             index += 1
 
-    all_t_text = "let textures = new Map()\n\n"
+    all_t_text = "import TextureModel from \"./TextureModel\"\n\n"
+
+    all_t_text += "let textures = new Map<string, TextureModel>()\n\n"
 
     for index, path, data, name in all_textures:
         path = path.replace(os.getcwd(), ".").replace("\\", "/")

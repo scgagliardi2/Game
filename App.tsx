@@ -3,6 +3,7 @@ import Display from './src/game/Display';
 import Builder from './src/mapBuilder/Builder';
 import TestingGame from './src/maps/TestingGame';
 import { setGame } from './src/game/Game'
+import PokeReactBuilder from './src/mapBuilder/PokeReactBuilder';
 
 interface Props {
 }
@@ -23,7 +24,7 @@ export default class App extends React.Component<Props, AppState> {
 
   render() {
     return (
-      <Builder/>
+      <PokeReactBuilder/>
     )
   }
 }

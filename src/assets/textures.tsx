@@ -1,4 +1,6 @@
-let textures = new Map()
+import TextureModel from "./TextureModel"
+
+let textures = new Map<string, TextureModel>()
 
 textures.set('BenchHorizontalWood', {
 	name: 'BenchHorizontalWood',
