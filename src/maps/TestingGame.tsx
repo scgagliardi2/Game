@@ -1,7 +1,7 @@
 import Red from "../assets/player/Red/Red";
 import Game from "../game/Game";
 import Player from "../game/Player";
-import { buildFrom } from "../game/world/GameMap";
+import GameMap from "../game/world/GameMap";
 import TestingMap from "./TestingMap";
 import Testing2Map from "./Testing2Map";
 
@@ -2653,7 +2653,7 @@ export default class TestingGame extends Game {
         super(
             [
                 TestingMap,
-                buildFrom(data)
+                GameMap.buildFrom(data)
             ],
             new Player('red', new Red(4, 8))
         )

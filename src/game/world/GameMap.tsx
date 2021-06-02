@@ -323,7 +323,7 @@ export default class GameMap {
         })
 
         var basicTexBuild = (m: GameMap, texture: IOTextureModel, level: TextureLevel) => {
-            var cls = textures.get(texture.class)?.class()
+            var cls = textures.get(texture.class)?.class
     
             if (texture.stretches) {
                 m.addTexture(
