@@ -17,6 +17,8 @@ export default class Game {
 
     Maps: Map<string, GameMap>
 
+    State: Map<string, any>
+
     constructor(maps: GameMap[], player: Player) {
         // defaults until initialization
         this.Player = player
@@ -25,8 +27,13 @@ export default class Game {
         this.Maps = new Map<string, GameMap>()
 
         maps.forEach((map: GameMap) => {
-            this.Maps.set(map.Name, map)
+            this.Maps.set(map.id(), map)
+
+            // we load tranistions separately so as not to hit hash id conflicts
+            map.loadTransitions()
         })
+
+        this.State = new Map<string, any>()
 
         this.initializeGameState()
     }

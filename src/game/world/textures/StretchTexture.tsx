@@ -1,16 +1,22 @@
+import { InputTextureModel } from '../../../mapBuilder/models/MapModel';
 import Tile from '../tiles/Tile';
 import Texture, { TextureLevel } from './Texture';
 
 export default class StretchTexture extends Texture {
 
+    Length: number
+    RepeatIndex: number
+
+    OrigWidth: number
+    OrigHeight: number
 
     constructor(
-        xpos: number, ypos: number, level: TextureLevel, tiles: Tile[][], 
+        id: string, xpos: number, ypos: number, level: TextureLevel, tiles: Tile[][], 
         horizontal: boolean, 
         length: number,
         repeatIndex: number
     ) {
-        super(xpos, ypos, level, tiles)
+        super(id, xpos, ypos, level, tiles)
 
         for (var row = 0; row < this.Tiles.length; row++) {
             if (horizontal) {
@@ -30,7 +36,25 @@ export default class StretchTexture extends Texture {
             }
         }
 
+        this.OrigWidth = this.Width
+        this.OrigHeight = this.Height
+        this.Length = length
+        this.RepeatIndex = repeatIndex
+
         this.Height = tiles.length
         this.Width = tiles[0].length
+    }
+
+    toYaml(): InputTextureModel {
+        return {
+            x: this.X,
+            y: this.Y,
+            width: this.OrigWidth,
+            height: this.OrigHeight,
+            stretches: true,
+            length: this.Length,
+            repeatIndex: this.RepeatIndex,
+            class: typeof(this)
+        }
     }
 }

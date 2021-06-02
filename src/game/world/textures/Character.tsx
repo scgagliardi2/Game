@@ -13,8 +13,9 @@ export default class Character extends Texture {
 
     TileIndex: number
 
-    constructor(x: number, y: number, dms: MoveSet, lms: MoveSet, rms: MoveSet, ums: MoveSet) {
+    constructor(id: string, x: number, y: number, dms: MoveSet, lms: MoveSet, rms: MoveSet, ums: MoveSet) {
         super(
+            id,
             x, 
             y,
             TextureLevel.SPRITES,

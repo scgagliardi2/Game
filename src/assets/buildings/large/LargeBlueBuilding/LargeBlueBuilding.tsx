@@ -5,7 +5,7 @@ import { MoveSetType } from "../../../../game/inputs/MoveSet"
 export default class LargeBlueBuilding extends Texture {
 
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
-		super(xpos, ypos, level, [
+		super('c65be00a93f70227c55159293cf8d9317039192c8b01711774fc12b4f7015560', xpos, ypos, level, [
 			[
 				new Tile(require('./0-0.png'), [], []),
 				new Tile(require('./0-1.png'), [], []),

@@ -5,7 +5,7 @@ import { MoveSetType } from "../../../../game/inputs/MoveSet"
 export default class MartPurple extends Texture {
 
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
-		super(xpos, ypos, level, [
+		super('6002a97356b87dcc7524ac22fcf33865bf0224a44f78a427bd30ed33093933a9', xpos, ypos, level, [
 			[
 				new Tile(require('./0-0.png'), [], []),
 				new Tile(require('./0-1.png'), [], []),

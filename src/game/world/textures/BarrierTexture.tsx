@@ -18,6 +18,6 @@ export default class BarrierTexture extends Texture {
             }
         }
 
-        super(xpos, ypos, TextureLevel.BARRIER, tiles)
+        super("BARRIER", xpos, ypos, TextureLevel.BARRIER, tiles)
     }
 }

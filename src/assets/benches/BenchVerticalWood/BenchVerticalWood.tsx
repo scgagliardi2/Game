@@ -5,7 +5,7 @@ import { MoveSetType } from "../../../game/inputs/MoveSet"
 export default class BenchVerticalWood extends Texture {
 
 	constructor(xpos: number, ypos: number, level: TextureLevel) {
-		super(xpos, ypos, level, [
+		super('f029c15cc5f9b59533ef6ec658a8d580792d88203857a8687905029d09bb339f', xpos, ypos, level, [
 			[
 				new Tile(require('./0-0.png'), [], [])
 			],

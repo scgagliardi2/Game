@@ -6,16 +6,16 @@ import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
 import Transition, { getTransitionKey } from './Transition'
 import { GameData } from '../Game'
-import MapModel, { InputTextureModel } from './MapModel'
-import {textures} from '../../assets/textures'
+import MapModel, { InputTextureModel, InputTransitionModel } from '../../mapBuilder/models/MapModel'
+import { textures } from '../../assets/textures'
+import hash from "object-hash"
 
-export const half = Math.floor(constants.size.windowTiles / 2)
 
 export function buildFrom(model: MapModel): GameMap {
-    var map = new GameMap(model.id, model.width, model.height, 0, 0)
+    var map = new GameMap(model.width, model.height, 0, 0)
 
     model.textures.barrier.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClass(texture.class)
+        var cls = getTextureClassById(texture.class)
 
         map.addTexture(
             new cls(texture.x, texture.y, texture.width, texture.height)
@@ -23,7 +23,7 @@ export function buildFrom(model: MapModel): GameMap {
     })
 
     model.textures.base.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClass(texture.class)
+        var cls = getTextureClassById(texture.class)
 
         if (texture.stretches) {
             map.addTexture(
@@ -38,7 +38,7 @@ export function buildFrom(model: MapModel): GameMap {
     })
 
     model.textures.low.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClass(texture.class)
+        var cls = getTextureClassById(texture.class)
 
         if (texture.stretches) {
             map.addTexture(
@@ -53,7 +53,7 @@ export function buildFrom(model: MapModel): GameMap {
     })
 
     model.textures.sprite.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClass(texture.class)
+        var cls = getTextureClassById(texture.class)
 
         map.addTexture(
             new cls(texture.x, texture.y)
@@ -61,7 +61,7 @@ export function buildFrom(model: MapModel): GameMap {
     })
 
     model.textures.high.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClass(texture.class)
+        var cls = getTextureClassById(texture.class)
         
         if (texture.stretches) {
             map.addTexture(
@@ -75,18 +75,25 @@ export function buildFrom(model: MapModel): GameMap {
         }
     })
 
+    map.LoadTransitionFunctions.push((m: GameMap) => {
+        model.transitions.forEach((transition: InputTransitionModel) => {
+            m.addTransition(Transition.buildFrom(transition))
+        })
+    })
+
     return map
 }
 
-function getTextureClass(className: string): any {
-    return textures.get(className)?.class
+function getTextureClassById(id: string): any {
+    return textures.get(id)?.class
 }
 
+export const half = Math.floor(constants.size.windowTiles / 2)
+
 export default class GameMap {
-
-    Name: string
-
     Layers: Layers
+
+    Textures: Texture[]
 
     Left: number
     Top: number
@@ -96,10 +103,19 @@ export default class GameMap {
 
     Transitions: Map<string, Transition>
 
-    constructor(name: string, width: number, height: number, startX: number, startY: number) {
-        this.Layers = new Layers()
+    LoadTransitionFunctions: any[]
 
-        this.Name = name
+    Hash: string
+
+    constructor(width: number, height: number, startX: number, startY: number) {
+        if (this.constructor !== GameMap) {
+            throw new Error('Subclassing is not allowed')
+        }
+
+        this.Hash = ""
+
+        this.Layers = new Layers()
+        this.Textures = []
         
         this.Width = width
         this.Height = height
@@ -108,6 +124,14 @@ export default class GameMap {
         this.Top = startY
 
         this.Transitions = new Map<string, Transition>()
+
+        this.LoadTransitionFunctions = []
+    }
+
+    loadTransitions() {
+        this.LoadTransitionFunctions.forEach((func: any) => {
+            func(this)
+        })
     }
 
     maxLeft() {
@@ -294,17 +318,72 @@ export default class GameMap {
                 )
             }
         }
+
+        this.Textures.push(texture)
     }
 
-    addTransition(x: number, y: number, direction: MoveSetType, callback: (doneCallback: () => any) => void, walkOnTrigged: boolean = true) {
-        var trans: Transition = new Transition(x, y, direction, callback, walkOnTrigged)
+    addTransition(transition: Transition) {
         this.Transitions.set(
-            trans.Key,
-            trans
+            transition.Key,
+            transition
         )
     }
 
     getTransition(x: number, y: number, direction: MoveSetType, walkOnTrigged: boolean): Transition | undefined {
         return this.Transitions.get(getTransitionKey(x, y, direction, walkOnTrigged))
+    }
+
+    id(): string {
+        if (this.Hash == "") {
+            this.Hash = hash(this.toYaml())
+        }
+
+        return this.Hash
+    }
+
+    toYaml(): MapModel {
+        var model: MapModel = {
+            id: this.Hash,
+            width: this.Width,
+            height: this.Height,
+            textures: {
+                barrier: [],
+                base: [],
+                low: [],
+                sprite: [],
+                high: []
+            },
+            transitions: []
+        }
+
+        this.Textures.forEach((texture: Texture) => {
+            var list: InputTextureModel[]
+
+            switch (texture.Level) {
+                case TextureLevel.BARRIER:
+                    list = model.textures.barrier
+                    break;
+                case TextureLevel.BASE:    
+                    list = model.textures.base
+                    break;
+                case TextureLevel.LOWLANDSCAPE:    
+                    list = model.textures.low
+                    break;
+                case TextureLevel.SPRITES:    
+                    list = model.textures.sprite
+                    break;
+                case TextureLevel.HIGHLANDSCAPE:    
+                    list = model.textures.high
+                    break;
+            }
+
+            list.push(texture.toYaml())
+        })
+            
+        this.Transitions.forEach((transition: Transition, key: string) => {
+            model.transitions.push(transition.toYaml())
+        })
+
+        return model
     }
 }

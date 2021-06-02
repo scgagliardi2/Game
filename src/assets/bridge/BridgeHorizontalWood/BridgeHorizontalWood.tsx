@@ -6,7 +6,7 @@ import { MoveSetType } from "../../../game/inputs/MoveSet"
 export default class BridgeHorizontalWood extends StretchTexture {
 
 	constructor(xpos: number, ypos: number, level: TextureLevel, length: number) {
-		super(xpos, ypos, level, [
+		super('e2c962e3de47d4c7a98662e6d21cb81bd6b91648f242f50071b2895d8cfc0b29', xpos, ypos, level, [
 			[
 				new Tile(require('./0-0.png'), [MoveSetType.DOWN], [MoveSetType.UP]),
 				new Tile(require('./0-1.png'), [MoveSetType.DOWN], [MoveSetType.UP]),

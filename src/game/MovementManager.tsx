@@ -29,7 +29,7 @@ export default class MovementManager {
     }
 
     public static transition(
-        newMapName: string, mapX: number, mapY: number, 
+        nextMapId: string, mapX: number, mapY: number, 
         playerX: number, playerY: number, playerDirection: MoveSetType
     ) {
         GameData().Player.Texture.X = playerX
@@ -37,7 +37,7 @@ export default class MovementManager {
         GameData().Player.Texture.nextTile()
         GameData().Player.Texture.look(playerDirection)
 
-        var map = GameData().Maps.get(newMapName)!
+        var map = GameData().Maps.get(nextMapId)!
         map.Top = mapY
         map.Left = mapX
 
@@ -60,7 +60,7 @@ export default class MovementManager {
         if (walkOffTransition != undefined) {
             this.FadeOutCallback()
 
-            walkOffTransition.Callback(() => {
+            walkOffTransition.transition(() => {
                 setTimeout(
                     this.FadeInCallback,
                     300 
@@ -81,7 +81,7 @@ export default class MovementManager {
             // if a transition is triggered when the player walks on the next tile
             // only trigger right before the player lands
             if (walkOnTransition != undefined && this.MoveCounter == 3) {
-                walkOnTransition!.Callback(() => {
+                walkOnTransition!.transition(() => {
                     setTimeout(
                         this.FadeInCallback,
                         300 

@@ -1,3 +1,5 @@
+import { MoveSetType } from "../../game/inputs/MoveSet";
+
 export interface InputTextureModel {
     x: number,
     y: number,
@@ -5,11 +7,24 @@ export interface InputTextureModel {
     height: number,
     stretches: boolean,
     length: number,
+    repeatIndex: number,
     class: string
 }
 
+export interface InputTransitionModel {
+    mapX: number,
+    mapY: number,
+    walkOn: boolean,
+    activationDirection: MoveSetType,
+    newMapX: number,
+    newMapY: number,
+    newMapId: string,
+    playerX: number,
+    playerY: number,
+    playerDirection: MoveSetType
+}
+
 export default interface MapModel {
-    name: string,
     id: string,
     width: number,
     height: number,
@@ -19,5 +34,6 @@ export default interface MapModel {
         low: InputTextureModel[],
         sprite: InputTextureModel[],
         high: InputTextureModel[]
-    }
+    },
+    transitions: InputTransitionModel[]
 }
