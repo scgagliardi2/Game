@@ -26,7 +26,7 @@ export default class TextureList extends React.Component<Props, State> {
 
     renderImage(texture: TextureModel, index: number) {
         return (
-            <Draggable key={texture.name} draggableId={texture.name} index={index} >
+            <Draggable key={texture.id} draggableId={texture.id} index={index} >
                 {(provided, snapshot) => (
                     <div
                         ref={provided.innerRef}

@@ -1,4 +1,4 @@
-import { InputTransitionModel } from "../../mapBuilder/models/MapModel";
+import { IOTransitionModel } from "../../mapBuilder/models/IOTransitionModel";
 import { MoveSetType } from "../inputs/MoveSet";
 import MovementManager from "../MovementManager";
 
@@ -51,7 +51,7 @@ export default class Transition {
         doneCallback()
     }
 
-    toYaml(): InputTransitionModel {
+    toYaml(): IOTransitionModel {
         return {
             mapX: this.X,
             mapY: this.Y,
@@ -66,7 +66,7 @@ export default class Transition {
         }
     }
 
-    static buildFrom(model: InputTransitionModel): Transition {
+    static buildFrom(model: IOTransitionModel): Transition {
         return new Transition(
             model.mapX, model.mapY, model.activationDirection, model.walkOn,
             model.newMapId, model.newMapX, model.newMapY, 

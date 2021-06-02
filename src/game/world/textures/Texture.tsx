@@ -1,4 +1,4 @@
-import { InputTextureModel } from '../../../mapBuilder/models/MapModel';
+import { IOTextureModel } from '../../../mapBuilder/models/IOTextureModel';
 import Tile from '../tiles/Tile';
 
 export enum TextureLevel {
@@ -32,7 +32,7 @@ export default class Texture {
         this.Level = level
     }
 
-    toYaml(): InputTextureModel {
+    toYaml(): IOTextureModel {
         return {
             x: this.X,
             y: this.Y,

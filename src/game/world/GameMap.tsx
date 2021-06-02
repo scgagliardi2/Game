@@ -6,87 +6,11 @@ import { cellSize, increment } from './World'
 import Layers from './textures/Layers'
 import Transition, { getTransitionKey } from './Transition'
 import { GameData } from '../Game'
-import MapModel, { InputTextureModel, InputTransitionModel } from '../../mapBuilder/models/MapModel'
+import MapModel from '../../mapBuilder/models/MapModel'
 import { textures } from '../../assets/textures'
 import hash from "object-hash"
-
-
-export function buildFrom(model: MapModel): GameMap {
-    var map = new GameMap(model.width, model.height, 0, 0)
-
-    model.textures.barrier.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClassById(texture.class)
-
-        map.addTexture(
-            new cls(texture.x, texture.y, texture.width, texture.height)
-        )
-    })
-
-    model.textures.base.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClassById(texture.class)
-
-        if (texture.stretches) {
-            map.addTexture(
-                new cls(texture.x, texture.y, TextureLevel.BASE, texture.length)
-            )
-        }
-        else {
-            map.addTexture(
-                new cls(texture.x, texture.y, TextureLevel.BASE)
-            )
-        }
-    })
-
-    model.textures.low.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClassById(texture.class)
-
-        if (texture.stretches) {
-            map.addTexture(
-                new cls(texture.x, texture.y, TextureLevel.LOWLANDSCAPE, texture.length)
-            )
-        }
-        else {
-            map.addTexture(
-                new cls(texture.x, texture.y, TextureLevel.LOWLANDSCAPE)
-            )
-        }
-    })
-
-    model.textures.sprite.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClassById(texture.class)
-
-        map.addTexture(
-            new cls(texture.x, texture.y)
-        )
-    })
-
-    model.textures.high.forEach((texture: InputTextureModel) => {
-        var cls = getTextureClassById(texture.class)
-        
-        if (texture.stretches) {
-            map.addTexture(
-                new cls(texture.x, texture.y, TextureLevel.HIGHLANDSCAPE, texture.length)
-            )
-        }
-        else {
-            map.addTexture(
-                new cls(texture.x, texture.y, TextureLevel.HIGHLANDSCAPE)
-            )
-        }
-    })
-
-    map.LoadTransitionFunctions.push((m: GameMap) => {
-        model.transitions.forEach((transition: InputTransitionModel) => {
-            m.addTransition(Transition.buildFrom(transition))
-        })
-    })
-
-    return map
-}
-
-function getTextureClassById(id: string): any {
-    return textures.get(id)?.class
-}
+import { IOTextureModel } from '../../mapBuilder/models/IOTextureModel'
+import { IOTransitionModel } from '../../mapBuilder/models/IOTransitionModel'
 
 export const half = Math.floor(constants.size.windowTiles / 2)
 
@@ -357,7 +281,7 @@ export default class GameMap {
         }
 
         this.Textures.forEach((texture: Texture) => {
-            var list: InputTextureModel[]
+            var list: IOTextureModel[]
 
             switch (texture.Level) {
                 case TextureLevel.BARRIER:
@@ -385,5 +309,56 @@ export default class GameMap {
         })
 
         return model
+    }
+
+    static buildFrom(model: MapModel): GameMap {
+        var map = new GameMap(model.width, model.height, 0, 0)
+    
+        model.textures.barrier.forEach((texture: IOTextureModel) => {
+            var cls = textures.get(texture.class)?.class()
+    
+            map.addTexture(
+                new cls(texture.x, texture.y, texture.width, texture.height)
+            )
+        })
+
+        var basicTexBuild = (m: GameMap, texture: IOTextureModel, level: TextureLevel) => {
+            var cls = textures.get(texture.class)?.class()
+    
+            if (texture.stretches) {
+                m.addTexture(
+                    new cls(texture.x, texture.y, level, texture.length)
+                )
+            }
+            else {
+                m.addTexture(
+                    new cls(texture.x, texture.y, level)
+                )
+            }
+        }
+    
+        model.textures.base.forEach((texture: IOTextureModel) => {
+            basicTexBuild(map, texture, TextureLevel.BASE)
+        })
+    
+        model.textures.low.forEach((texture: IOTextureModel) => {
+            basicTexBuild(map, texture, TextureLevel.LOWLANDSCAPE)
+        })
+    
+        model.textures.sprite.forEach((texture: IOTextureModel) => {
+            basicTexBuild(map, texture, TextureLevel.SPRITES)
+        })
+    
+        model.textures.high.forEach((texture: IOTextureModel) => {
+            basicTexBuild(map, texture, TextureLevel.HIGHLANDSCAPE)
+        })
+    
+        map.LoadTransitionFunctions.push((m: GameMap) => {
+            model.transitions.forEach((transition: IOTransitionModel) => {
+                m.addTransition(Transition.buildFrom(transition))
+            })
+        })
+    
+        return map
     }
 }
