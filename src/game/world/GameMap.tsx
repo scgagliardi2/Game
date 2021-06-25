@@ -26,6 +26,7 @@ export default class GameMap {
     Height: number
 
     Transitions: Map<string, Transition>
+    Encounters: Map<string, Transition>
 
     LoadTransitionFunctions: any[]
 

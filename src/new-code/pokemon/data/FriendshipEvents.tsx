@@ -1,0 +1,12 @@
+export enum FRIENDSHIP_EVENT {
+    GROW_LEVEL = 0,
+    VITAMIN = 1,
+    BATTLE_ITEM = 2,
+    LEAGUE_BATTLE = 3,
+    LEARN_TMHM = 4,
+    WALKING = 5,
+    MASSAGE = 6,
+    FAINT_SMALL = 7,
+    FAINT_OUTSIDE_BATTLE = 8,
+    FAINT_LARGE = 9
+}

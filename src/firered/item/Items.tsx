@@ -1,0 +1,1 @@
+export const Items = require('../data/json/items.json')

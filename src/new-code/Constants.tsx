@@ -1,0 +1,1 @@
+export const PARTY_SIZE = 6

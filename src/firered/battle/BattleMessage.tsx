@@ -1,0 +1,1 @@
+export const Text_BadEgg: string = "Bad EGG";
